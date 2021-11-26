@@ -19,9 +19,9 @@ router.get('/:id', async function(req, res, next) {
   const queryString = "SELECT * FROM Users WHERE id = $1";
   const result = await db.query(queryString, id);
 
-  if(result.rows.length > 0) {
+  if(result.rowCount > 0) {
     res.status(200).send(result.rows); 
-  } else if (result.rows.length == 0) {
+  } else if (result.rowCount === 0) {
     res.status(204).send();
   } else {
     res.status(400).send();
@@ -47,9 +47,9 @@ router.put('/:id', async function(req, res, next) {
   const queryString = 'UPDATE users SET user_name = $2, password = $3 WHERE id = $1 RETURNING *';
   const result = await db.query(queryString, theVals);
 
-  if(result.rows.length > 0) {
+  if(result.rowCount > 0) {
     res.status(205).send(result.rows); 
-  } else if (result.rows.length == 0) {
+  } else if (result.rowCount === 0) {
     res.status(204).send();
   } else {
     res.status(400).send();
