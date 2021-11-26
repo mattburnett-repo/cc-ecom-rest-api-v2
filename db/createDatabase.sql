@@ -21,6 +21,25 @@ DROP DATABASE IF EXISTS codecademy_ecommerce_rest_api_v2;
 
 BEGIN;
 
+CREATE TABLE Carts
+(
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    cart_id integer NOT NULL, 
+    order_date date,
+    CONSTRAINT "Carts_pkey" PRIMARY KEY (id)
+)
+
+CREATE TABLE Cart
+(
+    id integer NOT NULL,
+    product_id integer NOT NULL, 
+    product_name character varying,
+    product_quantity integer NOT NULL,
+    line_item_total_price money NOT NULL,
+    CONSTRAINT "Cart_pkey" PRIMARY KEY (id)
+)
+
 CREATE TABLE Order_Item
 (
     id integer NOT NULL,
@@ -57,6 +76,20 @@ CREATE TABLE Users
 
 COMMENT ON TABLE Users
     IS 'users / customers';
+
+ALTER TABLE Carts   
+    ADD CONSTRAINT cart_id_fkey FOREIGN KEY (cart_id)
+    REFERENCES Cart (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+ALTER TABLE Cart
+    ADD CONSTRAINT product_id_fkey FOREIGN KEY (product_id)
+    REFERENCES Products (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
 
 ALTER TABLE Order_Item
     ADD CONSTRAINT order_id_fkey FOREIGN KEY (order_id)
