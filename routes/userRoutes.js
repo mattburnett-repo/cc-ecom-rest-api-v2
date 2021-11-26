@@ -1,24 +1,68 @@
 var express = require('express');
-// var { Client } = require("pg");
-
 var router = express.Router();
 
-// TODO: 
-//    clean up connection code. convert to Pool. use .env for connectionString
-//    error handling for result const assign
+var db = require('../db');
 
-/* GET users listing. */
 router.get('/', async function(req, res, next) {
-  var pg = require("pg")
-  var connectionString = "pg://postgres:postgres@localhost:5432/codecademy_ecommerce_rest_api_v2";
-  var client = new pg.Client(connectionString);
-  client.connect();
+  const queryString = "SELECT * FROM Users";
+  const result = await db.query(queryString);
 
-  var queryString = "SELECT * FROM Users";
+  if(result) {
+    res.status(200).send(result.rows);
+  } else {
+    res.status(400).send();
+  }
+});
 
-  const result = await client.query(queryString);
+router.get('/:id', async function(req, res, next) {
+  const id = [parseInt(req.params.id)];
+  const queryString = "SELECT * FROM Users WHERE id = $1";
+  const result = await db.query(queryString, id);
 
-  res.status(200).send({ query: 'users', results: result.rows});
+  if(result) {
+    res.status(200).send(result.rows);
+  } else {
+    res.status(400).send();
+  }
+});
+
+router.post('/', async function(req, res, next) {
+  var theVals = [req.body.id, req.body.user_name, req.body.password];
+ 
+  const queryString = 'INSERT INTO users(id, user_name, password) VALUES($1, $2, $3) RETURNING *';
+  const result = await db.query(queryString, theVals);
+
+  if(result) {
+    res.status(201).send(result.rows); 
+  } else {
+    res.status(400).send();
+  }
+});
+
+router.put('/:id', async function(req, res, next) {
+  var theVals = [req.params.id, req.body.user_name, req.body.password];
+
+  const queryString = 'UPDATE users SET user_name = $2, password = $3 WHERE id = $1 RETURNING *';
+  const result = await db.query(queryString, theVals);
+
+  if(result) {
+    res.status(205).send(result.rows); 
+  } else {
+    res.status(400).send();
+  }
+});
+
+router.delete('/:id', async function(req, res, next) {
+  var theVals = [req.params.id];
+
+  const queryString = "DELETE FROM users WHERE id = $1";
+  const result = await db.query(queryString, theVals);
+
+  if(result) {
+    res.status(204).send(result.rows); 
+  } else {
+    res.status(400).send();
+  }
 });
 
 module.exports = router;
