@@ -3,4 +3,6 @@
 
 ## Technologies used
 * Express / NodeJS
-* PostgreSQL / PGadmin
+* PostgreSQL / PGadmin / Postbird
+* Mocha / Chai TDD suite
+* Postman API development tool

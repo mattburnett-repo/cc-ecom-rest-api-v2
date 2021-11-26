@@ -52,6 +52,16 @@ describe('API User Routes', function() {
           });
         });
       }); // end inner describe
+      describe('GET /api/v1/user/:id', function() {
+        it('should handle request for non-existing user', function(done) {
+          chai.request(server)
+          .get('/api/v1/user/4')
+          .end(function(err, res) {
+            res.should.have.status(204);
+            done();
+          });
+        });
+      }); // end inner describe
     describe('POST /api/v1/user', function(){
         it('should add a user', function(done) {
             chai.request(server)
@@ -107,4 +117,27 @@ describe('API User Routes', function() {
             });      
         });
     }); // end inner describe
+
+    describe('DELETE /api/v1/user/:id', function(){
+        it('should handle delete request for a non-existent user', function(done) {
+            chai.request(server)
+            .delete('/api/v1/user/4')
+            .send()
+            .end(function(err, res) {
+                res.should.have.status(204);
+                done();
+            });      
+        });
+    }); // end inner describe
+
+    describe('PUT /api/v1/user/:id', function() {
+        it('should handle update for non-existing user', function(done) {
+          chai.request(server)
+          .put('/api/v1/user/4')
+          .end(function(err, res) {
+            res.should.have.status(204);
+            done();
+          });
+        });
+      }); // end inner describe
 });
