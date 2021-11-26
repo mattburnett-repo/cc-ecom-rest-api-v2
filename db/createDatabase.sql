@@ -85,4 +85,8 @@ INSERT INTO Users VALUES (1, 'username_01', 'password_01');
 INSERT INTO Users VALUES (2, 'username_02', 'password_02');
 INSERT INTO Users VALUES (3, 'username_03', 'password_03');
 
+INSERT INTO Products VALUES (1, 'product_name_01', 'product_desc_01', 1.00);
+INSERT INTO Products VALUES (2, 'product_name_02', 'product_desc_02', 2.00);
+INSERT INTO Products VALUES (3, 'product_name_02', 'product_desc_03', 3.00);
+
 END;
