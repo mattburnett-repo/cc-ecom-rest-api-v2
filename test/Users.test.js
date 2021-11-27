@@ -102,8 +102,8 @@ describe('API User Routes', function() {
                 res.body[0].should.have.property('password');
                 res.body[0].password.should.equal('password_044');
                 done();
-            });         
-        });
+            });        
+        }); 
     }); // end inner describe
 
     describe('DELETE /api/v1/user/:id', function(){
