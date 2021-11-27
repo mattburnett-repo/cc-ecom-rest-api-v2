@@ -20,7 +20,6 @@ BEGIN;
 
 DROP TABLE IF EXISTS carts CASCADE;
 DROP TABLE IF EXISTS cart_items;
-DROP TABLE IF EXISTS order_items;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS users;
@@ -38,24 +37,16 @@ CREATE TABLE cart_items
     cart_id integer NOT NULL,
     product_id integer NOT NULL, 
     product_quantity integer NOT NULL,
-    product_price money NOT NULL,
-    line_item_total_price money NOT NULL
+    product_price decimal NOT NULL,
+    line_item_total_price decimal NOT NULL
 );
 
 CREATE TABLE orders
 (
-    id integer PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     user_id integer,
-    total_price money
-);
-
-CREATE TABLE order_items
-(
-    id integer NOT NULL,
-    order_id integer,
-    product_id integer,
-    line_item_price money,
-    product_quantity integer
+    cart_id integer,
+    total_price decimal
 );
 
 CREATE TABLE products
@@ -63,7 +54,7 @@ CREATE TABLE products
     id SERIAL PRIMARY KEY,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     description character varying COLLATE pg_catalog."default" NOT NULL,
-    price money
+    price decimal
 );
 
 CREATE TABLE users
@@ -83,23 +74,15 @@ ALTER TABLE cart_items
     ON DELETE NO ACTION
     NOT VALID;
 
-ALTER TABLE order_item
-    ADD CONSTRAINT order_id_fkey FOREIGN KEY (order_id)
-    REFERENCES Orders (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
-ALTER TABLE order_item
-    ADD CONSTRAINT product_id_fkey FOREIGN KEY (product_id)
-    REFERENCES Products (id) MATCH SIMPLE
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
-
 ALTER TABLE orders
     ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id)
     REFERENCES Users (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+ALTER TABLE orders
+    ADD CONSTRAINT cart_id_fkey FOREIGN KEY (cart_id)
+    REFERENCES Carts (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 

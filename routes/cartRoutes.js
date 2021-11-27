@@ -31,6 +31,19 @@ router.get('/:cartID', async function(req, res, next) {
     }
 });
 
+router.post('/', async function(req, res, next) {
+  var queryString = 'INSERT INTO carts (user_id) VALUES ($1) RETURNING *';
+
+  const result = await db.query(queryString, [req.body.user_id]);
+
+  if(result) {
+    res.status(201).send(result.rows); 
+    // res.status(201).send(); 
+  } else {
+    res.status(400).send();
+  }
+});
+
 router.post('/:cartID', async function(req, res, next) {
     var theVals = [req.params.cartID, req.body.product_id, req.body.product_quantity, req.body.product_price, (req.body.product_quantity * req.body.product_price)];
    
@@ -57,8 +70,10 @@ router.post('/:cartID', async function(req, res, next) {
     queryString = "SELECT * FROM cart_items WHERE id = $1";
     result = await db.query(queryString, [req.body.cart_item_id]);
 
-    if(result.rowCount > 0) {
-      res.status(205).send(result.rows);
+    // if(result.rowCount > 0) {
+    if(result) {
+      // res.status(205).send(result.rows);
+      res.status(205).send();
     } else {
       res.status(400).send();
     }

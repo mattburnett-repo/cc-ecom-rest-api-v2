@@ -23,21 +23,21 @@ describe('API Product Routes', function() {
               res.body[0].should.have.property('description');
               res.body[0].description.should.equal('product_desc_01');
               res.body[0].should.have.property('price');
-              res.body[0].price.should.equal('$1.00');
+              res.body[0].price.should.equal('1.00');
 
               res.body[1].should.have.property('name');
               res.body[1].name.should.equal('product_name_02');
               res.body[1].should.have.property('description');
               res.body[1].description.should.equal('product_desc_02');
               res.body[1].should.have.property('price');
-              res.body[1].price.should.equal('$2.00');
+              res.body[1].price.should.equal('2.00');
 
               res.body[2].should.have.property('name');
               res.body[2].name.should.equal('product_name_03');
               res.body[2].should.have.property('description');
               res.body[2].description.should.equal('product_desc_03');
               res.body[2].should.have.property('price');
-              res.body[2].price.should.equal('$3.00');
+              res.body[2].price.should.equal('3.00');
 
               done();
               });
@@ -56,7 +56,7 @@ describe('API Product Routes', function() {
               res.body[0].should.have.property('description');
               res.body[0].description.should.equal('product_desc_01');
               res.body[0].should.have.property('price');
-              res.body[0].price.should.equal('$1.00');
+              res.body[0].price.should.equal('1.00');
   
               done();
             });
@@ -80,7 +80,7 @@ describe('API Product Routes', function() {
                 id: 4,
                 name: 'product_name_04',
                 description : 'product_desc_04',
-                price: 4.00
+                price: '4.00'
             })
             .end(function(err, res) {
                 res.should.have.status(201);
@@ -91,7 +91,7 @@ describe('API Product Routes', function() {
                 res.body[0].should.have.property('description');
                 res.body[0].description.should.equal('product_desc_04');
                 res.body[0].should.have.property('price');
-                res.body[0].price.should.equal('$4.00');
+                res.body[0].price.should.equal('4.00');
                 done();
             });
           });
@@ -116,7 +116,7 @@ describe('API Product Routes', function() {
                 res.body[0].should.have.property('description');
                 res.body[0].description.should.equal('product_desc_044');
                 res.body[0].should.have.property('price');
-                res.body[0].price.should.equal('$4.44');
+                res.body[0].price.should.equal('4.44');
                 done();
             });        
         });

@@ -9,7 +9,7 @@ var index = require('./routes/index');
 var userRoutes = require('./routes/userRoutes');
 var productRoutes = require('./routes/productRoutes');
 var cartRoutes = require('./routes/cartRoutes');
-var checkoutRoutes = require('./routes/checkoutRoutes');
+var orderRoutes = require('./routes/orderRoutes');
 
 var app = express();
 
@@ -30,7 +30,7 @@ app.use('/api/v1', index);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
-app.use('/api/v1/checkout', checkoutRoutes);
+app.use('/api/v1/order', orderRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
