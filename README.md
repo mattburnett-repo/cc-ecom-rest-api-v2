@@ -6,3 +6,4 @@
 * PostgreSQL / PGadmin / Postbird
 * Mocha / Chai TDD suite
 * Postman API development tool
+* Passport JS authentication library

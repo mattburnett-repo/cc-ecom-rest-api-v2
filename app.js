@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+var authRoutes = require('./routes/authRoutes');
 var userRoutes = require('./routes/userRoutes');
 var productRoutes = require('./routes/productRoutes');
 var cartRoutes = require('./routes/cartRoutes');
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/api/v1', index);
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
