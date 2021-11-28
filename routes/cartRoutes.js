@@ -37,7 +37,7 @@ router.post('/', async function(req, res, next) {
   const result = await db.query(queryString, [req.body.user_id]);
 
   if(result) {
-    res.status(201).send(result.rows); 
+    res.status(200).send(result.rows); 
     // res.status(201).send(); 
   } else {
     res.status(400).send();
@@ -54,26 +54,26 @@ router.post('/:cartID', async function(req, res, next) {
     const result = await db.query(queryString);
   
     if(result) {
-      res.status(205).send(result.rows); 
+      res.status(200).send(result.rows); 
     } else {
       res.status(400).send();
     }
   });
 
   router.put('/:cartID', async function(req, res, next) {
-    var theVals = [req.body.cart_item_id, req.body.product_quantity, (req.body.product_quantity * req.body.product_price)];
+    var theVals = [req.params.cartID, req.body.cart_item_id, req.body.product_quantity, (req.body.product_quantity * req.body.product_price)];
   
-    var queryString = 'UPDATE cart_items SET product_quantity = $2, line_item_total_price = $3 WHERE id = $1 RETURNING *';
+    var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND id = $2 RETURNING *';
     var result = await db.query(queryString, theVals);
 
     // get updated row
     queryString = "SELECT * FROM cart_items WHERE id = $1";
     result = await db.query(queryString, [req.body.cart_item_id]);
 
-    // if(result.rowCount > 0) {
-    if(result) {
-      // res.status(205).send(result.rows);
-      res.status(205).send();
+    if(result.rowCount > 0) {
+      res.status(200).send(result.rows); 
+    } else if (result.rowCount === 0) {
+      res.status(204).send({message: `item ${req.body.cart_item_id} not updated`});
     } else {
       res.status(400).send();
     }
@@ -86,7 +86,7 @@ router.post('/:cartID', async function(req, res, next) {
     const result = await db.query(queryString, theVals);
   
     if(result) {
-      res.status(204).send();
+      res.status(200).send(result.rows); 
     } else {
       res.status(400).send();
     }

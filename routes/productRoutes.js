@@ -22,16 +22,16 @@ router.get('/:id', async function(req, res, next) {
   if(result.rowCount > 0) {
     res.status(200).send(result.rows); 
   } else if (result.rowCount === 0) {
-    res.status(204).send();
+    res.status(200).send([{'message': `product id ${req.params.id} not found`}]);
   } else {
     res.status(400).send();
   }
 });
 
 router.post('/', async function(req, res, next) {
-  var theVals = [req.body.id, req.body.name, req.body.description, req.body.price];
- 
-  const queryString = 'INSERT INTO products(id, name, description, price) VALUES($1, $2, $3, $4) RETURNING *';
+  var theVals = [req.body.name, req.body.description, req.body.price];
+
+  const queryString = 'INSERT INTO products(name, description, price) VALUES($1, $2, $3) RETURNING *';
   const result = await db.query(queryString, theVals);
 
   if(result) {
@@ -47,8 +47,8 @@ router.put('/:id', async function(req, res, next) {
   const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4  WHERE id = $1 RETURNING *';
   const result = await db.query(queryString, theVals);
 
-  if(result.rowCount > 0) {
-    res.status(205).send(result.rows); 
+  if(result.rowCount === 1) {
+    res.status(200).send(result.rows); 
   } else if (result.rowCount === 0) {
     res.status(204).send();
   } else {
@@ -61,7 +61,7 @@ router.delete('/:id', async function(req, res, next) {
 
   const queryString = "DELETE FROM products WHERE id = $1";
   const result = await db.query(queryString, theVals);
-
+  // TODO: find out about that results.rows?.length thing and fix all routes to use/return this
   if(result) {
     res.status(204).send(result.rows); 
   } else {

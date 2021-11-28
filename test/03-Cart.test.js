@@ -20,8 +20,13 @@ describe('API Cart Routes', function() {
                 user_id: 1
             })
             .end(function(err, res) {
-              res.should.have.status(201);
+              res.should.have.status(200);
               res.should.be.json; // jshint ignore:line
+              res.body.should.be.a('array');
+              res.body.length.should.equal(1);
+
+              res.body[0].should.have.property('user_id');
+              res.body[0].user_id.should.equal(1);
   
               done();
             });
@@ -34,6 +39,10 @@ describe('API Cart Routes', function() {
             .end(function(err, res) {
               res.should.have.status(200);
               res.should.be.json; // jshint ignore:line
+              res.body.should.be.a('array');
+
+              res.body[0].should.have.property('user_id');
+              res.body[0].user_id.should.equal(1);
   
               done();
             });
@@ -49,6 +58,9 @@ describe('API Cart Routes', function() {
                 res.body.should.be.a('array');
                 res.body.length.should.equal(1);
 
+                res.body[0].should.have.property('user_id');
+                res.body[0].user_id.should.equal(1);
+
               done();
             });
         });
@@ -63,9 +75,10 @@ describe('API Cart Routes', function() {
                 product_price: 1.00
             })
             .end(function(err, res) {
-                res.should.have.status(205);
+                res.should.have.status(200);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
+                res.body.length.should.equal(1);
 
                 res.body[0].should.have.property('cart_id');
                 res.body[0].cart_id.should.equal(1);
@@ -92,9 +105,10 @@ describe('API Cart Routes', function() {
                 product_price: 2.00
             })
             .end(function(err, res) {
-                res.should.have.status(205);
+                res.should.have.status(200);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
+                res.body.length.should.equal(1);
 
                 res.body[0].should.have.property('cart_id');
                 res.body[0].cart_id.should.equal(1);
@@ -121,20 +135,21 @@ describe('API Cart Routes', function() {
                 product_price: 1.00
             })
             .end(function(err, res) {
-                res.should.have.status(205);
-                // res.should.be.json; // jshint ignore:line
-                // res.body.should.be.a('array');
+                res.should.have.status(200);
+                res.should.be.json; // jshint ignore:line
+                res.body.should.be.a('array');
+                res.body.length.should.equal(1);
 
-                // res.body[0].should.have.property('cart_id');
-                // res.body[0].cart_id.should.equal(1);
-                // res.body[0].should.have.property('product_id');
-                // res.body[0].product_id.should.equal(1);
-                // res.body[0].should.have.property('product_quantity');
-                // res.body[0].product_quantity.should.equal(2);
-                // res.body[0].should.have.property('product_price');
-                // res.body[0].product_price.should.equal('1.00');
-                // res.body[0].should.have.property('line_item_total_price');
-                // res.body[0].line_item_total_price.should.equal('2.00');
+                res.body[0].should.have.property('cart_id');
+                res.body[0].cart_id.should.equal(1);
+                res.body[0].should.have.property('product_id');
+                res.body[0].product_id.should.equal(1);
+                res.body[0].should.have.property('product_quantity');
+                res.body[0].product_quantity.should.equal(2);
+                res.body[0].should.have.property('product_price');
+                res.body[0].product_price.should.equal('1');
+                res.body[0].should.have.property('line_item_total_price');
+                res.body[0].line_item_total_price.should.equal('2');
 
                 done();
             });            
@@ -148,7 +163,7 @@ describe('API Cart Routes', function() {
                 cart_item_id: 1
             })
             .end(function(err, res) {
-                res.should.have.status(204);
+                res.should.have.status(200);
                 done();
             });      
         });

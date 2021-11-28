@@ -17,14 +17,18 @@ describe('API Order Routes', function() {
                 cart_id: 1
             })
             .end(function(err, res) {
-                res.should.have.status(201);
+                res.should.have.status(200);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
                 res.body.length.should.equal(1);
-                // res.body[0].should.have.property('user_name');
-                // res.body[0].user_name.should.equal('username_04');
-                // res.body[0].should.have.property('password');
-                // res.body[0].password.should.equal('password_04');
+
+                res.body[0].should.have.property('user_id');
+                res.body[0].user_id.should.equal(1);
+                res.body[0].should.have.property('cart_id');
+                res.body[0].cart_id.should.equal(1);
+                res.body[0].should.have.property('total_price');
+                res.body[0].total_price.should.equal('4');
+
                 done();
             });
         });
@@ -37,20 +41,14 @@ describe('API Order Routes', function() {
             res.should.have.status(200);
             res.should.be.json; // jshint ignore:line
             res.body.should.be.a('array');
-            res.body.length.should.equal(1); 
+            // res.body.length.should.equal(1); 
 
-            // res.body[0].should.have.property('user_name');
-            // res.body[0].user_name.should.equal('username_01');
-            // res.body[0].should.have.property('password');
-            // res.body[0].password.should.equal('password_01');
-            // res.body[1].should.have.property('user_name');
-            // res.body[1].user_name.should.equal('username_02');
-            // res.body[1].should.have.property('password');
-            // res.body[1].password.should.equal('password_02');
-            // res.body[2].should.have.property('user_name');
-            // res.body[2].user_name.should.equal('username_03');
-            // res.body[2].should.have.property('password');
-            // res.body[2].password.should.equal('password_03');
+            res.body[0].should.have.property('user_id');
+            res.body[0].user_id.should.equal(1);
+            res.body[0].should.have.property('cart_id');
+            res.body[0].cart_id.should.equal(1);
+            res.body[0].should.have.property('total_price');
+            res.body[0].total_price.should.equal('4');
 
             done();
             });
@@ -64,10 +62,14 @@ describe('API Order Routes', function() {
             res.should.have.status(200);
             res.should.be.json; // jshint ignore:line
             res.body.should.be.a('array');
-            // res.body[0].should.have.property('user_name');
-            // res.body[0].user_name.should.equal('username_01');
-            // res.body[0].should.have.property('password');
-            // res.body[0].password.should.equal('password_01');
+            res.body.length.should.equal(1); 
+
+            res.body[0].should.have.property('user_id');
+            res.body[0].user_id.should.equal(1);
+            res.body[0].should.have.property('cart_id');
+            res.body[0].cart_id.should.equal(1);
+            res.body[0].should.have.property('total_price');
+            res.body[0].total_price.should.equal('4');
 
             done();
           });
@@ -81,6 +83,7 @@ describe('API Order Routes', function() {
             .send()
             .end(function(err, res) {
                 res.should.have.status(204);
+
                 done();
             });      
         });

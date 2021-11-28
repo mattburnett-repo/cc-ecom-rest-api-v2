@@ -17,7 +17,7 @@ router.post('/', async function(req, res, next) {
     result = await db.query(queryString, [req.body.user_id, req.body.cart_id, total_price]);
   
     if(result) {
-      res.status(201).send(result.rows);
+      res.status(200).send(result.rows);
     } else {
       res.status(400).send();
     }

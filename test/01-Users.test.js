@@ -16,7 +16,7 @@ describe('API User Routes', function() {
             res.should.have.status(200);
             res.should.be.json; // jshint ignore:line
             res.body.should.be.a('array');
-            res.body.length.should.equal(3);
+            // res.body.length.should.equal(3);
 
             res.body[0].should.have.property('user_name');
             res.body[0].user_name.should.equal('username_01');
@@ -57,7 +57,13 @@ describe('API User Routes', function() {
           chai.request(server)
           .get('/api/v1/user/4')
           .end(function(err, res) {
-            res.should.have.status(204);
+            res.should.have.status(200);
+            res.should.be.json; 
+            res.body.should.be.a('array');
+
+            res.body[0].should.have.property('message');
+            res.body[0].message.should.equal('user id 4 not updated');
+
             done();
           });
         });
@@ -94,7 +100,7 @@ describe('API User Routes', function() {
                 password : 'password_044'
             })
             .end(function(err, res) {
-                res.should.have.status(205);
+                res.should.have.status(200);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
                 res.body[0].should.have.property('user_name');
@@ -112,7 +118,7 @@ describe('API User Routes', function() {
             .delete('/api/v1/user/4')
             .send()
             .end(function(err, res) {
-                res.should.have.status(204);
+                res.should.have.status(200);
                 done();
             });      
         });
@@ -124,7 +130,7 @@ describe('API User Routes', function() {
             .delete('/api/v1/user/4')
             .send()
             .end(function(err, res) {
-                res.should.have.status(204);
+                res.should.have.status(200);
                 done();
             });      
         });

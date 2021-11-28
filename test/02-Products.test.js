@@ -16,7 +16,7 @@ describe('API Product Routes', function() {
               res.should.have.status(200);
               res.should.be.json; // jshint ignore:line
               res.body.should.be.a('array');
-              res.body.length.should.equal(3);
+              // res.body.length.should.equal(3);
   
               res.body[0].should.have.property('name');
               res.body[0].name.should.equal('product_name_01');
@@ -51,6 +51,7 @@ describe('API Product Routes', function() {
               res.should.have.status(200);
               res.should.be.json; // jshint ignore:line
               res.body.should.be.a('array');
+
               res.body[0].should.have.property('name');
               res.body[0].name.should.equal('product_name_01');
               res.body[0].should.have.property('description');
@@ -62,12 +63,19 @@ describe('API Product Routes', function() {
             });
         });
       }); // end inner describe
-      describe('GET /api/v1/product/:id', function() {
+      
+    describe('GET /api/v1/product/:id', function() {
         it('should handle request for non-existing product', function(done) {
             chai.request(server)
-            .get('/api/v1/user/4')
+            .get('/api/v1/product/100')
             .end(function(err, res) {
-              res.should.have.status(204);
+              res.should.have.status(200);
+              res.should.be.json; // jshint ignore:line
+              res.body.should.be.a('array');
+
+              res.body[0].should.have.property('message');
+              res.body[0].message.should.equal('product id 100 not found');
+
               done();
             });
         });
@@ -77,7 +85,6 @@ describe('API Product Routes', function() {
             chai.request(server)
             .post('/api/v1/product')
             .send({
-                id: 4,
                 name: 'product_name_04',
                 description : 'product_desc_04',
                 price: '4.00'
@@ -86,12 +93,14 @@ describe('API Product Routes', function() {
                 res.should.have.status(201);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
+
                 res.body[0].should.have.property('name');
                 res.body[0].name.should.equal('product_name_04');
                 res.body[0].should.have.property('description');
                 res.body[0].description.should.equal('product_desc_04');
                 res.body[0].should.have.property('price');
                 res.body[0].price.should.equal('4.00');
+
                 done();
             });
           });
@@ -102,21 +111,22 @@ describe('API Product Routes', function() {
             chai.request(server)
             .put('/api/v1/product/4')
             .send({
-                id: 4,
-                name: 'product_name_044',
-                description : 'product_desc_044',
+                name: 'product_name_0444',
+                description : 'product_desc_0444',
                 price: 4.44
             })
             .end(function(err, res) {
-                res.should.have.status(205);
+                res.should.have.status(200);
                 res.should.be.json; // jshint ignore:line
                 res.body.should.be.a('array');
+
                 res.body[0].should.have.property('name');
-                res.body[0].name.should.equal('product_name_044');
+                res.body[0].name.should.equal('product_name_0444');
                 res.body[0].should.have.property('description');
-                res.body[0].description.should.equal('product_desc_044');
+                res.body[0].description.should.equal('product_desc_0444');
                 res.body[0].should.have.property('price');
                 res.body[0].price.should.equal('4.44');
+
                 done();
             });        
         });
