@@ -1,5 +1,5 @@
-// FIXME: this kills the app-> console.log(require('dotenv').config({path: __dirname + '/.env'}))
-// console.log('app: ' + process.env.SESSION_SECRET);
+
+require('dotenv').config();
 
 var express = require('express');
 var path = require('path');
@@ -8,7 +8,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
-
 var flash = require('express-flash');
 var session = require('express-session');
 
@@ -19,7 +18,7 @@ const passport = require('passport');
 initializePassport(passport);
 
 app.use(session({
-  secret: 'session_secret', // FIXME: should come from process.env, but dotenv kills the app. wtf...
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
