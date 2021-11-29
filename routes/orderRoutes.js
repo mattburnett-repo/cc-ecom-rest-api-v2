@@ -46,7 +46,7 @@ router.get('/:orderID', async function(req, res, next) {
 });
 
 router.delete('/:orderID', async function(req, res, next) {
-  const queryString = "DELETE FROM users WHERE id = $1";
+  const queryString = "DELETE FROM orders WHERE id = $1";
   const result = await db.query(queryString, [req.params.id]);
 
   if(result) {

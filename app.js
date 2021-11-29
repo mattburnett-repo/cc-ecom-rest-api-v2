@@ -14,7 +14,6 @@ const yaml = require('js-yaml');
 const fs = require('fs'); 
 const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swagger.yml'), 'utf8'));
 
-
 // stuff for passport
 var bcrypt = require('bcrypt');
 var flash = require('express-flash');
