@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "createDB": "psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql",
     "testAll": "mocha"
   },

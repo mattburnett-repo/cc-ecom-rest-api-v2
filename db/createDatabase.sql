@@ -16,6 +16,9 @@
 -- RUN SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
+-- HEROKU CLI
+-- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app damp-fjord-27458
+
 BEGIN;
 
 DROP TABLE IF EXISTS carts CASCADE;
