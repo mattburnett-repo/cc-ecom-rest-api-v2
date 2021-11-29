@@ -1,7 +1,9 @@
 
 // git push heroku main
 
-require('dotenv').config();
+if(process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 var express = require('express');
 var path = require('path');
@@ -40,7 +42,7 @@ app.use(passport.session());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(favicon(path.join(__dirname, 'public/images', 'ladderIcon_01.png')));
+app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
