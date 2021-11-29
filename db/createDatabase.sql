@@ -60,8 +60,8 @@ CREATE TABLE products
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
-    user_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(25) COLLATE pg_catalog."default" NOT NULL
+    user_name character varying(50) COLLATE pg_catalog."default" NOT NULL UNIQUE,
+    password character varying(100) COLLATE pg_catalog."default" NOT NULL -- very long because it's hashed in /register
 );
 
 COMMENT ON TABLE users

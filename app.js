@@ -1,34 +1,64 @@
+// FIXME: this kills the app-> console.log(require('dotenv').config({path: __dirname + '/.env'}))
+// console.log('app: ' + process.env.SESSION_SECRET);
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var bcrypt = require('bcrypt');
 
-var index = require('./routes/index');
-var authRoutes = require('./routes/authRoutes');
-var userRoutes = require('./routes/userRoutes');
-var productRoutes = require('./routes/productRoutes');
-var cartRoutes = require('./routes/cartRoutes');
-var orderRoutes = require('./routes/orderRoutes');
+var flash = require('express-flash');
+var session = require('express-session');
 
 var app = express();
 
+const initializePassport = require('./passport-config');
+const passport = require('passport');
+initializePassport(passport);
+
+app.use(session({
+  secret: 'session_secret', // FIXME: should come from process.env, but dotenv kills the app. wtf...
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public/images', 'ladderIcon_01.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.urlencoded({ extended: false }));
 
-app.use('/', index);
-app.use('/api/v1', index);
-app.use('/api/v1/auth', authRoutes);
+app.use(flash());
+
+var index = require('./routes/index');
+var loginRoutes = require('./routes/loginRoutes');
+var registerRoutes = require('./routes/registerRoutes');
+var userRoutes = require('./routes/userRoutes');
+var productRoutes = require('./routes/productRoutes');
+var cartRoutes = require('./routes/cartRoutes');
+var orderRoutes = require('./routes/orderRoutes');
+
+// app.use('/', index);
+// app.use('/api/v1', index);
+app.use('/', loginRoutes);
+app.use('/api/v1', loginRoutes);
+app.use('/login', loginRoutes);
+app.use('/api/v1/login', loginRoutes);
+
+app.use('/register', registerRoutes);
+app.use('/api/v1/register', registerRoutes);
+
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);

@@ -3,7 +3,9 @@
 
 ## Technologies used
 * Express / NodeJS
+* EJS template language
 * PostgreSQL / PGadmin / Postbird
 * Mocha / Chai TDD suite
 * Postman API development tool
+* bcrypt encryption library
 * Passport JS authentication library
