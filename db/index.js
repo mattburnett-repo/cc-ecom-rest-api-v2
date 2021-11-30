@@ -12,7 +12,7 @@ const devConfig = {
 
 // UnhandledPromiseRejectionWarning: error: no pg_hba.conf entry for host "3.86.254.150", user "bjonkuvjlhiska", database "deqs5qjkrb94vk", SSL off
 const prodConfig = {
-  connectionString: process.env.HEROKU_POSTGRESQL_ONYX_URL + "?sslmode=verify-full&sslrootcert=server-ca.pem"
+  connectionString: process.env.HEROKU_POSTGRESQL_ONYX_URL + "?sslmode=verify-ca&sslrootcert=server-ca.pem&sslcert=client-cert.pem&sslkey=client-key.pem"
 };
 
 const pool = new Pool(
