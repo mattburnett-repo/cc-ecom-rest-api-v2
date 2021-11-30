@@ -10,11 +10,9 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', passport.authenticate('local', {
-    successRedirect: '/api-docs', // TODO: api-docs is kind of like the front end. you should be able to interact with the api here.
+    successRedirect: '/api-docs', // api-docs is the front end for this project
     failureRedirect: '/login',
     failureFlash: true
 }));
-
-// TODO: add middleware methods to check isAuthenticated true / false and use to restrict access to routes
 
 module.exports = router;

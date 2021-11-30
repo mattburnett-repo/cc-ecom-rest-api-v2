@@ -44,7 +44,7 @@ function isAuthenticated(req, res, next) {
     } 
   }
 
-function isNotAuthenticated(req, rest, next) {
+function isNotAuthenticated(req, rest, next) { // TODO: untangle this, so we can give users a logout option
     if(req.isAuthenticated()) {
         return res.redirect('/logout');
     } else {

@@ -27,7 +27,6 @@ const methodOverride = require('method-override');
 
 var app = express();
 
-// const { initializePassport } = require('./passport-config');
 const passport = require('passport');
 initializePassport(passport);
 
@@ -88,10 +87,10 @@ app.use('/api/v1/order', orderRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.delete('/logout', (req, res) => {
-  req.logOut();
-  res.redirect('/login');
-})
+// app.delete('/logout', (req, res) => {
+//   req.logOut();
+//   res.redirect('/login');
+// })
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
