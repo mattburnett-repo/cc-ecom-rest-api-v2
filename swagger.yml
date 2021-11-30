@@ -10,7 +10,11 @@ schemes:
 
 host: localhost:4000
 
-basePath: "/"
+servers:
+  - url: http://api.example.com/api/v1
+    description: app root URL + /api/v1
+
+basePath: "/api/v1"
 
 paths:
   /cart:
@@ -20,6 +24,28 @@ paths:
       produces:
         - "application/json"
       parameters:
+      responses:
+        200:
+          description: 200 Success
+          schema:
+            type: object
+            items:
+        204:
+          description: 204 No Content
+          schema:
+            type: 
+            items:
+        400:
+          description: 400 Bad request
+          schema:
+            type: 
+            items:
+    get/:cartID:
+      summary: "Get a cart"
+      description: "Get a cart by cart id"
+      produces:
+        - "application/json"
+      parameters: cartID
       responses:
         200:
           description: 200 Success
@@ -75,7 +101,9 @@ paths:
       description: "Update a cart item's quantity and line item price"
       produces:
         - "application/json"
-      parameters: cartID, productID
+      parameters: 
+        cartID, 
+        productID
       responses:
         200:
           description: 200 Success
@@ -108,29 +136,6 @@ paths:
           description: 400 Bad request
           schema:
             type: object
-            items:
-  /cart/{cartID}:
-    get:
-      summary: "Get a cart"
-      description: "Get a cart by cart id"
-      produces:
-        - "application/json"
-      parameters: cartID
-      responses:
-        200:
-          description: 200 Success
-          schema:
-            type: object
-            items:
-        204:
-          description: 204 No Content
-          schema:
-            type: 
-            items:
-        400:
-          description: 400 Bad request
-          schema:
-            type: 
             items:
   /login:
     get:
@@ -355,7 +360,7 @@ paths:
           schema:
             type: object
             items:
-    post/:
+    post:
       summary: "Create a user"
       description: "Add a user record to the database"
       produces:
@@ -372,7 +377,7 @@ paths:
           schema:
             type: object
             items:
-    put/:
+    put:
       summary: "Update a user"
       description: "Update a user record in the database"
       produces:
@@ -394,7 +399,7 @@ paths:
           schema:
             type: object
             items:
-    delete/{id}:
+    delete/id:
       summary: "Delete a user"
       description: "Delete a user record from the database"
       produces:
