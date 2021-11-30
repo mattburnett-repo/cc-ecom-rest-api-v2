@@ -11,7 +11,7 @@ const devConfig = {
 };
 
 const prodConfig = {
-  connectionString: process.env.DATABASE_URL // HEROKU_POSTGRESQL_ONYX_URL
+  connectionString: process.env.HEROKU_POSTGRESQL_ONYX_URL
 };
 
 const pool = new Pool(
