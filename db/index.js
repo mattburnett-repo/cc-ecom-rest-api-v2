@@ -10,10 +10,8 @@ const devConfig = {
   port: process.env.DATABASE_PORT
 };
 
-// UnhandledPromiseRejectionWarning: error: no pg_hba.conf entry for host "3.86.254.150", user "bjonkuvjlhiska", database "deqs5qjkrb94vk", SSL off
-//    + "?sslmode=verify-ca&sslrootcert=server-ca.pem&sslcert=client-cert.pem&sslkey=client-key.pem"
 const prodConfig = {
-  connectionString: process.env.HEROKU_POSTGRESQL_ONYX_URL, 
+  connectionString: process.env.DATABASE_URL, // HEROKU_POSTGRESQL_ONYX_URL
   ssl: {
     rejectUnauthorized: false
   }
