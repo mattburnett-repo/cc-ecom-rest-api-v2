@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', passport.authenticate('local', {
-    successRedirect: '/api-docs', // TODO: should go to user homepage. show completed orders / carts / logout, etc.
+    successRedirect: '/api-docs', // TODO: api-docs is kind of like the front end. you should be able to interact with the api here.
     failureRedirect: '/login',
     failureFlash: true
 }));
