@@ -18,6 +18,7 @@ router.post('/', async function(req, res) {
         const queryString = 'INSERT INTO users(user_name, password) VALUES ($1, $2) RETURNING *';
         const result = db.query(queryString, theVals);
  
+        // TODO: needs to catch duplicate user names
         res.redirect('/login');
     } catch {
         res.redirect('/register');

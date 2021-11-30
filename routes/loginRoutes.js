@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', passport.authenticate('local', {
-    successRedirect: '/api/v1/product', // TODO: should go to user homepage. show completed orders / carts / logout, etc.
+    successRedirect: '/api-docs', // TODO: should go to user homepage. show completed orders / carts / logout, etc.
     failureRedirect: '/login',
     failureFlash: true
 }));

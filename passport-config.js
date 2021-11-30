@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const db = require('./db');
 
 function initialize(passport) {
-    // Configure local strategy to be use for local login
     passport.use(new LocalStrategy(
         async (username, password, done) => {
             const theVals = [username];
