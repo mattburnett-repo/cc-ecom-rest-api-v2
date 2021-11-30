@@ -10,7 +10,7 @@ Click the 'GitHub Repo' link to see the code repository. Database create script,
 
 Click the 'GitHub Project' link to see the kanban project cards.
 
-Deployment: https://damp-fjord-27458.herokuapp.com/ \
+Deployment: https://e-commerce-rest-api-v2.herokuapp.com/ \
 GitHub Repo: https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/ \
 GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects/1)
 
