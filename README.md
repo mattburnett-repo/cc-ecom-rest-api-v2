@@ -4,6 +4,7 @@ This is a collection of RESTful API calls modelled on basic e-commerce functiona
 The focus of this project is the creation of REST APIs, and not the creation of a functioning online store.
 
 Click the 'Deployment' link to go to the app. From there you can register / login, and then see the API specification.
+All API routes are protected by authentication.
 
 Click the 'GitHub Repo' link to see the code repository. Database create script, ERD and unit tests are included in this repo.
 
