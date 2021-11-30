@@ -2,7 +2,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const db = require('./db');
 
-function initialize(passport) {
+function initializePassport(passport) {
     passport.use(new LocalStrategy(
         async (username, password, done) => {
             const theVals = [username];
@@ -36,4 +36,24 @@ function initialize(passport) {
     });
 }
 
-module.exports = initialize;
+function isAuthenticated(req, res, next) {  
+    if(req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/login');
+    } 
+  }
+
+function isNotAuthenticated(req, rest, next) {
+    if(req.isAuthenticated()) {
+        return res.redirect('/logout');
+    } else {
+        return next();
+    }    
+}
+
+module.exports = {
+    isAuthenticated,
+    isNotAuthenticated,
+    initializePassport
+}

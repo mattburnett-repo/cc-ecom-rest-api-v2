@@ -1,6 +1,4 @@
-
 // git push heroku main
-// heroku config:set NODE_MODULES_CACHE=false
 
 if(process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -23,10 +21,13 @@ const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swa
 var bcrypt = require('bcrypt');
 var flash = require('express-flash');
 var session = require('express-session');
+const { initializePassport, isAuthenticated, isNotAuthenticated } = require('./passport-config');
+
+const methodOverride = require('method-override');
 
 var app = express();
 
-const initializePassport = require('./passport-config');
+// const { initializePassport } = require('./passport-config');
 const passport = require('passport');
 initializePassport(passport);
 
@@ -38,6 +39,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(methodOverride('_method'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,13 +66,20 @@ var orderRoutes = require('./routes/orderRoutes');
 
 // app.use('/', index);
 // app.use('/api/v1', index);
+
+// app.use(isNotAuthenticated);
+
 app.use('/', loginRoutes);
 app.use('/api/v1', loginRoutes);
 app.use('/login', loginRoutes);
 app.use('/api/v1/login', loginRoutes);
+app.use('/logout', loginRoutes);
+app.use('/api/v1/logout', loginRoutes);
 
 app.use('/register', registerRoutes);
 app.use('/api/v1/register', registerRoutes);
+
+app.use(isAuthenticated);
 
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/product', productRoutes);
@@ -77,6 +87,11 @@ app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/order', orderRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.delete('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/login');
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
