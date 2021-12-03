@@ -13,6 +13,9 @@
 --     TABLESPACE = pg_default
 --     CONNECTION LIMIT = -1;
 
+--  ALTER TABLE public.users
+--     OWNER to postgres;
+
 -- RUN SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
