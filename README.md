@@ -26,7 +26,5 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
 
 ## Future development / To do
 * Everything can always be better...
-* Use loaders to make the app.js file smaller / more modularity of the app.
-* Better integration with Swagger. Make api-docs more interactive, allow users to run APIs from the api docs.
-  * Maybe this can be found in the OpenAPI docs / process
 * More granular control over api access using existing authentication
+* Refactor to use loader / model / service architecture (https://softwareontheroad.com/ideal-nodejs-project-structure/)

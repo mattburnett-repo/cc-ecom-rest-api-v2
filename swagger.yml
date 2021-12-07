@@ -9,7 +9,9 @@ schemes:
   - http
   - https
 
-host: https://e-commerce-rest-api-v2.herokuapp.com/
+servers:
+  - url: http://localhost:4000
+  - url: https://e-commerce-rest-api-v2.herokuapp.com/
 
 tags:
 - name: "cart"
@@ -26,7 +28,7 @@ tags:
   description: "User endpoint"
 
 paths:
-  /cart:
+  /api/v1/cart:
     get:
       tags: 
       - "cart"
@@ -70,7 +72,7 @@ paths:
           schema:
             type: object
             items:
-  /cart/{cartID}:
+  /api/v1/cart/{cartID}:
     get:
       tags: 
         - "cart"
@@ -226,7 +228,7 @@ paths:
           description: "Password"
           required: true
           type: "string"
-  /order:
+  /api/v1/order:
     get:
       tags: 
       - "order"
@@ -246,7 +248,7 @@ paths:
           schema:
             type: 
             items:
-  /order/{orderID}:
+  /api/v1/order/{orderID}:
     get:
       tags: 
       - "order"
@@ -316,7 +318,7 @@ paths:
           schema:
             type: 
             items:
-  /product:
+  /api/v1/product:
     get:
       tags: 
       - "product"
@@ -336,12 +338,12 @@ paths:
           schema:
             type: 
             items:
-  /product/{productID}:
+  /api/v1/product/{productID}:
     get:
       tags: 
       - "product"
-      summary: "Get order"
-      description: "Get an order by id"
+      summary: "Get product"
+      description: "Get a product by id"
       produces:
         - "application/json"
       parameters:
@@ -485,7 +487,7 @@ paths:
         - "application/json"
       parameters: 
       responses:
-  /user:
+  /api/v1/user:
     get:
       tags: 
       - "user"
@@ -589,7 +591,7 @@ paths:
           schema:
             type: object
             items:
-  /user/{userID}:
+  /api/v1/user/{userID}:
     get:
       tags: 
       - "user"
