@@ -6,7 +6,12 @@ var passport = require('passport');
 // https://www.youtube.com/watch?v=-RCnNyD0L-s
 
 router.get('/', function(req, res) {
-    res.render('login.ejs');
+    try {
+        res.render('login.ejs');
+    } catch (e) {
+        res.status(400).send({message: e.message});
+    }
+    
 });
 
 router.post('/', passport.authenticate('local', {

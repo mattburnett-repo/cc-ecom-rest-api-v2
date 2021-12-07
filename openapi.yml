@@ -159,8 +159,8 @@ paths:
       description: "Delete an order by id"
       parameters: []
       responses:
-        204:
-          description: 204 No content
+        200:
+          description: 200 Success
         400:
           description: 400 Bad request
   /api/v1/product:

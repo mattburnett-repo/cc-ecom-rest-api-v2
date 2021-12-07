@@ -60,8 +60,6 @@ app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/order', orderRoutes);
 
-
-
 // app.delete('/logout', (req, res) => {
 //   req.logOut();
 //   res.redirect('/login');
