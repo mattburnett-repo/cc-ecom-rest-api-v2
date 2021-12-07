@@ -5,55 +5,30 @@ if(process.env.NODE_ENV !== 'production') {
 }
 
 var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var app = express();
+
+const loaders = require('./loaders');
+
+loaders(app); // TODO: need to add swagger / passport / routing
 
 // stuff for swagger
+var path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const yaml = require('js-yaml');
 const fs = require('fs'); 
-const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swagger.yml'), 'utf8'));
+// const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swagger.yml'), 'utf8'));
+const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './openapi.yml'), 'utf8'));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // stuff for passport
 var bcrypt = require('bcrypt');
-var flash = require('express-flash');
-var session = require('express-session');
 const { initializePassport, isAuthenticated, isNotAuthenticated } = require('./passport-config');
-
-const methodOverride = require('method-override');
-
-var app = express();
 
 const passport = require('passport');
 initializePassport(passport);
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
-
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use(methodOverride('_method'));
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(favicon(path.join(__dirname, 'public/images', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.urlencoded({ extended: false }));
-
-app.use(flash());
 
 var index = require('./routes/index');
 var loginRoutes = require('./routes/loginRoutes');
@@ -85,7 +60,7 @@ app.use('/api/v1/product', productRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/order', orderRoutes);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // app.delete('/logout', (req, res) => {
 //   req.logOut();
