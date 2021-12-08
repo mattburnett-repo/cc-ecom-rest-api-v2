@@ -46,13 +46,13 @@ module.exports = async (app) => {
 
   router.post('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.id), req.body.user_name, req.body.password];
+      var theVals = [req.body.user_name, req.body.password];
     
-      const queryString = 'INSERT INTO users(id, user_name, password) VALUES($1, $2, $3) RETURNING *';
+      const queryString = 'INSERT INTO users(user_name, password) VALUES($1, $2) RETURNING *';
       const result = await db.query(queryString, theVals);
 
       if(result) {
-        res.status(201).send(result.rows); 
+        res.status(200).send(result.rows); 
       } else {
         res.status(400).send();
       }    

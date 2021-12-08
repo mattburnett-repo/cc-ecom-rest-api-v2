@@ -56,9 +56,9 @@ module.exports = async (app) => {
     }
   });
 
-  router.put('/:id', async function(req, res, next) {
+  router.put('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.id), req.body.name, req.body.description, req.body.price];
+      var theVals = [parseInt(req.body.id), req.body.name, req.body.description, req.body.price];
 
       const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4  WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);

@@ -38,23 +38,24 @@ module.exports = (app, passport) => {
     }
   });
 
+  // FIXME: figure best way to add cart for a user
+  // router.post('/', async function(req, res, next) {
+  //   try {
+  //     var queryString = 'INSERT INTO carts (user_id) VALUES ($1) RETURNING *';
+
+  //     const result = await db.query(queryString, [parseInt(req.body.user_id)]);
+
+  //   if(result) {
+  //     res.status(200).send(result.rows); 
+  //   } else {
+  //     res.status(400).send();
+  //   }  
+  //   } catch (e) {
+  //     res.status(400).send({message: e.message});
+  //   }
+  // });
+
   router.post('/', async function(req, res, next) {
-    try {
-      var queryString = 'INSERT INTO carts (user_id) VALUES ($1) RETURNING *';
-
-      const result = await db.query(queryString, [parseInt(req.body.user_id)]);
-
-    if(result) {
-      res.status(200).send(result.rows); 
-    } else {
-      res.status(400).send();
-    }  
-    } catch (e) {
-      res.status(400).send({message: e.message});
-    }
-  });
-
-  router.post('/:cartID', async function(req, res, next) {
     try {
       var theVals = [parseInt(req.params.cartID), parseInt(req.body.product_id), parseInt(req.body.product_quantity), req.body.product_price, (parseInt(req.body.product_quantity) * req.body.product_price)];
 

@@ -61,6 +61,7 @@ CREATE TABLE products
     id SERIAL PRIMARY KEY,
     name character varying COLLATE pg_catalog."default" NOT NULL,
     description character varying COLLATE pg_catalog."default" NOT NULL,
+    image_url character varying(250),
     price decimal
 );
 
