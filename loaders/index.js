@@ -1,15 +1,14 @@
 const expressLoader = require('./expressLoader');
+const passportLoader = require('./passportLoader');
+const routeLoader = require('../routes');
 const swaggerLoader = require('./swaggerLoader');
-// const passportLoader = require('./passportLoader');
 
 module.exports = async (app) => {
     const expressApp = await expressLoader(app);
-    
-    // const passport = await passportLoader(expressApp);
+    const passport = await passportLoader(expressApp);
 
-    // await swaggerLoader(app);
-
-    // return expressApp;
+    await routeLoader(app, passport); // TODO: finish refactor of passport route auth
+    await swaggerLoader(app);
 
     // Error Handler
     app.use((err, req, res, next) => {

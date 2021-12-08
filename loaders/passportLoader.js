@@ -3,6 +3,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const db = require('../db');
 
+// TODO: finish refactor of route access auth
+
 module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());

@@ -9,26 +9,26 @@ var app = express();
 
 const loaders = require('./loaders');
 
-loaders(app); // TODO: need to add swagger / passport / routing
+loaders(app); 
 
 // stuff for swagger
-var path = require('path');
-const swaggerUi = require('swagger-ui-express');
-const yaml = require('js-yaml');
-const fs = require('fs'); 
-// const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swagger.yml'), 'utf8'));
-const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './openapi.yml'), 'utf8'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// var path = require('path');
+// const swaggerUi = require('swagger-ui-express');
+// const yaml = require('js-yaml');
+// const fs = require('fs'); 
+// // const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './swagger.yml'), 'utf8'));
+// const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, './openapi.yml'), 'utf8'));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // stuff for passport
-var bcrypt = require('bcrypt');
-const { initializePassport, isAuthenticated, isNotAuthenticated } = require('./passport-config');
+// var bcrypt = require('bcrypt');
+// const { initializePassport, isAuthenticated, isNotAuthenticated } = require('./passport-config');
 
-const passport = require('passport');
-initializePassport(passport);
+// const passport = require('passport');
+// initializePassport(passport);
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 var index = require('./routes/index');
 var loginRoutes = require('./routes/loginRoutes');
