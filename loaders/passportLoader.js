@@ -26,7 +26,7 @@ module.exports = (app) => {
             const user = await db.query(queryString, theVals);
             
             if(user.rowCount !== 1) {
-                return done(null, false, { message: `${username} not found`});
+                return done(null, false, { message: `${username} not found. You can click the Register link and create a login from there.`});
             }
 
             try {

@@ -20,7 +20,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.get('/:cart_id', async function(req, res, next) {
+  router.get('/:cart_id', async function(req, res, next) {  // FIXME: should bring back all of the cart items...
     try {
       const queryString = "SELECT * FROM Carts WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.params.cart_id)]);

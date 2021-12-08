@@ -19,6 +19,9 @@
 -- RUN SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
+-- RUN THIS TO ADD MINIMAL TEST DATA
+-- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
+
 -- HEROKU CLI
 -- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app damp-fjord-27458
 
@@ -94,6 +97,6 @@ ALTER TABLE orders
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
-SELECT '*** Run insertTestData.sql to add minimal user / product data ***' AS do_this_next;
+SELECT '*** Run insertTestData.sql to add minimal test data ***' AS do_this_next;
 
 END;

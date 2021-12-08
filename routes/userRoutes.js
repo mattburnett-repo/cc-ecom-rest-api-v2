@@ -34,7 +34,7 @@ module.exports = async (app) => {
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(200).send([{"message": `user id ${req.params.id} not updated`}]);
+        res.status(200).send([{"message": `user id ${req.params.id} not found`}]);
       } else {
         res.status(400).send();
       }     
