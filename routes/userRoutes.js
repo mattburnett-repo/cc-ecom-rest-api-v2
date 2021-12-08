@@ -61,9 +61,9 @@ module.exports = async (app) => {
     }
   });
 
-  router.put('/:id', async function(req, res, next) {
+  router.put('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.id), req.body.user_name, req.body.password];
+      var theVals = [parseInt(req.body.user_id), req.body.user_name, req.body.password];
 
       const queryString = 'UPDATE users SET user_name = $2, password = $3 WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -80,9 +80,9 @@ module.exports = async (app) => {
     }
   });
 
-  router.delete('/:id', async function(req, res, next) {
+  router.delete('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.id)];
+      var theVals = [parseInt(req.body.user_id)];
 
       const queryString = "DELETE FROM users WHERE id = $1";
       const result = await db.query(queryString, theVals);

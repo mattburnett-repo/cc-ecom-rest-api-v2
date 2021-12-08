@@ -12,7 +12,7 @@ module.exports = (app) => {
         var result = await db.query(queryString, [parseInt(req.body.cart_id)]);
         var total_price = result.rows[0].total_price;
 
-        console.log('post: ' + total_price);
+        // console.log('post: ' + total_price);
 
         queryString = 'UPDATE carts SET order_date = Now() WHERE id = $1';
         result = await db.query(queryString, [parseInt(req.body.cart_id)]);
@@ -60,10 +60,10 @@ module.exports = (app) => {
     }
   });
 
-  router.delete('/:orderID', async function(req, res, next) {
+  router.delete('/', async function(req, res, next) {
     try {
       const queryString = "DELETE FROM orders WHERE id = $1";
-      const result = await db.query(queryString, [parseInt(req.params.id)]);
+      const result = await db.query(queryString, [parseInt(req.body.id)]);
 
       if(result) {
         res.status(200).send(result.rows); 

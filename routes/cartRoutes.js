@@ -20,16 +20,13 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.get('/:cartID', async function(req, res, next) {
+  router.get('/:cart_id', async function(req, res, next) {
     try {
-      const cartID = [parseInt(req.params.cartID)];
       const queryString = "SELECT * FROM Carts WHERE id = $1";
-      const result = await db.query(queryString, cartID);
+      const result = await db.query(queryString, [parseInt(req.params.cart_id)]);
 
       if(result.rowCount > 0) {
           res.status(200).send(result.rows); 
-      } else if (result.rowCount === 0) {
-          res.status(204).send();
       } else {
           res.status(400).send();
       }      
@@ -39,25 +36,10 @@ module.exports = (app, passport) => {
   });
 
   // FIXME: figure best way to add cart for a user
-  // router.post('/', async function(req, res, next) {
-  //   try {
-  //     var queryString = 'INSERT INTO carts (user_id) VALUES ($1) RETURNING *';
-
-  //     const result = await db.query(queryString, [parseInt(req.body.user_id)]);
-
-  //   if(result) {
-  //     res.status(200).send(result.rows); 
-  //   } else {
-  //     res.status(400).send();
-  //   }  
-  //   } catch (e) {
-  //     res.status(400).send({message: e.message});
-  //   }
-  // });
 
   router.post('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.cartID), parseInt(req.body.product_id), parseInt(req.body.product_quantity), req.body.product_price, (parseInt(req.body.product_quantity) * req.body.product_price)];
+      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.product_id), parseInt(req.body.product_quantity), req.body.product_price, (req.body.product_quantity * req.body.product_price)];
 
       var insertStatement = `INSERT INTO cart_items (cart_id, product_id, product_quantity, product_price, line_item_total_price) `;
       var valuesStatement = `VALUES (${theVals}) RETURNING *`;
@@ -65,7 +47,7 @@ module.exports = (app, passport) => {
 
       const result = await db.query(queryString);
 
-      if(result) {
+      if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
       } else {
         res.status(400).send();
@@ -75,11 +57,11 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.put('/:cartID', async function(req, res, next) {
+  router.put('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.cartID), parseInt(req.body.cart_item_id), parseInt(req.body.product_quantity), (parseInt(req.body.product_quantity) * req.body.product_price)];
+      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id), parseInt(req.body.product_quantity), (parseInt(req.body.product_quantity) * req.body.product_price)];
 
-      var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND id = $2 RETURNING *';
+      var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND product_id = $2 RETURNING *';
       var result = await db.query(queryString, theVals);
 
       // get updated row
@@ -98,11 +80,11 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.delete('/:cartID', async function(req, res, next) {
+  router.delete('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.cartID), parseInt(req.body.cart_item_id)];
+      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id)];
 
-      const queryString = "DELETE FROM cart_items WHERE cart_id = $1 AND id = $2";
+      const queryString = "DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2";
       const result = await db.query(queryString, theVals);
 
       if(result) {

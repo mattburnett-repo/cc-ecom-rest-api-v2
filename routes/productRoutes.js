@@ -41,9 +41,9 @@ module.exports = async (app) => {
 
   router.post('/', async function(req, res, next) {
     try {
-      var theVals = [req.body.name, req.body.description, req.body.price];
+      var theVals = [req.body.name, req.body.description, req.body.price, req.body.image_url];
 
-      const queryString = 'INSERT INTO products(name, description, price) VALUES($1, $2, $3) RETURNING *';
+      const queryString = 'INSERT INTO products(name, description, price, image_url) VALUES($1, $2, $3, $4) RETURNING *';
       const result = await db.query(queryString, theVals);
 
       if(result) {
@@ -58,9 +58,9 @@ module.exports = async (app) => {
 
   router.put('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.id), req.body.name, req.body.description, req.body.price];
+      var theVals = [parseInt(req.body.id), req.body.name, req.body.description, req.body.price, req.body.image_url];
 
-      const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4  WHERE id = $1 RETURNING *';
+      const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4, image_url = $5 WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);
 
       if(result.rowCount === 1) {
@@ -75,9 +75,9 @@ module.exports = async (app) => {
     }
   });
 
-  router.delete('/:id', async function(req, res, next) {
+  router.delete('/', async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.params.id)];
+      var theVals = [parseInt(req.body.id)];
 
       const queryString = "DELETE FROM products WHERE id = $1";
       const result = await db.query(queryString, theVals);
