@@ -341,8 +341,6 @@ components:
                   type: integer
                 cart_id:  
                   type: integer
-                total_price:
-                  type: number
     OrderID:
         description: ID of an order
         required: true

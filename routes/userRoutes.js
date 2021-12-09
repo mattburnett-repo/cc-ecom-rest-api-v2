@@ -25,12 +25,12 @@ module.exports = async (app) => {
 
   });
 
-  router.get('/:id', isAuthenticated, async function(req, res, next) {
+  router.get('/:user_id', isAuthenticated, async function(req, res, next) {
     try {
-      const id = [parseInt(req.params.id)];          
+      const { user_id } = req.params;
 
       const queryString = "SELECT * FROM Users WHERE id = $1";
-      const result = await db.query(queryString, id);
+      const result = await db.query(queryString, [parseInt(user_id, 10)]);
 
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
@@ -47,7 +47,8 @@ module.exports = async (app) => {
 
   router.post('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [req.body.user_name, req.body.password];
+      const { username, password } = req.body;
+      var theVals = [username, password];
     
       const queryString = 'INSERT INTO users(user_name, password) VALUES($1, $2) RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -64,7 +65,8 @@ module.exports = async (app) => {
 
   router.put('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.user_id), req.body.user_name, req.body.password];
+      const { user_id, username, password } = req.body;
+      var theVals = [parseInt(user_id, 10), username, password];
 
       const queryString = 'UPDATE users SET user_name = $2, password = $3 WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -83,7 +85,8 @@ module.exports = async (app) => {
 
   router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.user_id)];
+      const { user_id } = req.body;
+      var theVals = [parseInt(user_id, 10)];
 
       const queryString = "DELETE FROM users WHERE id = $1";
       const result = await db.query(queryString, theVals);

@@ -40,11 +40,13 @@ module.exports = (app, passport) => {
 
   router.post('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.product_id), parseInt(req.body.product_quantity), req.body.product_price, (req.body.product_quantity * req.body.product_price)];
+      const { cart_id, product_id, product_quantity, product_price } = req.body;
+      var line_item_total_price = (product_quantity * product_price);
+      var theVals = [parseInt(cart_id, 10), parseInt(product_id, 10), parseInt(product_quantity, 10), product_price, line_item_total_price];
 
       var insertStatement = `INSERT INTO cart_items (cart_id, product_id, product_quantity, product_price, line_item_total_price) `;
       var valuesStatement = `VALUES (${theVals}) RETURNING *`;
-      var queryString = insertStatement + valuesStatement;
+      var queryString = insertStatement + ' ' + valuesStatement;
 
       const result = await db.query(queryString);
 
@@ -60,14 +62,17 @@ module.exports = (app, passport) => {
 
   router.put('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id), parseInt(req.body.product_quantity), (parseInt(req.body.product_quantity) * req.body.product_price)];
+      const { cart_id, product_id, product_quantity, product_price } = req.body;
+      var line_item_total_price = (product_quantity * product_price);
 
+      var theVals = [parseInt(cart_id, 10), parseInt(product_id, 10), parseInt(product_quantity, 10), line_item_total_price];
+      
       var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND product_id = $2 RETURNING *';
       var result = await db.query(queryString, theVals);
 
       // get updated row
       queryString = "SELECT * FROM cart_items WHERE id = $1";
-      result = await db.query(queryString, [parseInt(req.body.cart_item_id)]);
+      result = await db.query(queryString, [parseInt(result.rows[0].id, 10)]);
 
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
@@ -83,13 +88,14 @@ module.exports = (app, passport) => {
 
   router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id)];
+      const { cart_id, product_id } = req.body; 
+      var theVals = [parseInt(cart_id, 10), parseInt(product_id, 10)];
 
       const queryString = "DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2";
       const result = await db.query(queryString, theVals);
 
       if(result) {
-        res.status(200).send(result.rows); 
+        res.status(200).send({ message: `product_id ${product_id} deleted from cart_id ${cart_id}`}); 
       } else {
         res.status(400).send();
       }     

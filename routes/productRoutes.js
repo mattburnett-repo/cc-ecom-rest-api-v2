@@ -24,9 +24,9 @@ module.exports = async (app) => {
 
   router.get('/:id', isAuthenticated, async function(req, res, next) {
     try {
-      const id = [parseInt(req.params.id)];
+      const { id } = req.params;
       const queryString = "SELECT * FROM Products WHERE id = $1";
-      const result = await db.query(queryString, id);
+      const result = await db.query(queryString, [parseInt(id, 10)]);
 
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
@@ -59,7 +59,8 @@ module.exports = async (app) => {
 
   router.put('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.id), req.body.name, req.body.description, req.body.price, req.body.image_url];
+      const { id, name, description, price, image_url } = req.body;
+      var theVals = [parseInt(id, 10), name, description, price, image_url];
 
       const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4, image_url = $5 WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -67,7 +68,7 @@ module.exports = async (app) => {
       if(result.rowCount === 1) {
         res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(204).send();
+        res.status(204).send({ message: `product_id: ${id} updated.`});
       } else {
         res.status(400).send();
       }    
@@ -78,11 +79,12 @@ module.exports = async (app) => {
 
   router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
-      var theVals = [parseInt(req.body.id)];
+      const { product_id } = req.body;
+      var theVals = [parseInt(product_id, 10)];
 
       const queryString = "DELETE FROM products WHERE id = $1";
       const result = await db.query(queryString, theVals);
-      // TODO: find out about that results.rows?.length thing and fix all routes to use/return this
+
       if(result) {
         res.status(204).send(result.rows); 
       } else {
