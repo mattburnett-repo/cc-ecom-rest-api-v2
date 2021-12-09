@@ -26,5 +26,5 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
 
 ## Future development / To do
 * Everything can always be better...
-* More granular control over api access using existing authentication
+* Build a nicer login / register UX/UI using EJS
 * Refactor to use loader / model / service architecture (https://softwareontheroad.com/ideal-nodejs-project-structure/)

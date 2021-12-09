@@ -1,9 +1,9 @@
 openapi: "3.0.0"
 
 info:
-  description: "Generic endpoints for an e-commerce REST API. The 'Could not render n, see the console.' errors are a bug in the Swagger platform, afaik."
-  version: "1.0.0"
   title: "E-commerce REST API"
+  version: "1.0.0"
+  description: "Generic endpoints for an e-commerce REST API. The 'Could not render n, see the console.' errors are a bug in the Swagger platform, afaik."
 
 servers:
   - url: http://localhost:4000
@@ -302,7 +302,7 @@ components:
         description: 400 Bad request
   requestBodies:
     CartID_ProductID:
-        description: "Form data for item to delete from a cart"
+        description: Form data for item to delete from a cart
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -417,4 +417,3 @@ components:
                   type: string
                 password: 
                   type: string
-

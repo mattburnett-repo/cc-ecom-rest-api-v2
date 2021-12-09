@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 var db = require('../db');
+const { isAuthenticated } = require('../loaders/passportLoader');
 
 module.exports = (app, passport) => {
   app.use('/api/v1/cart', router);
 
-  router.get('/', async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res, next) {
     // const queryString = "SELECT * FROM Carts WHERE order_date IS NULL"; // cart with order_date is not a cart anymore, but has become an order
     const queryString = "SELECT * FROM Carts";
     const result = await db.query(queryString);
@@ -20,7 +21,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.get('/:cart_id', async function(req, res, next) {  // FIXME: should bring back all of the cart items...
+  router.get('/:cart_id', isAuthenticated, async function(req, res, next) {  // FIXME: should bring back all of the cart items...
     try {
       const queryString = "SELECT * FROM Carts WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.params.cart_id)]);
@@ -37,7 +38,7 @@ module.exports = (app, passport) => {
 
   // FIXME: figure best way to add cart for a user
 
-  router.post('/', async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [parseInt(req.body.cart_id), parseInt(req.body.product_id), parseInt(req.body.product_quantity), req.body.product_price, (req.body.product_quantity * req.body.product_price)];
 
@@ -57,7 +58,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.put('/', async function(req, res, next) {
+  router.put('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id), parseInt(req.body.product_quantity), (parseInt(req.body.product_quantity) * req.body.product_price)];
 
@@ -80,7 +81,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.delete('/', async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [parseInt(req.body.cart_id), parseInt(req.body.cart_item_id)];
 

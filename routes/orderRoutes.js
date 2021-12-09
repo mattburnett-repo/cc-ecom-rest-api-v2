@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 var db = require('../db');
+const { isAuthenticated } = require('../loaders/passportLoader');
 
 module.exports = (app) => {
   app.use('/api/v1/order', router);
 
-  router.post('/', async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res, next) {
       try {
         var queryString = 'SELECT SUM(line_item_total_price) AS total_price FROM cart_items WHERE cart_id = $1';
         var result = await db.query(queryString, [parseInt(req.body.cart_id)]);
@@ -30,7 +31,7 @@ module.exports = (app) => {
       }
     });
 
-  router.get('/', async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res, next) {
     try {
       const queryString = "SELECT * FROM orders";
       const result = await db.query(queryString);
@@ -45,7 +46,7 @@ module.exports = (app) => {
     }
   });
 
-  router.get('/:orderID', async function(req, res, next) {
+  router.get('/:orderID', isAuthenticated, async function(req, res, next) {
     try {
       const queryString = "SELECT * FROM orders WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.params.orderID)]);
@@ -60,7 +61,7 @@ module.exports = (app) => {
     }
   });
 
-  router.delete('/', async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
       const queryString = "DELETE FROM orders WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.body.id)]);

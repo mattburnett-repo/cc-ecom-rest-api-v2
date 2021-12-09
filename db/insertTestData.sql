@@ -11,4 +11,4 @@ INSERT INTO carts(user_id) VALUES (1);
 
 INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
-SELECT '*** You now have some users, some products, a cart, and an order as basic test data ***' AS test_data_inserted;
+SELECT '*** You now have three users, three products, one cart, and one order as basic test data ***' AS test_data_inserted;

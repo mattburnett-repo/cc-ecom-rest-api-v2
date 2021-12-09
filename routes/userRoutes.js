@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 var db = require('../db');
+const { isAuthenticated } = require('../loaders/passportLoader');
 
 module.exports = async (app) => {
   app.use('/api/v1/user', router);
 
-  router.get('/', async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res, next) {
     try {
       const queryString = "SELECT * FROM Users";
       const result = await db.query(queryString);
@@ -24,7 +25,7 @@ module.exports = async (app) => {
 
   });
 
-  router.get('/:id', async function(req, res, next) {
+  router.get('/:id', isAuthenticated, async function(req, res, next) {
     try {
       const id = [parseInt(req.params.id)];          
 
@@ -44,7 +45,7 @@ module.exports = async (app) => {
 
   });
 
-  router.post('/', async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [req.body.user_name, req.body.password];
     
@@ -61,7 +62,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.put('/', async function(req, res, next) {
+  router.put('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [parseInt(req.body.user_id), req.body.user_name, req.body.password];
 
@@ -80,7 +81,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.delete('/', async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res, next) {
     try {
       var theVals = [parseInt(req.body.user_id)];
 
