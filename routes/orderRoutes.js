@@ -25,7 +25,7 @@ module.exports = (app) => {
         result = await db.query(queryString, [parseInt(user_id, 10), parseInt(cart_id, 10), orderDate, total_price]);
       
         if(result) {
-          res.status(200).send(result.rows);
+          res.status(200).json(result.rows);
         } else {
           res.status(400).send();
         }
@@ -35,12 +35,13 @@ module.exports = (app) => {
     });
 
   router.get('/', isAuthenticated, async function(req, res) {
+    const queryString = "SELECT * FROM orders";
+
     try {
-      const queryString = "SELECT * FROM orders";
       const result = await db.query(queryString);
 
       if(result) {
-        res.status(200).send(result.rows);
+        res.status(200).json(result.rows);
       } else {
         res.status(400).send();
       }
@@ -50,12 +51,13 @@ module.exports = (app) => {
   });
 
   router.get('/:orderID', isAuthenticated, async function(req, res) {
+    const queryString = "SELECT * FROM orders WHERE id = $1";
+
     try {
-      const queryString = "SELECT * FROM orders WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.params.orderID)]);
 
       if(result) {
-        res.status(200).send(result.rows);
+        res.status(200).json(result.rows);
       } else {
         res.status(400).send();
       }    
@@ -65,13 +67,14 @@ module.exports = (app) => {
   });
 
   router.delete('/', isAuthenticated, async function(req, res) {
+    const { order_id } = req.body;
+    const queryString = "DELETE FROM orders WHERE id = $1";
+
     try {
-      const { order_id } = req.body;
-      const queryString = "DELETE FROM orders WHERE id = $1";
       const result = await db.query(queryString, [parseInt(order_id, 10)]);
 
       if(result) {
-        res.status(200).send(result.rows); 
+        res.status(200).json(result.rows); 
       } else {
         res.status(400).send();
       }   

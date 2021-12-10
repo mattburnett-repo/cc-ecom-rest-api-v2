@@ -24,10 +24,9 @@ module.exports = async (app) => {
 
         try {
             const result = await db.query(queryString, theVals)
-            // console.log(result.rows[0]);
+            
             res.render('login');
           } catch (err) {
-            // console.log(err.detail)
             let errors = []
             errors.push({ msg: `Username ${username} already exists.`})
             res.render('register', {errors})
