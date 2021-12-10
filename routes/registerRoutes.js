@@ -17,9 +17,9 @@ module.exports = async (app) => {
     router.post('/', async function(req, res) {
         try {
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            const theVals = [req.body.username, hashedPassword];
+            const theVals = [req.body.username, hashedPassword, req.body.email];
 
-            const queryString = 'INSERT INTO users(user_name, password) VALUES ($1, $2) RETURNING *';
+            const queryString = 'INSERT INTO users(user_name, password, email) VALUES ($1, $2, $3) RETURNING *';
             const result = db.query(queryString, theVals);
     
             // TODO: needs to catch duplicate user names. Right now it fails silently

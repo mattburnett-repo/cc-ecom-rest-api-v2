@@ -47,10 +47,10 @@ module.exports = async (app) => {
 
   router.post('/', isAuthenticated, async function(req, res, next) {
     try {
-      const { username, password } = req.body;
+      const { username, password, email } = req.body;
       var theVals = [username, password];
     
-      const queryString = 'INSERT INTO users(user_name, password) VALUES($1, $2) RETURNING *';
+      const queryString = 'INSERT INTO users(user_name, password, email) VALUES($1, $2, $3) RETURNING *';
       const result = await db.query(queryString, theVals);
 
       if(result) {
@@ -65,10 +65,10 @@ module.exports = async (app) => {
 
   router.put('/', isAuthenticated, async function(req, res, next) {
     try {
-      const { user_id, username, password } = req.body;
+      const { user_id, username, password, email } = req.body;
       var theVals = [parseInt(user_id, 10), username, password];
 
-      const queryString = 'UPDATE users SET user_name = $2, password = $3 WHERE id = $1 RETURNING *';
+      const queryString = 'UPDATE users SET user_name = $2, password = $3, email = $4 WHERE id = $1 RETURNING *';
       const result = await db.query(queryString, theVals);
 
       if(result.rowCount > 0) {

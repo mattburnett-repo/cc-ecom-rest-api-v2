@@ -207,7 +207,7 @@ paths:
       summary: "Add user"
       description: "Adds user to database"
       requestBody:
-        $ref: '#/components/requestBodies/UserPassword'
+        $ref: '#/components/requestBodies/UserEmailPassword'
       responses:
         $ref: '#/components/responses/200-400'
   /api/v1/user:
@@ -225,7 +225,7 @@ paths:
       summary: "Create a user"
       description: "Add a user record to the database"
       requestBody:
-        $ref: '#/components/requestBodies/UserPassword'
+        $ref: '#/components/requestBodies/UserEmailPassword'
       responses:
         $ref: '#/components/responses/201-400'
     put:
@@ -234,7 +234,7 @@ paths:
       summary: "Update a user"
       description: "Update a user record in the database"
       requestBody:
-        $ref: '#/components/requestBodies/UserIdPassword'
+        $ref: '#/components/requestBodies/UserIdEmailPassword'
       responses:
         $ref: '#/components/responses/200-204-400'
     delete:
@@ -389,8 +389,8 @@ components:
               properties:
                   user_id:
                     type: integer
-    UserIdPassword:
-        description: Username / user id / password
+    UserIdEmailPassword:
+        description: Username / user id / Email / password
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -401,10 +401,12 @@ components:
                   type: integer
                 username:
                   type: string
+                email:
+                  type: string
                 password: 
                   type: string
-    UserPassword:
-        description: Username / password
+    UserEmailPassword:
+        description: Username / Email / Password
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -412,6 +414,8 @@ components:
               type: object
               properties:
                 username:
+                  type: string
+                email:
                   type: string
                 password: 
                   type: string
