@@ -73,7 +73,7 @@ CREATE TABLE users
     id SERIAL PRIMARY KEY,
     user_name character varying(50) COLLATE pg_catalog."default" NOT NULL UNIQUE,
     password character varying(100) COLLATE pg_catalog."default" NOT NULL, -- very long because it's hashed in /register
-    email varying(50)
+    email character varying(50)
 );
 
 COMMENT ON TABLE users

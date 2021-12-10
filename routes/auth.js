@@ -10,8 +10,8 @@ module.exports = (app) => {
     app.use('/api/v1', router);
     app.use('/login', router);
     app.use('/api/v1/login', router);
-    app.use('/logout', router);
-    app.use('/api/v1/logout', router); 
+    // app.use('/logout', router);
+    // app.use('/api/v1/logout', router); 
 
     router.get('/', function(req, res) {
         res.render('login.ejs');

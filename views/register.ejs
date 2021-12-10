@@ -4,6 +4,7 @@
         <h1 class="text-center mb-3"><i class="fab fa-node-js fa-3x"></i> </h1>
         <h2 class="text-center mb-3">Register</h2>
 
+        <!-- TODO: ejs partial/messages should go here, but ejs is too buggy to deal with right now -->
         <form action="/register" method="POST">
           <div class="form-group">
             <label for="name">User Name</label>
@@ -16,7 +17,7 @@
               value="<%= typeof name != 'undefined' ? username : '' %>"
             />
           </div>
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="email">Email</label>
             <input
               type="email"
@@ -26,7 +27,7 @@
               placeholder="Enter Email"
               value="<%= typeof email != 'undefined' ? email : '' %>"
             />
-          </div> -->
+          </div>
           <div class="form-group">
             <label for="password">Password</label>
             <input

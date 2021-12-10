@@ -16,15 +16,17 @@ module.exports = async (app) => {
 
     router.post('/', async function(req, res) {
         try {
-            const hashedPassword = await bcrypt.hash(req.body.password, 10);
-            const theVals = [req.body.username, hashedPassword, req.body.email];
+            const { username, password, password2, email } = req.body
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const theVals = [username, hashedPassword, email];
 
             const queryString = 'INSERT INTO users(user_name, password, email) VALUES ($1, $2, $3) RETURNING *';
             const result = db.query(queryString, theVals);
     
+            res.redirect('/login'); 
+        } catch (e) {
             // TODO: needs to catch duplicate user names. Right now it fails silently
-            res.redirect('/login'); // , { message: `User ${user_name} already exists`}
-        } catch {
+            // res.redirect('/register', { errors }); // , { message: `User ${user_name} already exists`}
             res.redirect('/register');
         }
     })

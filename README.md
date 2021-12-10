@@ -16,6 +16,7 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
 
 ## Technologies used
 * Express / NodeJS
+* EJS templating
 * PostgreSQL / PGadmin / Postbird
 * Mocha / Chai TDD suite
 * Postman API development tool
@@ -26,5 +27,5 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
 
 ## Future development / To do
 * Everything can always be better...
-* Build a nicer login / register UX/UI using EJS
 * Tests are wrecked after refactoring everything to load from index.js instead of app.js
+* Figure out how to get around EJS bugginess and implement better messaging
