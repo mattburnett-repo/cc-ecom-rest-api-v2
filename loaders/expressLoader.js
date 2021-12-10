@@ -11,7 +11,7 @@ var flash = require('express-flash');
 var session = require('express-session');
 var methodOverride = require('method-override');
 
-// var expressLayouts = require('express-ejs-layouts');
+var expressLayouts = require('express-ejs-layouts');
 
 module.exports = (app) => {
     app.use(favicon(path.join(__dirname, '../public/images', 'favicon.ico')));
@@ -31,9 +31,9 @@ module.exports = (app) => {
 
     app.use(flash());
 
-    // app.use(expressLayouts);
-    app.set('views', path.join(__dirname, '../views'));
+    app.use(expressLayouts);
     app.set('view engine', 'ejs');
-
+    // app.set('views', path.join(__dirname, '../views'));
+    
     return app;
 }

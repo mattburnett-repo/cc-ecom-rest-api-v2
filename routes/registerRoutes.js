@@ -11,7 +11,7 @@ module.exports = async (app) => {
     app.use('/api/v1/register', router);
 
     router.get('/', function(req, res) {
-        res.render('register.ejs', {name: 'qwer'});
+        res.render('register.ejs');
     })
 
     router.post('/', async function(req, res) {
