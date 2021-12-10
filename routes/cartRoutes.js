@@ -38,7 +38,7 @@ module.exports = (app, passport) => {
 
   // FIXME: figure best way to add cart for a user
 
-  router.post('/', isAuthenticated, async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res) {
     try {
       const { cart_id, product_id, product_quantity, product_price } = req.body;
       var line_item_total_price = (product_quantity * product_price);
@@ -60,7 +60,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.put('/', isAuthenticated, async function(req, res, next) {
+  router.put('/', isAuthenticated, async function(req, res) {
     try {
       const { cart_id, product_id, product_quantity, product_price } = req.body;
       var line_item_total_price = (product_quantity * product_price);
@@ -86,7 +86,7 @@ module.exports = (app, passport) => {
     }
   });
 
-  router.delete('/', isAuthenticated, async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res) {
     try {
       const { cart_id, product_id } = req.body; 
       var theVals = [parseInt(cart_id, 10), parseInt(product_id, 10)];

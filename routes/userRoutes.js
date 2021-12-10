@@ -7,7 +7,7 @@ const { isAuthenticated } = require('../loaders/passportLoader');
 module.exports = async (app) => {
   app.use('/api/v1/user', router);
 
-  router.get('/', isAuthenticated, async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res) {
     try {
       const queryString = "SELECT * FROM Users";
       const result = await db.query(queryString);
@@ -25,7 +25,7 @@ module.exports = async (app) => {
 
   });
 
-  router.get('/:user_id', isAuthenticated, async function(req, res, next) {
+  router.get('/:user_id', isAuthenticated, async function(req, res) {
     try {
       const { user_id } = req.params;
 
@@ -35,7 +35,7 @@ module.exports = async (app) => {
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(200).send([{"message": `user id ${req.params.id} not found`}]);
+        res.status(200).send([{"message": `user id ${user_id} not found`}]);
       } else {
         res.status(400).send();
       }     
@@ -45,10 +45,10 @@ module.exports = async (app) => {
 
   });
 
-  router.post('/', isAuthenticated, async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res) {
     try {
       const { username, password, email } = req.body;
-      var theVals = [username, password];
+      var theVals = [username, password, email];
     
       const queryString = 'INSERT INTO users(user_name, password, email) VALUES($1, $2, $3) RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -63,7 +63,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.put('/', isAuthenticated, async function(req, res, next) {
+  router.put('/', isAuthenticated, async function(req, res) {
     try {
       const { user_id, username, password, email } = req.body;
       var theVals = [parseInt(user_id, 10), username, password];
@@ -74,7 +74,7 @@ module.exports = async (app) => {
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(204).send({message: `user ${req.body.user_name} not updated`});
+        res.status(204).send({message: `user ${username} not updated`});
       } else {
         res.status(400).send();
       }    
@@ -83,7 +83,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.delete('/', isAuthenticated, async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res) {
     try {
       const { user_id } = req.body;
       var theVals = [parseInt(user_id, 10)];

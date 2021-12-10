@@ -7,7 +7,7 @@ const { isAuthenticated } = require('../loaders/passportLoader');
 module.exports = async (app) => {
   app.use('/api/v1/product', router);
 
-  router.get('/', isAuthenticated, async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res) {
     try {
       const queryString = "SELECT * FROM Products";
       const result = await db.query(queryString);
@@ -22,7 +22,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.get('/:id', isAuthenticated, async function(req, res, next) {
+  router.get('/:id', isAuthenticated, async function(req, res) {
     try {
       const { id } = req.params;
       const queryString = "SELECT * FROM Products WHERE id = $1";
@@ -31,7 +31,7 @@ module.exports = async (app) => {
       if(result.rowCount > 0) {
         res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(200).send([{'message': `product id ${req.params.id} not found`}]);
+        res.status(200).send([{'message': `product id ${id} not found`}]);
       } else {
         res.status(400).send();
       }    
@@ -40,9 +40,10 @@ module.exports = async (app) => {
     }
   });
 
-  router.post('/', isAuthenticated, async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res) {
     try {
-      var theVals = [req.body.name, req.body.description, req.body.price, req.body.image_url];
+      const { name, description, price, image_url } = req.body;
+      var theVals = [name, description, price, image_url];
 
       const queryString = 'INSERT INTO products(name, description, price, image_url) VALUES($1, $2, $3, $4) RETURNING *';
       const result = await db.query(queryString, theVals);
@@ -57,7 +58,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.put('/', isAuthenticated, async function(req, res, next) {
+  router.put('/', isAuthenticated, async function(req, res) {
     try {
       const { id, name, description, price, image_url } = req.body;
       var theVals = [parseInt(id, 10), name, description, price, image_url];
@@ -77,7 +78,7 @@ module.exports = async (app) => {
     }
   });
 
-  router.delete('/', isAuthenticated, async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res) {
     try {
       const { product_id } = req.body;
       var theVals = [parseInt(product_id, 10)];

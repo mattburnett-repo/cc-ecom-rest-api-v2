@@ -7,7 +7,7 @@ const { isAuthenticated } = require('../loaders/passportLoader');
 module.exports = (app) => {
   app.use('/api/v1/order', router);
 
-  router.post('/', isAuthenticated, async function(req, res, next) {
+  router.post('/', isAuthenticated, async function(req, res) {
       try {
         const { cart_id, user_id } = req.body;
 
@@ -34,7 +34,7 @@ module.exports = (app) => {
       }
     });
 
-  router.get('/', isAuthenticated, async function(req, res, next) {
+  router.get('/', isAuthenticated, async function(req, res) {
     try {
       const queryString = "SELECT * FROM orders";
       const result = await db.query(queryString);
@@ -49,7 +49,7 @@ module.exports = (app) => {
     }
   });
 
-  router.get('/:orderID', isAuthenticated, async function(req, res, next) {
+  router.get('/:orderID', isAuthenticated, async function(req, res) {
     try {
       const queryString = "SELECT * FROM orders WHERE id = $1";
       const result = await db.query(queryString, [parseInt(req.params.orderID)]);
@@ -64,7 +64,7 @@ module.exports = (app) => {
     }
   });
 
-  router.delete('/', isAuthenticated, async function(req, res, next) {
+  router.delete('/', isAuthenticated, async function(req, res) {
     try {
       const { order_id } = req.body;
       const queryString = "DELETE FROM orders WHERE id = $1";
