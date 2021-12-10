@@ -28,4 +28,3 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
 ## Future development / To do
 * Everything can always be better...
 * Tests are wrecked after refactoring everything to load from index.js instead of app.js
-* Figure out how to get around EJS bugginess and implement better messaging

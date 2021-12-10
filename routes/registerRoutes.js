@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt');
 var db = require('../db');
 
 // https://www.youtube.com/watch?v=-RCnNyD0L-s
+// https://youtu.be/6FOq4cUdH8k
 
 module.exports = async (app) => {
     app.use('/register', router);
@@ -15,19 +16,22 @@ module.exports = async (app) => {
     })
 
     router.post('/', async function(req, res) {
-        try {
-            const { username, password, password2, email } = req.body
-            const hashedPassword = await bcrypt.hash(password, 10);
-            const theVals = [username, hashedPassword, email];
+        const { username, password, password2, email } = req.body
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const theVals = [username, hashedPassword, email];
 
-            const queryString = 'INSERT INTO users(user_name, password, email) VALUES ($1, $2, $3) RETURNING *';
-            const result = db.query(queryString, theVals);
-    
-            res.redirect('/login'); 
-        } catch (e) {
-            // TODO: needs to catch duplicate user names. Right now it fails silently
-            // res.redirect('/register', { errors }); // , { message: `User ${user_name} already exists`}
-            res.redirect('/register');
-        }
+        const queryString = 'INSERT INTO users(user_name, password, email) VALUES ($1, $2, $3) RETURNING *';
+
+        try {
+            const result = await db.query(queryString, theVals)
+            // console.log(result.rows[0]);
+            res.render('login');
+          } catch (err) {
+            // console.log(err.detail)
+            let errors = []
+            errors.push({ msg: `Username ${username} already exists.`})
+            res.render('register', {errors})
+          }
+
     })
 }

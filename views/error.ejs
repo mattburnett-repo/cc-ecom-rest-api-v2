@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 error.js
 
-<% if (messages.error) { %>
-    <%= messages.error %>
+<% if(typeof errors != 'undefined') { %>
+    <% errors.forEach(function(error) { %>
+        <%= error.msg %>
+    <% }); %>
 <% } %>
 

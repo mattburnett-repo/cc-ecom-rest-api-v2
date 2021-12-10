@@ -16,6 +16,26 @@
 --  ALTER TABLE public.users
 --     OWNER to postgres;
 
+-- *** SOME ERROR HINTSs
+-- // ERRORS
+-- // length: 208,
+-- // severity: 'ERROR',
+-- // code: '23505',
+-- // detail: 'Key (user_name)=(asdf) already exists.',
+-- // hint: undefined,
+-- // position: undefined,
+-- // internalPosition: undefined,
+-- // internalQuery: undefined,
+-- // where: undefined,
+-- // schema: 'public',
+-- // table: 'users',
+-- // column: undefined,
+-- // dataType: undefined,
+-- // constraint: 'users_user_name_key',
+-- // file: 'nbtinsert.c',
+-- // line: '670',
+-- // routine: '_bt_check_unique'
+
 -- RUN SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
