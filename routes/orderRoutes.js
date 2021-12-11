@@ -7,13 +7,31 @@ const { isAuthenticated } = require('../loaders/passportLoader');
 module.exports = (app) => {
   app.use('/api/v1/order', router);
 
-  // FIXME: orders need... order info like total, etc...
+  // TODO: the get queries are... long... Someday we can refactor everything over to Models...
   router.get('/', isAuthenticated, async function(req, res) {
-    const queryString = `SELECT orders.id AS order_id, cart_items.product_id, cart_items.product_quantity, 
-                                cart_items.product_price, cart_items.line_item_total_price
-                          FROM orders
-                          JOIN cart_items
-                            ON cart_items.cart_id = orders.id`;
+    const queryString = `select jsonb_build_object('order_id', o.id, 
+                                              'user_id', o.user_id, 
+                                              'cart', cart,
+                                              'order_date', o.order_date, 
+                                              'total_price', order_total) as order
+                          from orders o
+                          join (
+                            select ci.cart_id as cart_id, 
+                                   jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                                                'product_quantity', ci.product_quantity, 
+                                                                'product_name', p.name,
+                                                                'product_price', ci.product_price,
+                                                                'product_total_price', ci.line_item_total_price)
+                                            ) as cart_items
+                            from cart_items ci
+                            join products p on p.id = ci.product_id
+                            group by ci.cart_id
+                          ) cart on cart.cart_id = o.cart_id
+                          join (
+                            select cart_id, sum(line_item_total_price)
+                               from cart_items
+                            group by cart_id
+                          ) order_total on order_total.cart_id = o.cart_id`;
 
     try {
       const result = await db.query(queryString);
@@ -30,13 +48,30 @@ module.exports = (app) => {
 
   router.get('/:order_id', isAuthenticated, async function(req, res) {
     const { order_id } = req.params;
-
-    const queryString = `SELECT orders.id AS order_id, cart_items.product_id, cart_items.product_quantity, 
-                                cart_items.product_price, cart_items.line_item_total_price
-                           FROM orders
-                           JOIN cart_items
-                             ON cart_items.cart_id = orders.id
-                          WHERE orders.user_id = $1`;
+    const queryString = `select jsonb_build_object('order_id', o.id, 
+                                              'user_id', o.user_id, 
+                                              'cart', cart,
+                                              'order_date', o.order_date, 
+                                              'total_price', order_total) as order
+                          from orders o
+                          join (
+                            select ci.cart_id as cart_id, 
+                                   jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                                                'product_quantity', ci.product_quantity, 
+                                                                'product_name', p.name,
+                                                                'product_price', ci.product_price,
+                                                                'product_total_price', ci.line_item_total_price)
+                                            ) as cart_items
+                            from cart_items ci
+                            join products p on p.id = ci.product_id
+                            group by ci.cart_id
+                          ) cart on cart.cart_id = o.cart_id
+                          join (
+                            select cart_id, sum(line_item_total_price)
+                               from cart_items
+                            group by cart_id
+                          ) order_total on order_total.cart_id = o.cart_id
+                          WHERE o.id = $1`;
 
     try {
       const result = await db.query(queryString, [parseInt(order_id, 10)]);
