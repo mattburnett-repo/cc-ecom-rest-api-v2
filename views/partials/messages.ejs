@@ -1,3 +1,6 @@
+<!-- elsehere in the app: req.flash('the_message_type', 'the_message_text') -->
+<!-- res.render('template_to_render', {var_to_display: val_to_display}) -->
+
 <% if(locals.errors){ %> <% errors.forEach(function(error) { %>
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <%= error.msg %>
