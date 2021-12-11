@@ -36,7 +36,7 @@
 -- // line: '670',
 -- // routine: '_bt_check_unique'
 
--- RUN SCRIPT USING FOLOWING LINE
+-- RUN CREATE SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
 -- RUN THIS TO ADD MINIMAL TEST DATA
@@ -62,12 +62,13 @@ CREATE TABLE carts
 
 CREATE TABLE cart_items
 (
-    id SERIAL PRIMARY KEY,
+    -- id SERIAL,
     cart_id integer NOT NULL,
     product_id integer NOT NULL, 
     product_quantity integer NOT NULL,
     product_price decimal NOT NULL,
-    line_item_total_price decimal NOT NULL
+    line_item_total_price decimal NOT NULL,
+    PRIMARY KEY (cart_id, product_id)
 );
 
 CREATE TABLE orders

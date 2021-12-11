@@ -8,29 +8,46 @@ module.exports = (app) => {
   app.use('/api/v1/cart', router);
 
   router.get('/', isAuthenticated, async function(req, res) {
-    // const queryString = "SELECT * FROM Carts WHERE order_date IS NULL"; // cart with order_date is not a cart anymore, but has become an order
-    const queryString = "SELECT * FROM Carts";
-    const result = await db.query(queryString);
-
-    if(result.rowCount > 0) {
-        res.status(200).json(result.rows);
-    } else if(result.rowCount === 0) {
-        res.status(204).send();
-    } else {
-        res.status(400).send();
-    }
-  });
-
-  router.get('/:cart_id', isAuthenticated, async function(req, res) {  // FIXME: should bring back all of the cart items...
-    const queryString = "SELECT * FROM Carts WHERE id = $1";
+    const queryString = `SELECT carts.id, cart_items.product_id, products.name, cart_items.product_quantity, cart_items.product_price, 
+                                cart_items.line_item_total_price
+                           FROM carts, cart_items, products
+                          WHERE carts.order_date IS NULL
+                            AND carts.id = cart_items.cart_id
+                            AND products.id = cart_items.product_id`
 
     try {
-      const result = await db.query(queryString, [parseInt(req.params.cart_id)]);
+      const result = await db.query(queryString);
 
       if(result.rowCount > 0) {
-          res.status(200).json(result.rows); 
+          res.status(200).send(result.rows);
+      } else if(result.rowCount === 0) {
+          res.status(204).send();
       } else {
           res.status(400).send();
+      }
+    } catch (e) {
+      res.status(400).send({message: e.message});
+    }
+ 
+  });
+
+  router.get('/:cart_id', isAuthenticated, async function(req, res) { 
+    const { cart_id } = req.params;
+
+    const queryString = `SELECT carts.id, cart_items.product_id, products.name, cart_items.product_quantity, cart_items.product_price, cart_items.line_item_total_price
+                           FROM carts, cart_items, products
+                          WHERE carts.user_id = $1
+                            AND carts.order_date IS NULL
+                            AND carts.id = cart_items.cart_id
+                            AND products.id = cart_items.product_id
+                        `
+    try {
+      const result = await db.query(queryString, [parseInt(cart_id, 10)]);
+
+      if(result.rowCount > 0) {
+          res.status(200).send(result.rows); 
+      } else {
+          res.status(204).send({message: `no cart info for cart_id ${cart_id}`});
       }      
     } catch (e) {
       res.status(400).send({message: e.message});
@@ -52,7 +69,7 @@ module.exports = (app) => {
       const result = await db.query(queryString);
 
       if(result.rowCount > 0) {
-        res.status(200).json(result.rows); 
+        res.status(200).send(result.rows); 
       } else {
         res.status(400).send();
       }      
@@ -65,22 +82,23 @@ module.exports = (app) => {
     const { cart_id, product_id, product_quantity, product_price } = req.body;
     const line_item_total_price = (product_quantity * product_price);
     const theVals = [parseInt(cart_id, 10), parseInt(product_id, 10), parseInt(product_quantity, 10), line_item_total_price]; 
-    const queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND product_id = $2 RETURNING *';
+    var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND product_id = $2 RETURNING *';
+
+    console.log('asdf ' + cart_id);
+    console.log('qwer ' + product_id);
 
     try {
-      const result = await db.query(queryString, theVals);
+      var result = await db.query(queryString, theVals);
 
       // get updated row
-      queryString = "SELECT * FROM cart_items WHERE id = $1";
-      result = await db.query(queryString, [parseInt(result.rows[0].id, 10)]);
+      queryString = "SELECT * FROM cart_items WHERE cart_id = $1 AND product_id = $2";
+      result = await db.query(queryString, [parseInt(cart_id, 10), parseInt(product_id, 10)]);
 
       if(result.rowCount > 0) {
-        res.status(200).json(result.rows); 
-      } else if (result.rowCount === 0) {
-        res.status(204).send({message: `item ${product_id} not updated`});
+        res.status(200).send(result.rows); 
       } else {
-        res.status(400).send();
-      }     
+        res.status(204).send({message: `item ${product_id} not updated`});
+      }
     } catch (e) {
       res.status(400).send({message: e.message});
     }

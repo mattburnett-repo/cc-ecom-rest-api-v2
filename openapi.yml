@@ -77,7 +77,7 @@ paths:
             format: int64
             minimum: 1
       responses:
-        $ref: '#/components/responses/200-400'
+        $ref: '#/components/responses/200-204-400'
   /api/v1/login:
     get:
       tags: 
@@ -123,14 +123,14 @@ paths:
           $ref: '#/components/requestBodies/OrderID'
       responses:
         $ref: '#/components/responses/200-400'
-  /api/v1/order/{orderID}:
+  /api/v1/order/{order_id}:
     get:
       tags: 
       - "order"
       summary: "Get order by id"
       description: "Get an order by id"
       parameters:
-        - name: orderID
+        - name: order_id
           in: path
           required: true
           description: Id of order to retrieve.
