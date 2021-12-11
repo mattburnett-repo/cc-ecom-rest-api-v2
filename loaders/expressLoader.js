@@ -3,7 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 
+// CORS docs: https://expressjs.com/en/resources/middleware/cors.html
 var cors = require('cors');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -20,7 +22,15 @@ module.exports = (app) => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+
+    // const corsConfig = {
+    //     origin: 'http://example.com',
+    //     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    // }
+    // app.use(cors(corsConfig));
+
     app.use(cors());
+
     app.use(express.static(path.join(__dirname, '../public')));
     app.use(methodOverride('_method'));
 
@@ -33,6 +43,8 @@ module.exports = (app) => {
     app.use(flash());
 
     // Global vars
+    // elsehere in the app: req.flash('the_message_type', 'the_message_text')
+    // res.render('template_to_render', {var_to_display: val_to_display})
     app.use((req, res, next) => {
         res.locals.success_msg = req.flash('success_msg');
         res.locals.error_msg = req.flash('error_msg');
