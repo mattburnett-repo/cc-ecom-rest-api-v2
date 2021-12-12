@@ -58,20 +58,11 @@ function passportGoogleStrategy(app) {
         done(null, { id });
     });
 
-    // Use the GoogleStrategy within Passport.
-    //   Strategies in Passport require a `verify` function, which accept
-    //   credentials (in this case, an accessToken, refreshToken, and Google
-    //   profile), and invoke a callback with a user object.
-
     passport.use(new GoogleStrategy({
-            // clientID: process.env.GOOGLE_CLIENT_ID,
-            clientID: '481684270995-1k5stg1sv5o0uj5gku0p20774d4uubrk.apps.googleusercontent.com',
-            // clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            clientSecret: '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',
-            // callbackURL: process.env.GOOGLE_CALLBACK_URL // TODO: change this in console.cloud.google etc after deploy
-            callbackURL: '/auth/google/callback'
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL // TODO: change this in console.cloud.google etc after deploy
         },
-        // function(accessToken, refreshToken, profile, done) {
         async (accessToken, refreshToken, profile, done) => {            
             const googleId = profile.id;
             const displayName = profile.displayName;
