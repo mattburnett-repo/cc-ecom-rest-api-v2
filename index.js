@@ -1,6 +1,7 @@
 // git push heroku main
 
 if(process.env.NODE_ENV !== 'production') {
+  console.log('dotenv')
   require('dotenv').config();
 }
 
@@ -8,8 +9,6 @@ var express = require('express');
 var app = express();
 
 var PORT = process.env.PORT;
-
-// TODO: finish passport auth protection of routes
 
 const loaders = require('./loaders');
 
