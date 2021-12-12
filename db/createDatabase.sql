@@ -94,7 +94,12 @@ CREATE TABLE users
     id SERIAL PRIMARY KEY,
     user_name character varying(50) COLLATE pg_catalog."default" NOT NULL UNIQUE,
     password character varying(100) COLLATE pg_catalog."default" NOT NULL, -- very long because it's hashed in /register
-    email character varying(50)
+    email character varying(50),
+    google_id character varying(100),
+    google_display_name character varying(100),
+    google_first_name character varying(100),
+    google_last_name character varying(100),
+    google_image character varying(250)
 );
 
 COMMENT ON TABLE users

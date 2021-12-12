@@ -73,7 +73,7 @@ module.exports = async (app) => {
       const result = await db.query(queryString, theVals);
 
       if(result.rowCount > 0) {
-        res.status(200).json(result.rows); 
+        res.status(200).send(result.rows); 
       } else if (result.rowCount === 0) {
         res.status(204).send({message: `user ${username} not updated`});
       } else {
@@ -93,7 +93,7 @@ module.exports = async (app) => {
       const result = await db.query(queryString, theVals);
 
       if(result) {
-        res.status(200).json(result.rows); 
+        res.status(200).send(result.rows); 
       } else {
         res.status(400).send();
       }    
