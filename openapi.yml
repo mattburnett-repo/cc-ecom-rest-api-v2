@@ -265,10 +265,6 @@ paths:
         $ref: '#/components/responses/200-400'
 
 components:
-  securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
   responses:
     200-400:
       description: Success / Bad request responses
@@ -423,6 +419,3 @@ components:
                   type: string
                 password: 
                   type: string
-
-security:
-  - BasicAuth: []
