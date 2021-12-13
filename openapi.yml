@@ -25,6 +25,9 @@ tags:
 - name: "user"
   description: "User endpoint"
 
+security:
+  - BasicAuth: []
+
 paths:
   /api/v1/cart:
     get:
@@ -265,6 +268,10 @@ paths:
         $ref: '#/components/responses/200-400'
 
 components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
   responses:
     200-400:
       description: Success / Bad request responses

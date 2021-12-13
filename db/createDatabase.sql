@@ -43,7 +43,8 @@
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
 
 -- HEROKU CLI
--- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app damp-fjord-27458
+-- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app damp-fjord-27458 *** NOT USE ***
+-- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app e-commerce-rest-api-v2
 
 BEGIN;
 
