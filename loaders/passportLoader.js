@@ -5,7 +5,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcrypt');
 const db = require('../db');
 
-function passportLocalStrategy(app) {
+function passportLocalStrategy(app) { // TODO: refactor to something like 'initializePassport(app)'?
     app.use(passport.initialize());
     app.use(passport.session());
 
