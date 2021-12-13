@@ -10,7 +10,7 @@ module.exports = (app) => {
     router.get('/', (req, res) => res.render('login.ejs'));
 
     router.post('/', passport.authenticate('local', {
-        successRedirect: '/api/v1/api-docs', // api-docs is the front end for this project
+        successRedirect: '/api/v1/api-docs', // api-docs is the front end for the API project
         failureRedirect: '/login',
         failureFlash: true
     }));    
