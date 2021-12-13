@@ -5,8 +5,8 @@ const productRouter = require('./productRoutes');
 const registerRouter = require('./registerRoutes');
 const userRouter = require('./userRoutes');
 
-module.exports = (app, passport) => {
-  authRouter(app, passport);  // FIXME: do we even pass in passport?
+  module.exports = (app) => {
+  authRouter(app);
   cartRouter(app);
   orderRouter(app);
   productRouter(app);
