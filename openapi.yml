@@ -25,9 +25,6 @@ tags:
 - name: "user"
   description: "User endpoint"
 
-security:
-  - BasicAuth: []
-
 paths:
   /api/v1/cart:
     get:
@@ -426,3 +423,6 @@ components:
                   type: string
                 password: 
                   type: string
+
+security:
+  - BasicAuth: []
