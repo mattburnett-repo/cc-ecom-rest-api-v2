@@ -5,8 +5,9 @@ const swaggerLoader = require('./swaggerLoader');
 
 module.exports = async (app) => {
     const expressApp = await expressLoader(app);
-    // const passport = await passportLocalStrategy(expressApp);
-    const passport = await passportGoogleStrategy(expressApp);
+    let passport = await passportLocalStrategy(expressApp);
+    // const passport = await passportGoogleStrategy(expressApp);
+    passport = await passportGoogleStrategy(expressApp);
 
     await routeLoader(app, passport); 
     await swaggerLoader(app);

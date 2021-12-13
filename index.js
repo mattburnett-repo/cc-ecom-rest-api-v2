@@ -1,7 +1,6 @@
 // git push heroku main
 
 if(process.env.NODE_ENV !== 'production') {
-  console.log('dotenv')
   require('dotenv').config();
 }
 
@@ -13,7 +12,6 @@ var PORT = process.env.PORT;
 const loaders = require('./loaders');
 
 async function startServer() {
-
     // Init application loaders
     loaders(app);
   

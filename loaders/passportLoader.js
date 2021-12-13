@@ -76,7 +76,7 @@ function passportGoogleStrategy(app) {
             var insertQuery = `INSERT INTO users (user_name, password, google_id, google_display_name, google_first_name,
                                                  google_last_name, google_image)
                                     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
-            var theInsertVals = ['from google', 'from google', googleId, displayName, firstName, lastName, image];
+            var theInsertVals = [displayName, googleId, googleId, displayName, firstName, lastName, image];
 
             try {
                 let user = await db.query(selectQuery, theSelectVals); 
