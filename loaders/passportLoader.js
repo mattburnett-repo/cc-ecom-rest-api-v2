@@ -5,7 +5,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcrypt');
 const db = require('../db');
 
-function passportLocalStrategy(app) { // TODO: refactor to something like 'initializePassport(app)'?
+function initializePassport(app) {
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -41,23 +41,6 @@ function passportLocalStrategy(app) { // TODO: refactor to something like 'initi
         })   
     ); // end local strategy
 
-    return passport;
-}
-
-// Google OAuth strategy
-function passportGoogleStrategy(app) {
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    // Set method to serialize data to store in cookie
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
-    });
-    // Set method to deserialize data stored in cookie and attach to req.user
-    passport.deserializeUser((id, done) => {
-        done(null, { id });
-    });
-
     passport.use(new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -92,9 +75,7 @@ function passportGoogleStrategy(app) {
             }
         }
     )); // end Google strategy
-
-    return passport;
-}
+} // end initializePassport
 
 function isAuthenticated(req, res, next) {  
     if(req.isAuthenticated()) {
@@ -105,7 +86,6 @@ function isAuthenticated(req, res, next) {
   }
 
 module.exports = {
-    passportLocalStrategy,
-    passportGoogleStrategy,
+    initializePassport,
     isAuthenticated
 }
