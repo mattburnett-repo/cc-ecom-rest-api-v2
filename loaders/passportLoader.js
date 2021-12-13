@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-var GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const bcrypt = require('bcrypt');
 const db = require('../db');
@@ -41,10 +41,11 @@ function initializePassport(app) {
         })   
     ); // end local strategy
 
+    // Google strategy
     passport.use(new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL // TODO: change this in console.cloud.google etc after deploy
+            callbackURL: process.env.GOOGLE_CALLBACK_URL
         },
         async (accessToken, refreshToken, profile, done) => {            
             const googleId = profile.id;

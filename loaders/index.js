@@ -4,8 +4,8 @@ const routeLoader = require('../routes');
 const swaggerLoader = require('./swaggerLoader');
 
 module.exports = async (app) => {
-    const expressApp = await expressLoader(app);
-    await initializePassport(expressApp);
+    await expressLoader(app);
+    await initializePassport(app);
     await routeLoader(app); 
     await swaggerLoader(app);
 

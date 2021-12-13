@@ -17,7 +17,7 @@ module.exports = (app) => {
 
     router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
-    router.get('/auth/google/callback',  passport.authenticate('google', { // FIXME: works on localhost, but on prod it returns login screen in the 'try it out' section/s
+    router.get('/auth/google/callback',  passport.authenticate('google', {
         failureRedirect: '/login' 
     }), (req, res) => {
         res.redirect('/api/v1/api-docs');
