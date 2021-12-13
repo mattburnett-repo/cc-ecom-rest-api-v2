@@ -10,7 +10,7 @@ module.exports = (app) => {
     router.get('/', (req, res) => res.render('login.ejs'));
 
     router.post('/', passport.authenticate('local', {
-        successRedirect: '/api-docs', // api-docs is the front end for this project
+        successRedirect: '/api/v1/api-docs', // api-docs is the front end for this project
         failureRedirect: '/login',
         failureFlash: true
     }));    
@@ -20,7 +20,7 @@ module.exports = (app) => {
     router.get('/auth/google/callback',  passport.authenticate('google', { // FIXME: works on localhost, but on prod it returns login screen in the 'try it out' section/s
         failureRedirect: '/login' 
     }), (req, res) => {
-        res.redirect('/api-docs');
+        res.redirect('/api/v1/api-docs');
     });
 
 }

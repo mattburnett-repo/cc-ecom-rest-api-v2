@@ -8,7 +8,7 @@ const swaggerDocument = yaml.load(fs.readFileSync(path.resolve(__dirname, '../op
 
 module.exports = (app) => {
     app.use(isAuthenticated);
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     return app;
 }
