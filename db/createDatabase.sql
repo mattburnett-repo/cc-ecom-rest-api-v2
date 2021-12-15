@@ -42,7 +42,8 @@
 -- RUN THIS TO ADD MINIMAL TEST DATA
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
 
--- HEROKU CLI, push dabase changes to prod
+-- HEROKU CLI, push database changes to prod
+--      *** this pushes local version of db to heroku, so do locally creates / inserts before these two ***
 -- 1). heroku pg:reset HEROKU_POSTGRESQL_ONYX --confirm e-commerce-rest-api-v2
 -- 2). heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app e-commerce-rest-api-v2
 
