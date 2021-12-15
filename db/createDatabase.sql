@@ -51,6 +51,7 @@ BEGIN;
 DROP TABLE IF EXISTS carts CASCADE;
 DROP TABLE IF EXISTS cart_items;
 DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS product_categories CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS users;
 
@@ -84,10 +85,18 @@ CREATE TABLE orders
 CREATE TABLE products
 (
     id SERIAL PRIMARY KEY,
-    name character varying COLLATE pg_catalog."default" NOT NULL,
-    description character varying COLLATE pg_catalog."default" NOT NULL,
+    category_id         integer,
+    name character varying(100) NOT NULL,
+    description character varying(500) NOT NULL,
     image_url character varying(250),
     price decimal
+);
+
+CREATE TABLE product_categories
+(
+    category_id     integer,
+    description     character varying(200),
+    PRIMARY KEY (category_id)
 );
 
 CREATE TABLE users
@@ -105,6 +114,12 @@ CREATE TABLE users
 
 COMMENT ON TABLE users
     IS 'users / customers';
+
+ALTER TABLE products    
+    ADD CONSTRAINT category_id_fkey FOREIGN KEY (category_id)
+    REFERENCES product_categories (category_id)
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
 ALTER TABLE cart_items   
     ADD CONSTRAINT cart_id_fkey FOREIGN KEY (cart_id)
