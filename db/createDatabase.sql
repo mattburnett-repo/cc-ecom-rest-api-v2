@@ -42,9 +42,9 @@
 -- RUN THIS TO ADD MINIMAL TEST DATA
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
 
--- HEROKU CLI
--- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app damp-fjord-27458 *** NOT USE ***
--- heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app e-commerce-rest-api-v2
+-- HEROKU CLI, push dabase changes to prod
+-- 1). heroku pg:reset HEROKU_POSTGRESQL_ONYX --confirm e-commerce-rest-api-v2
+-- 2). heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app e-commerce-rest-api-v2
 
 BEGIN;
 

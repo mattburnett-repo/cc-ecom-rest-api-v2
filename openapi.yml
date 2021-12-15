@@ -20,6 +20,8 @@ tags:
   description: "Order endpoint"
 - name: "product"
   description: "Product endpoint"
+- name: "product-category"
+  description: "Product category endpoint"
 - name: "register"
   description: "Register endpoint"
 - name: "user"
@@ -187,6 +189,33 @@ paths:
           in: path
           required: true
           description: Id of product to retrieve.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
+  /api/v1/product-category:
+    get:
+      tags: 
+      - "product-category"
+      summary: "Get product categories"
+      description: "Get all product categories in the database"
+      parameters: []
+      responses:
+        $ref: '#/components/responses/200-400'
+
+  /api/v1/product-category/{category_id}:
+    get:
+      tags: 
+      - "product-category"
+      summary: "Get product category"
+      description: "Get product category by id"
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: Id of product category to retrieve.
           schema:
             type : integer
             format: int64
