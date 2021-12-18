@@ -10,7 +10,8 @@ module.exports = (app) => {
   router.get('/', isAuthenticated, async function(req, res) {
       const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
                                                       'user_id', c.user_id, 
-                                                      'cart_items', cart_items) as cart
+                                                      'cart_items', cart_items,
+                                                      'cart_total_price', cart_total) as cart
                             FROM carts c
                             JOIN (
                               SELECT ci.cart_id as cart_id, 
@@ -23,7 +24,12 @@ module.exports = (app) => {
                               FROM cart_items ci
                               JOIN products p on p.id = ci.product_id
                               GROUP BY ci.cart_id
-                            ) cart_items on c.id = cart_items.cart_id`
+                            ) cart_items on c.id = cart_items.cart_id
+                            JOIN (
+                              SELECT cart_id, sum(line_item_total_price)
+                                 FROM cart_items
+                              GROUP BY cart_id
+                            ) cart_total on cart_total.cart_id = cart_items.cart_id`
       try {
         const result = await db.query(queryString);
 
@@ -45,7 +51,8 @@ module.exports = (app) => {
 
     const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
                               'user_id', c.user_id, 
-                              'cart_items', cart_items) as cart
+                              'cart_items', cart_items,
+                              'cart_total_price', cart_total) as cart
                           FROM carts c
                           JOIN (
                             SELECT ci.cart_id as cart_id, 
@@ -59,6 +66,11 @@ module.exports = (app) => {
                             JOIN products p on p.id = ci.product_id
                             GROUP BY ci.cart_id
                             ) cart_items on c.id = cart_items.cart_id
+                          JOIN (
+                              SELECT cart_id, sum(line_item_total_price)
+                                 FROM cart_items
+                              GROUP BY cart_id
+                            ) cart_total on cart_total.cart_id = cart_items.cart_id
                           WHERE c.id = $1`
     try {
       const result = await db.query(queryString, [parseInt(cart_id, 10)]);
