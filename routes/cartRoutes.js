@@ -8,39 +8,58 @@ module.exports = (app) => {
   app.use('/api/v1/cart', router);
 
   router.get('/', isAuthenticated, async function(req, res) {
-    const queryString = `SELECT carts.id, cart_items.product_id, products.name, cart_items.product_quantity, cart_items.product_price, 
-                                cart_items.line_item_total_price
-                           FROM carts, cart_items, products
-                          WHERE carts.order_date IS NULL
-                            AND carts.id = cart_items.cart_id
-                            AND products.id = cart_items.product_id`
+      const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
+                                                      'user_id', c.user_id, 
+                                                      'cart_items', cart_items) as cart
+                            FROM carts c
+                            JOIN (
+                              SELECT ci.cart_id as cart_id, 
+                                    jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                                                  'product_quantity', ci.product_quantity, 
+                                                                  'product_name', p.name,
+                                                                  'product_price', ci.product_price,
+                                                                  'product_total_price', ci.line_item_total_price)
+                                              ) as cart_items
+                              FROM cart_items ci
+                              JOIN products p on p.id = ci.product_id
+                              GROUP BY ci.cart_id
+                            ) cart_items on c.id = cart_items.cart_id`
+      try {
+        const result = await db.query(queryString);
 
-    try {
-      const result = await db.query(queryString);
-
-      if(result.rowCount > 0) {
-          res.status(200).send(result.rows);
-      } else if(result.rowCount === 0) {
-          res.status(204).send();
-      } else {
-          res.status(400).send();
+        if(result.rowCount > 0) {
+            res.status(200).send(result.rows);
+        } else if(result.rowCount === 0) {
+            res.status(204).send();
+        } else {
+            res.status(400).send();
+        }
+      } catch (e) {
+        res.status(400).send({message: e.message});
       }
-    } catch (e) {
-      res.status(400).send({message: e.message});
-    }
  
   });
 
   router.get('/:cart_id', isAuthenticated, async function(req, res) { 
     const { cart_id } = req.params;
 
-    const queryString = `SELECT carts.id, cart_items.product_id, products.name, cart_items.product_quantity, cart_items.product_price, cart_items.line_item_total_price
-                           FROM carts, cart_items, products
-                          WHERE carts.user_id = $1
-                            AND carts.order_date IS NULL
-                            AND carts.id = cart_items.cart_id
-                            AND products.id = cart_items.product_id
-                        `
+    const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
+                              'user_id', c.user_id, 
+                              'cart_items', cart_items) as cart
+                          FROM carts c
+                          JOIN (
+                            SELECT ci.cart_id as cart_id, 
+                            jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                            'product_quantity', ci.product_quantity, 
+                                            'product_name', p.name,
+                                            'product_price', ci.product_price,
+                                            'product_total_price', ci.line_item_total_price)
+                            ) as cart_items
+                            FROM cart_items ci
+                            JOIN products p on p.id = ci.product_id
+                            GROUP BY ci.cart_id
+                            ) cart_items on c.id = cart_items.cart_id
+                          WHERE c.id = $1`
     try {
       const result = await db.query(queryString, [parseInt(cart_id, 10)]);
 
