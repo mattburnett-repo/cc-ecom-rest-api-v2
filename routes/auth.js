@@ -23,4 +23,20 @@ module.exports = (app) => {
         res.redirect('/api/v1/api-docs');
     });
 
+    router.get('/api/v1/auth/local', (req, res) => {
+        let msg = 'GET /api/v1/auth/local'
+        console.log({msg});
+        res.status(200).send({ message: msg})
+    })
+    router.get('/api/v1/auth/google', (req, res) => {
+        let msg = 'GET /api/v1/auth/google'
+        console.log({msg});
+        res.status(200).send({ message: msg})
+    })
+    router.get('/api/v1/auth/google/callback', (req, res) => {
+        let msg = 'GET /api/v1/auth/google/callback'
+        console.log({msg});
+        res.status(200).send({ message: msg})
+    })
+
 }
