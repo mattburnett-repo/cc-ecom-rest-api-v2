@@ -28,11 +28,36 @@ module.exports = (app) => {
     });
 
     // routes for auth from app server
-    router.post('/api/v1/auth/local', passport.authenticate('local', {
-        successRedirect: '/dashboard', // FIXME: add this route on the app side
-        failureRedirect: '/login',
-        failureFlash: true
-    }));    
+    // router.post('/api/v1/auth/local', passport.authenticate('local', {
+    //     successRedirect: '/dashboard', // FIXME: add this route on the app side
+    //     failureRedirect: '/login',
+    //     failureFlash: true
+    // }));    
+
+    router.post('/api/v1/auth/local', async (req, res) => {
+        const { username, password } = req.body;
+
+        const theVals = [username];
+        const queryString = 'SELECT * FROM users WHERE user_name = $1';
+        const user = await db.query(queryString, theVals);
+        
+        if(user.rowCount !== 1) {
+            res.status(401).send({ message: `${username} not found.`})
+            return 
+        }
+
+        try {
+            if(await bcrypt.compare(password, user.rows[0].password)) {
+                res.status(200).send(user.rows[0])
+                return 
+            } else {
+                res.status(401).send({ message: 'Password incorrect'})
+                return 
+            }
+        } catch (e) {
+            return done(e)
+        }
+    })
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {
