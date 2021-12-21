@@ -17,19 +17,18 @@ var expressLayouts = require('express-ejs-layouts');
 var partials = require('express-partials');
 
 module.exports = (app) => {
+    const corsOptions = {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      };
+
+    app.use(cors(corsOptions));
+
     app.use(favicon(path.join(__dirname, '../public/images', 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
-
-    // const corsConfig = {
-    //     origin: 'http://example.com',
-    //     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-    // }
-    // app.use(cors(corsConfig));
-
-    app.use(cors());
 
     app.use(express.static(path.join(__dirname, '../public')));
     app.use(methodOverride('_method'));

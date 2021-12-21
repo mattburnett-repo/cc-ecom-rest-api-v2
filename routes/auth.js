@@ -28,41 +28,11 @@ module.exports = (app) => {
     });
 
     // routes for auth from app server
-    // FIXME: this needs to be refactored into a model or something, and should use passport
-    // just copy local, above, and change path / redirects?
-    // router.post('/api/v1/auth/local', passport.authenticate('local', {
-    //     successRedirect: '/dashboard', 
-    //     failureRedirect: '/login',
-    //     failureFlash: true
-    // }));    
-
-    router.post('/api/v1/auth/local', async (req, res) => {
-        // body / header: application/x-www-form-urlencoded
-        const {username, password } = req.body
-
-        let msg = 'POST /api/v1/auth/local username: ' + username + ' password: ' + password
-        console.log({msg});
-
-        var theVals = [username]
-        var queryString = 'SELECT * FROM users WHERE user_name = $1'
-
-        const user = await db.query(queryString, theVals)
-
-        if(user.rowCount !== 1) {
-            res.status(401).send({ message: `User ${username} not found or not authorized` });
-            return;
-        }
-
-        try {   
-            if(await bcrypt.compare(password, user.rows[0].password)) {
-                res.status(200).send(user.rows);
-            } else {
-                res.status(401).send({ message: `user ${username} not authorized` });
-            }
-        } catch (e) {
-            res.status(400).send({ message: e.message });
-        }
-    }) // end post auth/local
+    router.post('/api/v1/auth/local', passport.authenticate('local', {
+        successRedirect: '/dashboard', // FIXME: add this route on the app side
+        failureRedirect: '/login',
+        failureFlash: true
+    }));    
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {
