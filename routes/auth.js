@@ -27,12 +27,17 @@ module.exports = (app) => {
                 res.redirect('/api/v1/api-docs');
             });
 
-    // routes for auth from React app server
-    router.post('/api/v1/auth/local', passport.authenticate('local', {
-        successRedirect: '/dashboard', 
-        failureRedirect: '/login',
-        failureFlash: true
-    }));    
+    // routes for auth from React app server. write a custom callback to make it work.
+    // FIXME: does this actually create / pass isAuthenticated() readable... 'thing'?
+    router.post('/api/v1/auth/local', (req, res, next) => {
+        passport.authenticate('local', (err, user, info) => { // FIXME: handle other return codes / err / info
+            if(!user) {
+                res.status(401).json({message: 'user is not authorized'})
+            } else {
+                res.status(200).json(user)
+            }
+        })(req, res, next)
+    });
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {
