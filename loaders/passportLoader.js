@@ -83,7 +83,8 @@ function isAuthenticated(req, res, next) {
         return next();
     } else {
         res.status(401).send()
-        res.redirect('/login');
+        // res.redirect('/login'); // FIXME
+        return
     } 
   }
 

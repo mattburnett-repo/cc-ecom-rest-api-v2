@@ -38,11 +38,14 @@ module.exports = (app) => {
 
       if(result) {
         res.status(200).send(result.rows);
+        return
       } else {
         res.status(400).send();
+        return
       }
     } catch (e) {
       res.status(400).send({message: e.message});
+      return
     }
   });
 

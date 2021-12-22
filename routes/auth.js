@@ -22,10 +22,10 @@ module.exports = (app) => {
     router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
 
     router.get('/auth/google/callback',  passport.authenticate('google', {
-        failureRedirect: '/login' 
-    }), (req, res) => {
-        res.redirect('/api/v1/api-docs');
-    });
+                failureRedirect: '/login' 
+            }), (req, res) => {
+                res.redirect('/api/v1/api-docs');
+            });
 
     // routes for auth from app server
     // router.post('/api/v1/auth/local', passport.authenticate('local', {
@@ -34,6 +34,7 @@ module.exports = (app) => {
     //     failureFlash: true
     // }));    
 
+    // FIXME: there should be some kind of token thing that is used for every subsequent request
     router.post('/api/v1/auth/local', async (req, res) => {
         const { username, password } = req.body;
 
@@ -57,6 +58,14 @@ module.exports = (app) => {
         } catch (e) {
             return done(e)
         }
+    })
+
+    router.get('/api/v1/test', (req, res) => {
+        console.log('/api/v1/test')
+        console.log('req.session: ' + req.session)
+        console.log('req.session.cookie: ' + req.session.cookie)
+        console.log('req.isAuthenticated(): ' + req.isAuthenticated())
+        res.status(200).send({message: 'hello from api/v1/test'})
     })
 
     // TODO: implement this, use passport
