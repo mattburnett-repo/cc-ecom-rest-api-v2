@@ -20,7 +20,7 @@ function initializePassport(app) {
 
     // Local strategy
     passport.use(new LocalStrategy(
-        async (username, password, done) => {
+        async (username, password, done) => {              
             const theVals = [username];
             const queryString = 'SELECT * FROM users WHERE user_name = $1';
             const user = await db.query(queryString, theVals);
@@ -82,9 +82,9 @@ function isAuthenticated(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     } else {
-        res.status(401).send()
-        // res.redirect('/login'); // FIXME
-        return
+        // res.status(401).send()
+        res.redirect('/login'); // FIXME
+        // return
     } 
   }
 

@@ -27,46 +27,12 @@ module.exports = (app) => {
                 res.redirect('/api/v1/api-docs');
             });
 
-    // routes for auth from app server
-    // router.post('/api/v1/auth/local', passport.authenticate('local', {
-    //     successRedirect: '/dashboard', // FIXME: add this route on the app side
-    //     failureRedirect: '/login',
-    //     failureFlash: true
-    // }));    
-
-    // FIXME: there should be some kind of token thing that is used for every subsequent request
-    router.post('/api/v1/auth/local', async (req, res) => {
-        const { username, password } = req.body;
-
-        const theVals = [username];
-        const queryString = 'SELECT * FROM users WHERE user_name = $1';
-        const user = await db.query(queryString, theVals);
-        
-        if(user.rowCount !== 1) {
-            res.status(401).send({ message: `${username} not found.`})
-            return 
-        }
-
-        try {
-            if(await bcrypt.compare(password, user.rows[0].password)) {
-                res.status(200).send(user.rows[0])
-                return 
-            } else {
-                res.status(401).send({ message: 'Password incorrect'})
-                return 
-            }
-        } catch (e) {
-            return done(e)
-        }
-    })
-
-    router.get('/api/v1/test', (req, res) => {
-        console.log('/api/v1/test')
-        console.log('req.session: ' + req.session)
-        console.log('req.session.cookie: ' + req.session.cookie)
-        console.log('req.isAuthenticated(): ' + req.isAuthenticated())
-        res.status(200).send({message: 'hello from api/v1/test'})
-    })
+    // routes for auth from React app server
+    router.post('/api/v1/auth/local', passport.authenticate('local', {
+        successRedirect: '/dashboard', 
+        failureRedirect: '/login',
+        failureFlash: true
+    }));    
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {
