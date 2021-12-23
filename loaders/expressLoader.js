@@ -19,7 +19,7 @@ var partials = require('express-partials');
 module.exports = (app) => {
     const corsOptions = {
         origin: 'http://localhost:3000',
-        credentials: true,
+        credentials: true
       };
 
     app.use(cors(corsOptions));
@@ -27,7 +27,8 @@ module.exports = (app) => {
     app.use(favicon(path.join(__dirname, '../public/images', 'favicon.ico')));
     app.use(logger('dev'));
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
+    // app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
 
     app.use(express.static(path.join(__dirname, '../public')));
@@ -37,8 +38,16 @@ module.exports = (app) => {
         secret: process.env.SESSION_SECRET,
         cookie: {},
         resave: false,
+        secure: false,
         saveUninitialized: false
     }));
+
+    // app.use(session({
+    //     secret: process.env.SESSION_SECRET,
+    //     cookie: {domain: 'localhost:3000'},
+    //     resave: false,
+    //     saveUninitialized: false
+    // }));
 
     app.use(flash());
 

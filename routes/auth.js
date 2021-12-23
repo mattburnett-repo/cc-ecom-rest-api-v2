@@ -27,17 +27,31 @@ module.exports = (app) => {
                 res.redirect('/api/v1/api-docs');
             });
 
-    // routes for auth from React app server. write a custom callback to make it work.
+    // routes for auth from React app server. wrote a custom callback in passport.authenticate() to make it work.
     // FIXME: does this actually create / pass isAuthenticated() readable... 'thing'?
-    router.post('/api/v1/auth/local', (req, res, next) => {
-        passport.authenticate('local', (err, user, info) => { // FIXME: handle other return codes / err / info
-            if(!user) {
-                res.status(401).json({message: 'user is not authorized'})
-            } else {
-                res.status(200).json(user)
-            }
-        })(req, res, next)
-    });
+    // router.post('/api/v1/auth/local', (req, res, next) => {
+    //     passport.authenticate('local', (err, user, info) => { // FIXME: handle other return codes / err / info
+    //         // FIXME: how do we pass back isAuthorized thing?
+    //         if(!user) {
+    //             res.status(401).json({message: 'user is not authorized'})
+    //             return
+    //         } else {
+    //             // passport.serializeUser(user)
+    //             res.status(200).json(user)
+    //         }
+            
+    //         // console.log('auth/local ' + res.body)
+    //         // console.log('auth/local req.isAuthenticated() ' + req.isAuthenticated())
+    //     // })(req, res, next)   
+    //     })(req, res, next)         
+    // });
+
+
+    router.post('/api/v1/auth/local', passport.authenticate('local'),
+        (req, res) => {
+            res.send({message: 'login', user: req.user})
+        }
+    );
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {
@@ -50,4 +64,10 @@ module.exports = (app) => {
     //     console.log({msg});
     //     res.status(200).send({ message: msg})
     // })
+
+    router.post('/api/v1/auth/logout', function(req, res){
+        req.logout();
+        // res.redirect('/');
+        res.status(200).send({message: 'logout successful'});
+    });
 }

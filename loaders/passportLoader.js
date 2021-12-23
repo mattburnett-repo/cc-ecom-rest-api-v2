@@ -11,10 +11,12 @@ function initializePassport(app) {
 
     // Set method to serialize data to store in cookie
     passport.serializeUser((user, done) => {
+        console.log('serialize.user.id ' + user.id);
         done(null, user.id);
     });
     // Set method to deserialize data stored in cookie and attach to req.user
     passport.deserializeUser((id, done) => {
+        console.log('deserializeUser.id ' + id)
         done(null, { id });
     });
 
@@ -80,10 +82,12 @@ function initializePassport(app) {
 
 function isAuthenticated(req, res, next) {  
     if(req.isAuthenticated()) {
+        console.log('isAuthenticated')
         return next();
     } else {
-        // res.status(401).send()
-        res.redirect('/login'); // FIXME
+        res.status(401).send({message: 'no authorized user'})
+
+        // res.redirect('/login'); // FIXME
         // return
     } 
   }
