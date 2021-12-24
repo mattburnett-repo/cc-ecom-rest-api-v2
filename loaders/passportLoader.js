@@ -113,6 +113,7 @@ function isAuthenticated(req, res, next) {
         console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
         // TODO: validate token here
         //  use the JWTStrategy upstairs?
+        // passport.authenticate('jwt') and verify token
         return next()
     } else {
         res.status(401).send({message: 'no authorized user'})
