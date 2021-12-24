@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var passport = require('passport');
+var jwt = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt');
 var db = require('../db');
@@ -27,31 +28,32 @@ module.exports = (app) => {
                 res.redirect('/api/v1/api-docs');
             });
 
-    // routes for auth from React app server. wrote a custom callback in passport.authenticate() to make it work.
-    // FIXME: does this actually create / pass isAuthenticated() readable... 'thing'?
-    // router.post('/api/v1/auth/local', (req, res, next) => {
-    //     passport.authenticate('local', (err, user, info) => { // FIXME: handle other return codes / err / info
-    //         // FIXME: how do we pass back isAuthorized thing?
-    //         if(!user) {
-    //             res.status(401).json({message: 'user is not authorized'})
-    //             return
-    //         } else {
-    //             // passport.serializeUser(user)
-    //             res.status(200).json(user)
-    //         }
-            
-    //         // console.log('auth/local ' + res.body)
-    //         // console.log('auth/local req.isAuthenticated() ' + req.isAuthenticated())
-    //     // })(req, res, next)   
-    //     })(req, res, next)         
-    // });
+    // API access from non-api server/s, ie React UI client.
+    router.post('/api/v1/auth/local', function (req, res, next) {
+        passport.authenticate('local', {session: false}, (err, user, info) => {
+            if (err || !user) {
+                return res.status(400).json({
+                    message: 'error in /api/v1/auth/local',
+                    user: user
+                });
+            }
+           req.login(user, {session: false}, (err) => {
+               if (err) {
+                   res.send(err);
+               }
+               // generate a signed json web token with the contents of user object and return it in the response
+               const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+               return res.json({user, token});
+            });
+        })(req, res);
+    });
 
-
-    router.post('/api/v1/auth/local', passport.authenticate('local'),
-        (req, res) => {
-            res.send({message: 'login', user: req.user})
-        }
-    );
+    // API JWT
+    // app.post('/api/v1/auth/local', passport.authenticate('jwt', { session: false }),
+    //     function(req, res) {
+    //         res.send(req.user.profile);
+    //     }
+    // );
 
     // TODO: implement this, use passport
     // router.get('/api/v1/auth/google', (req, res) => {

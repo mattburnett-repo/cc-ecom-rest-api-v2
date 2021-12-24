@@ -2,6 +2,14 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+const JWTStrategy = require('passport-jwt').Strategy,
+       ExtractJWT = require('passport-jwt').ExtractJwt;
+const opts = {}
+opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = 'secret';
+opts.issuer = 'localhost:4000';
+opts.audience = 'localhost:3000';
+
 const bcrypt = require('bcrypt');
 const db = require('../db');
 
@@ -11,12 +19,10 @@ function initializePassport(app) {
 
     // Set method to serialize data to store in cookie
     passport.serializeUser((user, done) => {
-        console.log('serialize.user.id ' + user.id);
         done(null, user.id);
     });
     // Set method to deserialize data stored in cookie and attach to req.user
     passport.deserializeUser((id, done) => {
-        console.log('deserializeUser.id ' + id)
         done(null, { id });
     });
 
@@ -78,17 +84,40 @@ function initializePassport(app) {
             }
         }
     )); // end Google strategy
+
+    // JWT Strategy
+    passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey: process.env.ACCESS_TOKEN_SECRET
+        },
+        function (jwtPayload, cb) {
+
+            //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
+            // return UserModel.findOneById(jwtPayload.id)
+            //     .then(user => {
+            //         return cb(null, user);
+            //     })
+            //     .catch(err => {
+            //         return cb(err);
+            //     });
+        }
+    ));
+    // end JWT Strategy
 } // end initializePassport
 
-function isAuthenticated(req, res, next) {  
-    if(req.isAuthenticated()) {
-        console.log('isAuthenticated')
+function isAuthenticated(req, res, next) {   
+    if(req.isAuthenticated()) { 
+        ('req.isAuthenticate()')
         return next();
+    } else if (req.headers.authorization) {
+        console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
+        // TODO: validate token here
+        //  use the JWTStrategy upstairs?
+        return next()
     } else {
         res.status(401).send({message: 'no authorized user'})
 
         // res.redirect('/login'); // FIXME
-        // return
     } 
   }
 

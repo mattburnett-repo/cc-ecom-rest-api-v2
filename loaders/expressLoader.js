@@ -18,7 +18,7 @@ var partials = require('express-partials');
 
 module.exports = (app) => {
     const corsOptions = {
-        origin: 'http://localhost:3000',
+        origin: process.env.REACT_APP_APP_BASE_URL,
         credentials: true
       };
 
@@ -34,14 +34,26 @@ module.exports = (app) => {
     app.use(express.static(path.join(__dirname, '../public')));
     app.use(methodOverride('_method'));
 
+    app.set("trust proxy", 1);
+
+    // app.use(session({
+    //     secret: process.env.SESSION_SECRET,
+    //     cookie: {},
+    //     resave: false,
+    //     secure: false,
+    //     saveUninitialized: false
+    // }));
+
     app.use(session({
         secret: process.env.SESSION_SECRET,
-        cookie: {},
-        resave: false,
-        secure: false,
+        cookie: {
+            // sameSite: 'none',
+            // secure: true,
+        },
+        resave: true,
         saveUninitialized: false
     }));
-
+ 
     // app.use(session({
     //     secret: process.env.SESSION_SECRET,
     //     cookie: {domain: 'localhost:3000'},
