@@ -109,11 +109,11 @@ function isAuthenticated(req, res, next) {
     if(req.isAuthenticated()) { 
         ('req.isAuthenticate()')
         return next();
-    } else if (req.headers.authorization) {
+    } else if (req.headers.authorization) { // TODO: and contains Bearer or JWT
         console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
-        // TODO: validate token here
-        //  use the JWTStrategy upstairs?
-        // passport.authenticate('jwt') and verify token
+
+        // TODO: implement some version of this:
+        //  passport.authenticate('jwt', {session: false})
         return next()
     } else {
         res.status(401).send({message: 'no authorized user'})
