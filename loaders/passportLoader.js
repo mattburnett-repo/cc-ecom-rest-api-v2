@@ -91,7 +91,8 @@ function initializePassport(app) {
         secretOrKey: process.env.ACCESS_TOKEN_SECRET
         },
         function (jwtPayload, cb) {
-
+            // TODO: get this working / validating
+            console.log('passportLoader JWTStrategy callback')
             //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
             // return UserModel.findOneById(jwtPayload.id)
             //     .then(user => {
@@ -109,11 +110,11 @@ function isAuthenticated(req, res, next) {
     if(req.isAuthenticated()) { 
         ('req.isAuthenticate()')
         return next();
-    } else if (req.headers.authorization) { // TODO: and contains Bearer or JWT
-        console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
+    } else if (req.headers.authorization) { 
+        // console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
 
-        // TODO: implement some version of this:
-        //  passport.authenticate('jwt', {session: false})
+        // console.log('passportLoader isAuthenticated() jwt auth')
+        passport.authenticate('jwt', {session: false})
         return next()
     } else {
         res.status(401).send({message: 'no authorized user'})
