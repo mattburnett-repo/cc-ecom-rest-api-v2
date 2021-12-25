@@ -112,8 +112,14 @@ function isAuthenticated(req, res, next) {
         return next();
     } else if (req.headers.authorization) { 
         // console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
+        const authHeader = req.headers.authorization.split(' ')
+        const authMethod = authHeader[0]
+        const authToken = authHeader[1]
 
-        // console.log('passportLoader isAuthenticated() jwt auth')
+        console.log('passportLoader isAuthenticated() jwt auth')
+        // console.log('passportLoader authMethod ', authMethod)
+        // console.log('passportLoader authToken ', authToken)
+
         passport.authenticate('jwt', {session: false})
         return next()
     } else {

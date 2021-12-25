@@ -54,7 +54,7 @@ module.exports = (app) => {
                    res.send(err);
                }
                // generate a signed json web token with the contents of user object and return it in the response
-               const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+               const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET); // TODO: less data in user
                return res.json({user, token});
             });
         })(req, res);
