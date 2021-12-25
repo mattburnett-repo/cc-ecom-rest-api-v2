@@ -31,10 +31,22 @@ module.exports = (app) => {
     // API access from non-api server/s, ie React UI client.
     router.post('/api/v1/auth/local', function (req, res, next) {
         passport.authenticate('local', {session: false}, (err, user, info) => {
-            if (err || !user) {
+            // if (err || !user) {
+            //     return res.status(400).json({
+            //         message: 'error in /api/v1/auth/local',
+            //         user: user
+            //     });
+            // }
+            if (err) {
                 return res.status(400).json({
                     message: 'error in /api/v1/auth/local',
-                    user: user
+                    // user: user
+                });
+            }
+            if (!user) {
+                return res.status(401).json({
+                    message: '/api/v1/auth/local: user not authorized',
+                    // user: user
                 });
             }
            req.login(user, {session: false}, (err) => {
