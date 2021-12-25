@@ -8,14 +8,15 @@ module.exports = (app) => {
     app.use('/api/v1/product-category', router);
 
     router.get('/', isAuthenticated, async function(req, res) {
-        const queryString = `SELECT * FROM product_categories
-                                  ORDER BY description`;
+        const queryString = `SELECT category_id, description 
+                               FROM product_categories
+                           ORDER BY description`;
 
         try {
             const result = await db.query(queryString);
 
             if(result) {
-                res.status(200).send(result.rows);
+                res.status(200).json(result.rows);
             }
         } catch (e) {
             res.status(400).send();
