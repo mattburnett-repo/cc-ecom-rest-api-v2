@@ -80,7 +80,7 @@ module.exports = (app) => {
     // })
 
     router.post('/api/v1/auth/logout', function(req, res){
-        req.logout();
+        req.logout(); // TODO: make sure this really logs everything out
         // res.redirect('/');
         res.status(200).send({message: 'logout successful'});
     });
