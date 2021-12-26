@@ -25,7 +25,10 @@ module.exports = async (app) => {
         try {
             const result = await db.query(queryString, theVals)
             
-            res.render('login');
+            // FIXME: needs to redirect / send message / reroute instead, with 200 code or whatever and then log user in
+            res.render('login'); 
+
+            // res.status(200).send(result)
           } catch (err) {
             let errors = []
             errors.push({ msg: `Username ${username} already exists.`})
