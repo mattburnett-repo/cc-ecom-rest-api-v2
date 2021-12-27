@@ -15,6 +15,7 @@ module.exports = async (app) => {
         res.render('register.ejs');
     })
 
+    // register from API server
     router.post('/', async function(req, res) {
         const { username, password, password2, email } = req.body
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,4 +37,22 @@ module.exports = async (app) => {
           }
 
     })
-}
+
+    // Register from some other server
+    router.post('/remote', async function(req, res) {
+      const { username, password, password2, email } = req.body
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const theVals = [username, hashedPassword, email];
+
+      const queryString = 'INSERT INTO users(user_name, password, email) VALUES ($1, $2, $3) RETURNING *';
+
+      try {
+          const result = await db.query(queryString, theVals)
+          
+          res.status(200).json( result.rows )
+        } catch (err) {
+          // error probably because username already exists
+          res.status(400).json({ errrorCode: err.code, errorDetail: err.detail})
+        }
+  })
+} // end module exports

@@ -9,10 +9,10 @@ const userRouter = require('./userRoutes');
 
   module.exports = (app) => {
   authRouter(app);
+  registerRouter(app);
   cartRouter(app);
   orderRouter(app);
   productRouter(app);
   productCategoryRouter(app);
-  registerRouter(app);
   userRouter(app);
 }
