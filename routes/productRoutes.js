@@ -97,4 +97,24 @@ module.exports = (app) => {
       res.status(400).send({message: e.message});
     } 
   });
+
+  router.get('/category/:category_id', isAuthenticated, async function(req, res) {
+    const { category_id } = req.params
+    const theVals = [parseInt(category_id, 10)]
+
+    const queryString = `SELECT * FROM Products
+                            WHERE category_id = $1`;
+    
+    try {
+      const result = await db.query(queryString, theVals);
+
+      if(result) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(400).send();
+      }   
+    } catch(e) {
+      res.status(400).send({message: e.message});
+    }
+  });
 }
