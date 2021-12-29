@@ -31,7 +31,7 @@ module.exports = (app) => {
       const result = await db.query(queryString, [parseInt(id, 10)]);
 
       if(result.rowCount > 0) {
-        res.status(200).json(result.rows); 
+        res.status(200).json(result.rows[0]); 
       } else if (result.rowCount === 0) {
         res.status(200).send([{'message': `product id ${id} not found`}]);
       } else {
