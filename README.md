@@ -11,6 +11,14 @@ Click the 'GitHub Project' link to see the kanban project cards.
 Deployment: https://e-commerce-rest-api-v2.herokuapp.com/ \
 GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects/1)
 
+To install after downloading / cloning this repo, 
+  * run
+    * npm install
+  * then 
+    * npm run dev
+
+---
+
 ## Technologies used
 * Express / NodeJS
 * EJS templating
@@ -22,7 +30,11 @@ GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects
   * Local / Basic (username, password) authentication
   * Google OAuth authentication
 * Swagger API documentation
+* E-Commerce UI (React app)
+  * UI code: https://github.com/mattburnett-repo/cc-ecomm-ui
 * Heroku deployment platform
+
+---
 
 ## Future development / To do
 * Everything can always be better...
