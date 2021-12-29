@@ -5,7 +5,7 @@ var db = require('../db');
 const { isAuthenticated } = require('../loaders/passportLoader');
 
 module.exports = (app) => {
-  app.use('/api/v1/cart', router);
+  app.use('/api/v1/cart', router); 
 
   router.get('/', isAuthenticated, async function(req, res) {
       const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
@@ -43,7 +43,6 @@ module.exports = (app) => {
       } catch (e) {
         res.status(400).send({message: e.message});
       }
- 
   });
 
   router.get('/:cart_id', isAuthenticated, async function(req, res) { 
@@ -84,6 +83,48 @@ module.exports = (app) => {
       res.status(400).send({message: e.message});
     }
   });
+
+  // FIXME: needs a get-saved-carts-by-user-id route
+  router.get('/user/:id', isAuthenticated, async function(req, res) {
+    const user_id = parseInt(req.params.id, 10)
+
+    const queryString = `SELECT jsonb_build_object('cart_id', c.id, 
+                                                    'user_id', c.user_id, 
+                                                    'cart_items', cart_items,
+                                                    'cart_total_price', cart_total) as cart
+                          FROM carts c
+                          JOIN (
+                            SELECT ci.cart_id as cart_id, 
+                                  jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                                                'product_quantity', ci.product_quantity, 
+                                                                'product_name', p.name,
+                                                                'product_price', ci.product_price,
+                                                                'product_total_price', ci.line_item_total_price)
+                                            ) as cart_items
+                            FROM cart_items ci
+                            JOIN products p on p.id = ci.product_id
+                            GROUP BY ci.cart_id
+                          ) cart_items on c.id = cart_items.cart_id
+                          JOIN (
+                            SELECT cart_id, sum(line_item_total_price)
+                               FROM cart_items
+                            GROUP BY cart_id
+                          ) cart_total on cart_total.cart_id = cart_items.cart_id
+                        WHERE c.user_id = $1`
+    try {
+      const result = await db.query(queryString, [user_id]);
+
+      if(result.rowCount > 0) {
+          res.status(200).send(result.rows);
+      } else if(result.rowCount === 0) {
+          res.status(204).send();
+      } else {
+          res.status(400).send();
+      }
+    } catch (e) {
+      res.status(400).send({message: e.message});
+    }
+});
 
   // FIXME: figure best way to add cart for a user
 

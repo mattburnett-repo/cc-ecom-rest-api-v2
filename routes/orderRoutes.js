@@ -89,6 +89,47 @@ module.exports = (app) => {
     }
   });
 
+  router.get('/user/:id', isAuthenticated, async function(req, res) {
+    const user_id = parseInt(req.params.id, 10)
+
+    const queryString = `select jsonb_build_object('order_id', o.id, 
+                                              'user_id', o.user_id, 
+                                              'cart', cart,
+                                              'order_date', o.order_date, 
+                                              'total_price', order_total) as order
+                          from orders o
+                          join (
+                            select ci.cart_id as cart_id, 
+                                   jsonb_agg(jsonb_build_object('product_id', ci.product_id, 
+                                                                'product_quantity', ci.product_quantity, 
+                                                                'product_name', p.name,
+                                                                'product_price', ci.product_price,
+                                                                'product_total_price', ci.line_item_total_price)
+                                            ) as cart_items
+                            from cart_items ci
+                            join products p on p.id = ci.product_id
+                            group by ci.cart_id
+                          ) cart on cart.cart_id = o.cart_id
+                          join (
+                            select cart_id, sum(line_item_total_price)
+                               from cart_items
+                            group by cart_id
+                          ) order_total on order_total.cart_id = o.cart_id
+                          WHERE o.user_id = $1`;
+
+    try {
+      const result = await db.query(queryString, [user_id]);
+
+      if(result) {
+        res.status(200).send(result.rows);
+      } else {
+        res.status(400).send();
+      }    
+    } catch (e) {
+      res.status(400).send({message: e.message});
+    }
+  });
+
   router.post('/', isAuthenticated, async function(req, res) {
       try {
         const { cart_id, user_id } = req.body;
