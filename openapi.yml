@@ -80,6 +80,23 @@ paths:
             minimum: 1
       responses:
         $ref: '#/components/responses/200-204-400'
+  /api/v1/cart/user/{user_id}:
+    get:
+      tags: 
+        - "cart"
+      summary: "Get carts by user id"
+      description: "Get carts by user id"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User id of carts to retrieve.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses:
+        $ref: '#/components/responses/200-204-400'
   /api/v1/login:
     get:
       tags: 
@@ -142,6 +159,23 @@ paths:
             minimum: 1
       responses:
         $ref: '#/components/responses/200-400'
+  /api/v1/order/user/{user_id}:
+    get:
+      tags: 
+        - "order"
+      summary: "Get orders by user id"
+      description: "Get orders by user id"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User id of orders to retrieve.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses:
+        $ref: '#/components/responses/200-204-400'
   /api/v1/product:
     get:
       tags: 
