@@ -57,7 +57,7 @@ INSERT INTO products(name, category_id, description, image_url, price) VALUES ('
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('pick up truck', 4, 'prod desc 08', 'https://cdn.pixabay.com/photo/2016/04/01/12/11/pickup-truck-1300585__340.png', 1.00);
 
 
-INSERT INTO carts(user_id) VALUES (1);
+INSERT INTO carts(user_id, name) VALUES (1, 'test cart 01');
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 1, 1, 1.00, 1.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 2, 2, 2.00, 4.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 3, 3, 3.00, 9.00);
