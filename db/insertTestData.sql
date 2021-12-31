@@ -28,7 +28,7 @@ INSERT INTO products(name, category_id, description, image_url, price) VALUES ('
 -- tech 9-16
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('laptop', 2, 'prod desc 01', 'https://cdn.pixabay.com/photo/2020/01/26/20/14/computer-4795762__340.jpg', 2.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('glowing cube', 2, 'prod desc 02', 'https://cdn.pixabay.com/photo/2017/07/10/23/45/cubes-2492010__340.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('vt headset', 2, 'prod desc 03', 'https://cdn.pixabay.com/photo/2018/06/07/16/49/vr-3460451__340.jpg', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('vr headset', 2, 'prod desc 03', 'https://cdn.pixabay.com/photo/2018/06/07/16/49/vr-3460451__340.jpg', 1.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('smart phone', 2, 'prod desc 04', 'https://cdn.pixabay.com/photo/2018/01/08/02/34/technology-3068617__480.jpg', 1.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('motherboard', 2, 'prod desc 05', 'https://cdn.pixabay.com/photo/2013/12/22/15/30/motherboard-232515__480.jpg', 1.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('monitor', 2, 'prod desc 06', 'https://cdn.pixabay.com/photo/2017/02/12/13/04/lcd-2059995__480.png', 1.00);
