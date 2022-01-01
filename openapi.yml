@@ -26,6 +26,8 @@ tags:
   description: "Register endpoint"
 - name: "user"
   description: "User endpoint"
+- name: "address"
+  description: "Address endpoint"
 
 paths:
   /api/v1/cart:
@@ -327,6 +329,56 @@ paths:
       responses:
         $ref: '#/components/responses/200-400'
 
+  /api/v1/address:
+    get:  
+      tags: 
+        - "address"
+      summary: "Get all address records"
+      description: "Get all address records from the database"
+      parameters: []
+      responses:
+        $ref: '#/components/responses/200-400'
+    post: 
+      tags: 
+        - "address"
+      summary: "Create address"
+      description: "Add address record to the database"
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAddress'
+  /api/v1/address/{addressId}:
+    get:  
+      tags: 
+        - "address"
+      summary: "Get address record by address id"
+      description: "Get one address record from the database"
+      parameters: 
+      - name: addressId
+        in: path
+        required: true
+        description: Id of address to retrieve.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
+  /api/v1/address/user/{userId}:
+    get:  
+      tags: 
+        - "address"
+      summary: "Get address records by user id"
+      description: "Get all address records for a user from the database"
+      parameters: 
+      - name: userId
+        in: path
+        required: true
+        description: User id for all address records to retrieve.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
 components:
   responses:
     200-400:
@@ -364,6 +416,32 @@ components:
       400: 
         description: 400 Bad request
   requestBodies:
+    CreateAddress:
+        description: "Form data for a new address record"
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userId: 
+                  type: integer
+                firstName:
+                  type: string
+                lastNane:
+                  type: string
+                address1:
+                  type: string
+                address2:
+                  type: string
+                city:
+                  type: string
+                stateProvince:
+                  type: string
+                postalCode:
+                  type: string
+                country:
+                  type: string
     CartID_ProductID:
         description: Form data for item to delete from a cart
         required: true
