@@ -9,21 +9,25 @@ INSERT INTO users(user_name, password, email) VALUES ('username_01', 'password_0
 INSERT INTO users(user_name, password, email) VALUES ('username_02', 'password_02', '2@2.com');
 INSERT INTO users(user_name, password, email) VALUES ('username_03', 'password_03', '3@3.com');
 
-INSERT INTO product_categories (category_id, description) VALUES (1, 'Pets');
+INSERT INTO addresses(first_name, last_name, address_1, address_2, city, state_province, postal_code, country)
+    VALUES ('first name', 'last name', 'address 1', 'address 2', 'city', 'state province', 'postal code', 'country');
+INSERT INTO users_addresses (user_id, address_id) VALUES (1, 1);
+
+INSERT INTO product_categories (category_id, description) VALUES (1, 'Pet Accessories');
 INSERT INTO product_categories (category_id, description) VALUES (2, 'Tech');
 INSERT INTO product_categories (category_id, description) VALUES (3, 'Health');
 INSERT INTO product_categories (category_id, description) VALUES (4, 'Auto');
 
 --  pixabay.com/ open link in new window
--- pets 1-8
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('hedgehog', 1, 'product_desc_01', 'https://cdn.pixabay.com/photo/2014/10/01/10/44/hedgehog-468228_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('maine coon cat', 1, 'prod desc 02', 'https://cdn.pixabay.com/photo/2015/03/27/13/16/maine-coon-694730_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('bulldog', 1, 'prod desc 03', 'https://cdn.pixabay.com/photo/2015/11/17/13/13/bulldog-1047518_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('bunny', 1, 'prod desc 04', 'https://cdn.pixabay.com/photo/2014/06/21/08/43/rabbit-373691_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('caiman lizard', 1, 'prod desc 05', 'https://cdn.pixabay.com/photo/2021/09/17/10/55/caiman-lizard-6632344_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('malamute dog', 1, 'prod desc 06', 'https://cdn.pixabay.com/photo/2018/05/07/10/48/husky-3380548_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('kitten', 1, 'prod desc 07', 'https://cdn.pixabay.com/photo/2019/08/20/21/21/cat-4419763_1280.jpg', 1.00);
-INSERT INTO products(name, category_id, description, image_url, price) VALUES ('guines pig', 1, 'prod desc 08', 'https://cdn.pixabay.com/photo/2014/01/11/23/40/guinea-pig-242520_1280.jpg', 1.00);
+-- pet accessories 1-8
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('cat and dog accessories', 1, 'product_desc_01', 'https://media.istockphoto.com/photos/accessories-for-cat-and-dog-on-blue-background-pet-care-and-training-picture-id1248454290', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('dog equipment', 1, 'prod desc 02', 'https://media.istockphoto.com/photos/dog-equipment-picture-id154956025', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('carload of pet accessories', 1, 'prod desc 03', 'https://media.istockphoto.com/photos/image-of-different-species-of-goods-in-pet-store-picture-id1212071081', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('leash', 1, 'prod desc 04', 'https://media.istockphoto.com/photos/dog-leash-picture-id186725241', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('leash and toy kit', 1, 'prod desc 05', 'https://media.istockphoto.com/photos/pet-bowl-leashes-and-toy-for-dog-pet-accessories-concept-picture-id1166584094', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('sleep accessory', 1, 'prod desc 06', 'https://media.istockphoto.com/photos/an-adult-redhaired-dachshund-is-resting-in-a-white-bed-and-wearing-picture-id1272860452', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('toy bone', 1, 'prod desc 07', 'https://media.istockphoto.com/photos/dog-toy-picture-id1216392830', 1.00);
+INSERT INTO products(name, category_id, description, image_url, price) VALUES ('box of fun', 1, 'prod desc 08', 'https://media.istockphoto.com/photos/donation-charity-box-with-animal-food-pet-goods-and-supplies-for-picture-id1290500307', 1.00);
 
 -- tech 9-16
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('laptop', 2, 'prod desc 01', 'https://cdn.pixabay.com/photo/2020/01/26/20/14/computer-4795762__340.jpg', 2.00);
@@ -65,4 +69,4 @@ INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, lin
 
 INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
-SELECT '*** You now have three users, four product categories, 32 products, one cart, and one order as basic test data ***' AS test_data_inserted;
+SELECT '*** You now have three users, one shipping address, four product categories, 32 products, one cart, and one order as basic test data ***' AS test_data_inserted;

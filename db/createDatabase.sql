@@ -54,7 +54,9 @@ DROP TABLE IF EXISTS cart_items;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS product_categories CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS addresses CASCADE;
+DROP TABLE IF EXISTS users_addresses;
 
 CREATE TABLE carts
 (
@@ -105,7 +107,7 @@ CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
     user_name character varying(50) COLLATE pg_catalog."default" NOT NULL UNIQUE,
-    password character varying(100) COLLATE pg_catalog."default" NOT NULL, -- very long because it's hashed in /register
+    password character varying(100) COLLATE pg_catalog."default" NOT NULL, -- very long because it's hashed in register
     email character varying(50),
     google_id character varying(100),
     google_display_name character varying(100),
@@ -114,8 +116,34 @@ CREATE TABLE users
     google_image character varying(250)
 );
 
-COMMENT ON TABLE users
-    IS 'users / customers';
+CREATE TABLE addresses
+(
+    id SERIAL PRIMARY KEY,
+    first_name character varying(100),
+    last_name character varying(100),
+    address_1 character varying(100) NOT NULL,
+    address_2 character varying(100),
+    city character varying(100) NOT NULL,
+    state_province character varying(100) NOT NULL,
+    postal_code character varying(20) NOT NULL,
+    country character varying(100) NOT NULL
+);
+
+CREATE TABLE users_addresses
+(
+    id SERIAL,
+    user_id integer,
+    address_id integer,
+    PRIMARY KEY (user_id, address_id)
+);
+
+ALTER TABLE users_addresses
+    ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES users(id);
+
+ALTER TABLE users_addresses
+    ADD CONSTRAINT address_id_fkey FOREIGN KEY (address_id)
+    REFERENCES addresses(id);
 
 ALTER TABLE products    
     ADD CONSTRAINT category_id_fkey FOREIGN KEY (category_id)
