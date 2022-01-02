@@ -11,10 +11,9 @@ module.exports = (app) => {
     router.post('/', isAuthenticated, async function(req, res) {
         const { userId, firstName, lastName, address1, address2, city, stateProvince, postalCode, country } = req.body; 
         const theAddressVals = [firstName, lastName, address1, address2, city, stateProvince, postalCode, country];
-
+ 
         try {
             // add address record
-            // TODO: $1 is user id
             var addressQueryString = `INSERT INTO addresses(first_name, last_name, address_1, address_2, city, state_province, postal_code, country)
                                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`;
             var result = await db.query(addressQueryString, theAddressVals);
