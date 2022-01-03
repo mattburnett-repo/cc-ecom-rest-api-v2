@@ -18,6 +18,12 @@ INSERT INTO product_categories (category_id, description) VALUES (2, 'Tech');
 INSERT INTO product_categories (category_id, description) VALUES (3, 'Health');
 INSERT INTO product_categories (category_id, description) VALUES (4, 'Auto');
 
+INSERT INTO payment_types (description) VALUEs ('PayPal');
+INSERT INTO payment_types (description) VALUEs ('MasterCard');
+INSERT INTO payment_types (description) VALUEs ('Visa');
+INSERT INTO payment_types (description) VALUEs ('Amex');
+INSERT INTO payment_types (description) VALUEs ('EC Karte');
+
 --  pixabay.com/ open link in new window
 -- pet accessories 1-8
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('cat and dog accessories', 1, 'product_desc_01', 'https://media.istockphoto.com/photos/accessories-for-cat-and-dog-on-blue-background-pet-care-and-training-picture-id1248454290', 1.00);
@@ -49,7 +55,6 @@ INSERT INTO products(name, category_id, description, image_url, price) VALUES ('
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('tablets', 3, 'prod desc 07', 'https://cdn.pixabay.com/photo/2015/10/22/14/05/tablets-1001224__480.jpg', 1.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('pandemic management kit', 3, 'prod desc 08', 'https://cdn.pixabay.com/photo/2020/11/01/17/53/coronavirus-5704493__480.png', 1.00);
 
-
 -- auto 25-32
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('sleek car from the future', 4, 'prod desc 01', 'https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278__340.jpg', 4.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('sleek car from the past', 4, 'prod desc 02', 'https://cdn.pixabay.com/photo/2015/05/28/23/12/auto-788747__340.jpg', 1.00);
@@ -60,13 +65,21 @@ INSERT INTO products(name, category_id, description, image_url, price) VALUES ('
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('race car', 4, 'prod desc 07', 'https://cdn.pixabay.com/photo/2016/03/26/22/32/fast-1281628__480.jpg', 1.00);
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('pick up truck', 4, 'prod desc 08', 'https://cdn.pixabay.com/photo/2016/04/01/12/11/pickup-truck-1300585__340.png', 1.00);
 
-
+-- carts
 INSERT INTO carts(user_id, name) VALUES (1, 'test cart 01');
+
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 1, 1, 1.00, 1.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 2, 2, 2.00, 4.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 3, 3, 3.00, 9.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 4, 4, 4.00, 16.00);
 
+-- orders / payments
 INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
+INSERT INTO payments(user_id, order_id, payment_type_id, card_number, expiration_date, transaction_id, amount)
+     VALUES (1, 1, 2, '1234 1234 1234 1234', '05/2022', 'X1234Y5678', 1234.00);
+
+INSERT INTO users_payments(user_id, payment_id) VALUES(1, 1);
+
+-- done
 SELECT '*** You now have three users, one shipping address, four product categories, 32 products, one cart, and one order as basic test data ***' AS test_data_inserted;

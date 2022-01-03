@@ -57,6 +57,9 @@ DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS addresses CASCADE;
 DROP TABLE IF EXISTS users_addresses;
+DROP TABLE IF EXISTS payments CASCADE;
+DROP TABLE IF EXISTS payment_types;
+DROP TABLE IF EXISTS users_payments;
 
 CREATE TABLE carts
 (
@@ -136,6 +139,40 @@ CREATE TABLE users_addresses
     address_id integer,
     PRIMARY KEY (user_id, address_id)
 );
+
+CREATE TABLE payments
+(
+    id SERIAL PRIMARY KEY,
+    user_id integer NOT NULL,
+    order_id integer NOT NULL,
+    payment_type_id integer NOT NULL,
+    card_number character varying(150), -- encrypt / decrypt this
+    expiration_date character varying(15),
+    transaction_id character varying(100) NOT NULL,     -- cc confirmation # / paypal / etc
+    amount decimal NOT NULL
+);
+
+CREATE TABLE payment_types
+(
+    id SERIAL PRIMARY KEY,
+    description character varying(100)
+);
+
+CREATE TABLE users_payments
+(
+    id SERIAL,
+    user_id integer NOT NULL,
+    payment_id integer NOT NULL,
+    PRIMARY KEY (user_id, payment_id)
+);
+
+ALTER TABLE users_payments  
+    ADD CONSTRAINT users_payments_user_id_fkey FOREIGN KEY (user_id)
+    REFERENCES users(id);
+
+ALTER TABLE users_payments  
+    ADD CONSTRAINT users_payments_payment_type_id_fkey FOREIGN KEY(payment_id)
+    REFERENCES payments(id);
 
 ALTER TABLE users_addresses
     ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id)
