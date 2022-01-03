@@ -76,8 +76,8 @@ INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, lin
 -- orders / payments
 INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
-INSERT INTO payments(user_id, order_id, payment_type_id, card_number, expiration_date, transaction_id, amount)
-     VALUES (1, 1, 2, '1234 1234 1234 1234', '05/2022', 'X1234Y5678', 1234.00);
+INSERT INTO payments(user_id, name_on_card, order_id, payment_type_id, card_number, expiration_date, transaction_id, amount)
+     VALUES (1, 'asdf qwer', 1, 2, '1234 1234 1234 1234', '05/2022', 'X1234Y5678', 1234.00);
 
 INSERT INTO users_payments(user_id, payment_id) VALUES(1, 1);
 

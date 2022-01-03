@@ -5,7 +5,8 @@ const productRouter = require('./productRoutes');
 const productCategoryRouter = require('./productCategoryRoutes');
 const registerRouter = require('./registerRoutes');
 const userRouter = require('./userRoutes');
-const addressRouter = require('./addressRoutes')
+const addressRouter = require('./addressRoutes');
+const paymentRouter = require('./paymentRoutes')
 
 module.exports = (app) => {
   authRouter(app);
@@ -16,4 +17,5 @@ module.exports = (app) => {
   productCategoryRouter(app);
   userRouter(app);
   addressRouter(app);
+  paymentRouter(app);
 }

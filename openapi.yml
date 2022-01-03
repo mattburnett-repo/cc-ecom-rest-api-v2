@@ -1,3 +1,4 @@
+
 openapi: "3.0.0"
 
 info:
@@ -28,6 +29,8 @@ tags:
   description: "User endpoint"
 - name: "address"
   description: "Address endpoint"
+- name: "payment"
+  description: "Payment information. Sensitive data is encryped upon insert"
 
 paths:
   /api/v1/cart:
@@ -379,6 +382,56 @@ paths:
           minimum: 1
       responses:
         $ref: '#/components/responses/200-400'
+
+  /api/v1/payment:
+    post: 
+      tags: 
+        - "payment"
+      summary: "Add payment to database"
+      requestBody:
+        $ref: '#/components/requestBodies/Payment'
+      responses:
+        $ref: '#/components/responses/200-400'
+    get:
+      tags:
+        - "payment"
+      summary: "Get all payment records."
+      description: "Get all payment records. Sensitive data is encrypted."
+      parameters: []
+      responses:
+        $ref: '#/components/responses/200-400'
+  /api/v1/payment/{paymentId}:
+    get:  
+      tags: 
+        - "payment"
+      summary: "Get payment info"
+      description: "Get payment info by payment info id"
+      parameters:
+        - name: paymentId
+          in: path
+          description: "Id of payment info to retrieve."
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
+  /api/v1/payment/user/{userId}:
+    get:  
+      tags: 
+        - "payment"
+      summary: "Get payment info"
+      description: "Get payment info by user id"
+      parameters:
+        - name: userId
+          in: path
+          description: "User id of payment info to retrieve."
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
 components:
   responses:
     200-400:
@@ -416,6 +469,26 @@ components:
       400: 
         description: 400 Bad request
   requestBodies:
+    Payment: 
+        description: "Form data for a new payment record"
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                nameOnCard:
+                  type: string
+                paymentTypeId:
+                  type: integer
+                cardNumber:
+                  type: string
+                expDate:
+                  type: string
+                orderAmount:
+                  type: number
     CreateAddress:
         description: "Form data for a new address record"
         required: true

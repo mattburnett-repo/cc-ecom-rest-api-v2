@@ -79,8 +79,10 @@ module.exports = (app) => {
     //     res.status(200).send({ message: msg})
     // })
 
+    // TODO: make sure this really logs everything out
+    //      zB clear out current cart / payment / order/ etc
     router.post('/api/v1/auth/logout', function(req, res){
-        req.logout(); // TODO: make sure this really logs everything out
+        req.logout(); 
         // res.redirect('/');
         res.status(200).send({message: 'logout successful'});
     });
