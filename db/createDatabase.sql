@@ -39,7 +39,7 @@
 -- RUN CREATE SCRIPT USING FOLOWING LINE
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql
 
--- RUN THIS TO ADD MINIMAL TEST DATA
+-- RUN THIS TO ADD MINIMAL TEST DATAq
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
 
 -- HEROKU CLI, push database changes to prod
