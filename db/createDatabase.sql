@@ -144,12 +144,12 @@ CREATE TABLE payments
 (
     id SERIAL PRIMARY KEY,
     user_id integer NOT NULL,
-    name_on_card character varying(100) NOT NULL,
+    name_on_card character varying(100) NOT NULL UNIQUE,
     -- update order_id value after order / payment confirmed
     order_id integer, 
-    payment_type_id integer NOT NULL,
-    card_number character varying(150), -- encrypt / decrypt this
-    expiration_date character varying(15),
+    payment_type_id integer NOT NULL UNIQUE,
+    card_number character varying(150) UNIQUE, -- encrypt / decrypt this
+    expiration_date character varying(15) UNIQUE,
     -- cc confirmation # / paypal / etc. update after order / payment confirmed
     transaction_id character varying(100),     
     amount decimal NOT NULL
