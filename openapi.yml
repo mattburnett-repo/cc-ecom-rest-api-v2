@@ -31,6 +31,8 @@ tags:
   description: "Address endpoint"
 - name: "payment"
   description: "Payment information. Sensitive data is encryped upon insert"
+- name: 'payment-type'
+  description: "Payment types"
 
 paths:
   /api/v1/cart:
@@ -430,6 +432,15 @@ paths:
             type: integer
             format: int64
             minimum: 1
+      responses:
+        $ref: '#/components/responses/200-400'
+  /api/v1/payment-type:
+    get:
+      tags:
+        - "payment-type"
+      summary: "Get all payment types."
+      description: "Get all payment types. SUsed for UI dropdowns, etc."
+      parameters: []
       responses:
         $ref: '#/components/responses/200-400'
 components:

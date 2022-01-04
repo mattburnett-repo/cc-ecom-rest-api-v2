@@ -63,8 +63,8 @@ module.exports = (app) => {
 
              res.status(200).send(result.rows) // TODO: remember that cc nums are encrypted
         } catch(err) {
-            console.log("Error in payment routes get all ", err)
-            res.status(400).send('Error in paymentRoutes / get all: ' + err)
+            console.log("Error in payment routes get by payment id ", err)
+            res.status(400).send('Error in paymentRoutes / get by payment id: ' + err)
         }       
     }) // end get by payment id
 
@@ -79,8 +79,22 @@ module.exports = (app) => {
 
             res.status(200).send(result.rows) // TODO: remember that cc nums are encrypted
         } catch(err) {
-            console.log("Error in payment routes get all ", err)
-            res.status(400).send('Error in paymentRoutes / get all: ' + err)
+            console.log("Error in payment routes get by user id ", err)
+            res.status(400).send('Error in paymentRoutes / get by user id: ' + err)
         }   
     }) // end get by user id
+
+    // get payment types 
+    router.get('/type', isAuthenticated, async (req, res) => {
+        const queryString = "SELECT * FROM payment_types"
+
+        try {
+             const result = await db.query(queryString)
+
+             res.status(200).send(result.rows) // TODO: remember that cc nums are encrypted
+        } catch(err) {
+            console.log("Error in payment routes get payment types ", err)
+            res.status(400).send('Error in paymentRoutes / get payment types: ' + err)
+        }       
+    }) // end get all
 } // end module.exports
