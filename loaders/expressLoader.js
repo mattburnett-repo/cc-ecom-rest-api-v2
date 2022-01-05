@@ -20,6 +20,14 @@ module.exports = (app) => {
     const corsOptions = {
         origin: process.env.REACT_APP_APP_BASE_URL,
         credentials: true
+
+        // stripe-related. maybe don't need
+        // https://blog.logrocket.com/react-stripe-payment-system-tutorial/
+        // res.header('Access-Control-Allow-Origin', '*')
+        // res.header(
+        //   'Access-Control-Allow-Headers',
+        //   'Origin, X-Requested-With, Content-Type, Accept'
+        // )
       };
 
     app.use(cors(corsOptions));
@@ -36,14 +44,6 @@ module.exports = (app) => {
 
     app.set("trust proxy", 1);
 
-    // app.use(session({
-    //     secret: process.env.SESSION_SECRET,
-    //     cookie: {},
-    //     resave: false,
-    //     secure: false,
-    //     saveUninitialized: false
-    // }));
-
     app.use(session({
         secret: process.env.SESSION_SECRET,
         cookie: {
@@ -53,13 +53,6 @@ module.exports = (app) => {
         resave: true,
         saveUninitialized: false
     }));
- 
-    // app.use(session({
-    //     secret: process.env.SESSION_SECRET,
-    //     cookie: {domain: 'localhost:3000'},
-    //     resave: false,
-    //     saveUninitialized: false
-    // }));
 
     app.use(flash());
 

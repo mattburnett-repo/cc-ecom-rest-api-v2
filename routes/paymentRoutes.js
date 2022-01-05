@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 var db = require('../db');
 const { isAuthenticated } = require('../loaders/passportLoader');
 
+const postCharge = require('../loaders/stripe')
+
 module.exports = (app) => {
     app.use('/api/v1/payment', router)
 
@@ -97,4 +99,8 @@ module.exports = (app) => {
             res.status(400).send('Error in paymentRoutes / get payment types: ' + err)
         }       
     }) // end get all
+
+    // stripe payment
+    router.post('/stripe/charge', isAuthenticated, postCharge)
+    
 } // end module.exports
