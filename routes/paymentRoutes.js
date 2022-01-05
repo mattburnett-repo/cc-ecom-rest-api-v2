@@ -7,8 +7,6 @@ const bcrypt = require('bcrypt');
 var db = require('../db');
 const { isAuthenticated } = require('../loaders/passportLoader');
 
-const postCharge = require('../loaders/stripe')
-
 module.exports = (app) => {
     app.use('/api/v1/payment', router)
 
@@ -101,6 +99,31 @@ module.exports = (app) => {
     }) // end get all
 
     // stripe payment
-    router.post('/stripe/charge', isAuthenticated, postCharge)
+    router.post('/stripe/charge', isAuthenticated, async (req, res) => {
+        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+  
+        try {
+            const { amount, source, receipt_email } = req.body
+
+            const charge = await stripe.charges.create({
+                amount: amount,
+                currency: 'usd',
+                source: source,
+                receipt_email: receipt_email
+            })
+
+            if (!charge) throw new Error('charge unsuccessful')
+
+            res.status(200).json({
+                charge,
+                message: 'charge posted successfully'
+            })
+        } catch (error) {
+            console.log('error ', error)
+            res.status(500).json({
+                message: error.message
+            })
+        } // end try / catch
+    }) // end stripe payment
     
 } // end module.exports
