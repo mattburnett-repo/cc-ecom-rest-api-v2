@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 var db = require('../db');
 const { isAuthenticated } = require('../loaders/passportLoader');
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+
 module.exports = (app) => {
     app.use('/api/v1/payment', router)
 
@@ -100,11 +102,9 @@ module.exports = (app) => {
 
     // stripe payment
     router.post('/stripe/charge', isAuthenticated, async (req, res) => {
-        const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
-  
-        try {
-            const { amount, source, receipt_email } = req.body
+        const { amount, source, receipt_email } = req.body
 
+        try {
             const charge = await stripe.charges.create({
                 amount: amount,
                 currency: 'usd',
