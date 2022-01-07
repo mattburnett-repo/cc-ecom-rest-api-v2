@@ -386,14 +386,6 @@ paths:
         $ref: '#/components/responses/200-400'
 
   /api/v1/payment:
-    post: 
-      tags: 
-        - "payment"
-      summary: "Add payment to database"
-      requestBody:
-        $ref: '#/components/requestBodies/Payment'
-      responses:
-        $ref: '#/components/responses/200-400'
     get:
       tags:
         - "payment"
@@ -418,31 +410,22 @@ paths:
             minimum: 1
       responses:
         $ref: '#/components/responses/200-400'
-  /api/v1/payment/user/{userId}:
-    get:  
-      tags: 
-        - "payment"
-      summary: "Get payment info"
-      description: "Get payment info by user id"
-      parameters:
-        - name: userId
-          in: path
-          description: "User id of payment info to retrieve."
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
-      responses:
-        $ref: '#/components/responses/200-400'
-  /api/v1/payment-type:
-    get:
-      tags:
-        - "payment-type"
-      summary: "Get all payment types."
-      description: "Get all payment types. SUsed for UI dropdowns, etc."
-      parameters: []
-      responses:
-        $ref: '#/components/responses/200-400'
+    /api/v1/payment/user/{userId}:
+      get:  
+        tags: 
+          - "payment"
+        summary: "Get payment info"
+        description: "Get payment info by user id"
+        parameters:
+          - name: userId
+            in: path
+            description: "User id of payment info to retrieve."
+            schema:
+              type: integer
+              format: int64
+              minimum: 1
+        responses:
+          $ref: '#/components/responses/200-400'
   /api/v1/payment/stripe/charge:
     post:  
       tags: 

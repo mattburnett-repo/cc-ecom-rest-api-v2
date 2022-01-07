@@ -7,6 +7,7 @@
     "start": "node ./index.js",
     "dev": "nodemon ./index.js",
     "createDB": "psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql",
+    "insertData": "psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql",
     "testAll": "mocha"
   },
   "dependencies": {

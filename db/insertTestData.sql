@@ -18,12 +18,6 @@ INSERT INTO product_categories (category_id, description) VALUES (2, 'Tech');
 INSERT INTO product_categories (category_id, description) VALUES (3, 'Health');
 INSERT INTO product_categories (category_id, description) VALUES (4, 'Auto');
 
-INSERT INTO payment_types (description) VALUEs ('PayPal');
-INSERT INTO payment_types (description) VALUEs ('MasterCard');
-INSERT INTO payment_types (description) VALUEs ('Visa');
-INSERT INTO payment_types (description) VALUEs ('Amex');
-INSERT INTO payment_types (description) VALUEs ('EC Karte');
-
 --  pixabay.com/ open link in new window
 -- pet accessories 1-8
 INSERT INTO products(name, category_id, description, image_url, price) VALUES ('cat and dog accessories', 1, 'product_desc_01', 'https://media.istockphoto.com/photos/accessories-for-cat-and-dog-on-blue-background-pet-care-and-training-picture-id1248454290', 1.00);
@@ -73,13 +67,9 @@ INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, lin
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 3, 3, 3.00, 9.00);
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 4, 4, 4.00, 16.00);
 
--- orders / payments
+-- orders 
 INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
-INSERT INTO payments(user_id, name_on_card, order_id, payment_type_id, card_number, expiration_date, transaction_id, amount)
-     VALUES (1, 'asdf qwer', 1, 2, '1234 1234 1234 1234', '05/2022', 'X1234Y5678', 1234.00);
-
-INSERT INTO users_payments(user_id, payment_id) VALUES(1, 1);
 
 -- done
 SELECT '*** You now have three users, one shipping address, four product categories, 32 products, one cart, and one order as basic test data ***' AS test_data_inserted;

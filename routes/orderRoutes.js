@@ -1,3 +1,4 @@
+const { query } = require('express');
 var express = require('express');
 var router = express.Router();
 
@@ -130,40 +131,79 @@ module.exports = (app) => {
     }
   });
 
+  // create order
   router.post('/', isAuthenticated, async function(req, res) {
-      try {
-        const { cart_id, user_id } = req.body;
+    const { orderData } = req.body;
 
-        // get total price
-        var queryString = `SELECT orders.id AS order_id, SUM(line_item_total_price) AS total_price
-                             FROM orders
-                             JOIN cart_items
-                               ON cart_items.cart_id = orders.id
-                            WHERE orders.user_id = $2
-                              AND cart_items.cart_id = $1
-                            GROUP BY orders.id`;
-        var result = await db.query(queryString, [parseInt(cart_id, 10)]);
-        var total_price = result.rows[0].total_price;
+    try {
+      // insert cart data
+      var queryString = `INSERT INTO carts(user_id, name)
+                              VALUES ($1, $2) RETURNING *`;
+      var theVals = [ parseInt(orderData.user_id, 10), `Cart for user id ${orderData.user_id}`]
 
-        // set order date, to make cart into an order
-        queryString = 'UPDATE carts SET order_date = Now() WHERE id = $1';
-        result = await db.query(queryString, [parseInt(cart_id, 10)]);
+      var result = await db.query(queryString, theVals)
+      let cartId = result.rows[0].id
 
-        // create order record
-        queryString = "INSERT INTO orders(user_id, cart_id, order_date, total_price) VALUES ($1, $2, $3, $4) RETURNING *";
-        var orderDate = new Date();
-        result = await db.query(queryString, [parseInt(user_id, 10), parseInt(cart_id, 10), orderDate, total_price]);
-      
-        res.status(200).send(result.rows);
+      // insert cart items
+      for(var i=0; i < orderData.cartInfo.length; i++) {
+        // FIXME: use real line item total price vals
+        queryString = `INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price)
+                            VALUES ($1, $2, $3, $4, $5)`
+        theVals = [cartId, orderData.cartInfo[i].id, orderData.cartInfo[i].quantity, orderData.cartInfo[i].price, 1234]
 
-      } catch (e) {
-        res.status(400).send({message: e.message});
+        result = await db.query(queryString, theVals)
       }
-    });
+
+      // insert shipping data
+      queryString = `INSERT INTO addresses (first_name, last_name, address_1, address_2, city, state_province, postal_code, country)
+                        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`
+      theVals = [ orderData.shippingInfo.firstName, orderData.shippingInfo.lastName, orderData.shippingInfo.address1, 
+                  orderData.shippingInfo.address2, orderData.shippingInfo.city, orderData.shippingInfo.stateProvince, 
+                  orderData.shippingInfo.postalCode, orderData.shippingInfo.country]
+
+      result = await db.query(queryString, theVals)
+      let addressId = result.rows[0].id
+
+      queryString = `INSERT INTO users_addresses (user_id, address_id)
+                      VALUES($1, $2)`
+      theVals = [ orderData.user_id, addressId ]
+      result = await db.query(queryString, theVals)
+
+      // insert payment data
+      // FIXME: use real amount value
+      queryString = `INSERT INTO payments (user_id, stripe_id, created, payment_method, receipt_url, transaction_status, amount)
+                      VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`
+      theVals = [ orderData.user_id, orderData.paymentInfo.charge.id, orderData.paymentInfo.charge.created, orderData.paymentInfo.charge.payment_method,
+                  orderData.paymentInfo.charge.receipt_url, orderData.paymentInfo.charge.status, 1234]
+
+      result = await db.query(queryString, theVals)
+      let paymentId = result.rows[0].id
+
+      queryString = `INSERT INTO users_payments (user_id, payment_id)
+                      VALUES($1, $2)`
+      theVals = [ orderData.user_id, paymentId ]
+
+      result = await db.query(queryString, theVals)
+
+      // insert order data
+      // FIXME: use real total price vals
+      queryString = "INSERT INTO orders(user_id, cart_id, total_price) VALUES ($1, $2, $3) RETURNING *";
+      // var orderDate = new Date();
+      result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, 1234]);
+      let orderId = result.rows[0].id
+
+      res.status(200).send({ message: `Order id ${orderId} successfully created}` })
+    } catch(e) {
+      console.log('orderRoutes / post error: ', e)
+      res.status(400).send({message: e.message});
+    }
+  }); // end create order
 
   router.delete('/', isAuthenticated, async function(req, res) {
     const { order_id } = req.body;
     const queryString = "DELETE FROM orders WHERE id = $1";
+
+    // TODO: needs to remove data from other tables...
 
     try {
       const result = await db.query(queryString, [parseInt(order_id, 10)]);
