@@ -192,7 +192,14 @@ module.exports = (app) => {
       result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, 1234]);
       let orderId = result.rows[0].id
 
-      res.status(200).send({ message: `Order id ${orderId} successfully created}` })
+      // get final order record
+      queryString = "SELECT * from orders WHERE id = $1"
+      theVals = [ orderId ]
+      result = await db.query(queryString, theVals)
+
+      // console.log('orderRoutes saveOrderData final query result.rows', result.rows)
+
+      res.status(200).send(result.rows)
     } catch(e) {
       console.log('orderRoutes / post error: ', e)
       res.status(400).send({message: e.message});
