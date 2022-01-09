@@ -117,4 +117,27 @@ module.exports = (app) => {
       res.status(400).send({message: e.message});
     }
   });
+
+  router.post('/search', isAuthenticated, async (req, res) => {
+    const { searchTerm } = req.body
+
+    let queryString = `SELECT * FROM products
+                        WHERE name LIKE '%${searchTerm}%'
+                           OR description LIKE '%${searchTerm}%'`
+
+    console.log('queryString ', queryString)
+
+    try {
+      const result = await db.query(queryString);
+
+      if(result) {
+        res.status(200).json(result.rows);
+      } else {
+        res.status(400).send();
+      }   
+    } catch(e) {
+      res.status(400).send({message: e.message});
+    }
+
+  })
 }

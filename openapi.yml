@@ -236,6 +236,23 @@ paths:
             minimum: 1
       responses:
         $ref: '#/components/responses/200-400'
+  /api/v1/product/search:
+    post: 
+      tags:
+        - product
+      summary: "Search products"
+      description: "Search products name and description for a single search term"
+      requestBody:
+        required: true  
+        content: 
+          application/json:
+            schema: 
+              type: object
+              properties:
+                searchTerm:
+                  type: string
+      responses:
+        $ref: '#/components/responses/200-400'
   /api/v1/product-category:
     get:
       tags: 
