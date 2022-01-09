@@ -6,9 +6,12 @@ const JWTStrategy = require('passport-jwt').Strategy,
        ExtractJWT = require('passport-jwt').ExtractJwt;
 const opts = {}
 opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'secret';
+opts.secretOrKey = process.env.ACCESS_TOKEN_SECRET;
 opts.issuer = 'localhost:4000';
 opts.audience = 'localhost:3000';
+
+// FIXME: at this point we are sort of ignoring passport...
+var jwt = require('jsonwebtoken')
 
 const bcrypt = require('bcrypt');
 const db = require('../db');
@@ -85,24 +88,30 @@ function initializePassport(app) {
         }
     )); // end Google strategy
 
-    // JWT Strategy
-    passport.use(new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.ACCESS_TOKEN_SECRET
-        },
-        function (jwtPayload, cb) {
-            // TODO: get this working / validating
-            console.log('passportLoader JWTStrategy callback')
-            //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-            // return UserModel.findOneById(jwtPayload.id)
-            //     .then(user => {
-            //         return cb(null, user);
-            //     })
-            //     .catch(err => {
-            //         return cb(err);
-            //     });
-        }
-    ));
+    // JWT Strategy. More or less ignoring it, using jwt verify in isAuthenticated(), below...
+    // https://www.youtube.com/watch?v=Ne0tLHm1juE&list=PLYQSCk-qyTW2ewJ05f_GKHtTIzjynDgjK&index=10&t=972s
+    // passport.use(new JWTStrategy({ // FIXME: should use opts{}, from upstairs?
+    //         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    //         secretOrKey: process.env.ACCESS_TOKEN_SECRET
+    //     },
+
+    // TODO: I don't understand why passport makes this so complicated. Maybe fix / implement this later.
+    // passport.use(new JWTStrategy( opts,
+    //     // function (jwtPayload, cb) {
+    //     (jwtPayload, cb) => {
+    //         // TODO: get this working / validating
+    //         console.log('passportLoader JWTStrategy callback')
+    //         //find the user in db if needed. 
+    //         //      >>> This functionality may be omitted if you store everything you'll need in JWT payload. <<<
+    //         // return UserModel.findOneById(jwtPayload.id)
+    //         //     .then(user => {
+    //         //         return cb(null, user);
+    //         //     })
+    //         //     .catch(err => {
+    //         //         return cb(err);
+    //         //     });
+    //     }
+    // ));
     // end JWT Strategy
 } // end initializePassport
 
@@ -110,18 +119,33 @@ function isAuthenticated(req, res, next) {
     if(req.isAuthenticated()) { 
         ('req.isAuthenticate()')
         return next();
-    } else if (req.headers.authorization) { 
-        // console.log('isAuthenticated() req.headers.authorization ', req.headers.authorization)
-        const authHeader = req.headers.authorization.split(' ')
-        const authMethod = authHeader[0]
-        const authToken = authHeader[1]
+    } else if (req.headers['authorization']) { 
+        const authHeader = req.headers['authorization']
+        const authToken =  authHeader && req.headers['authorization'].split(' ')[1]
 
-        console.log('passportLoader isAuthenticated() jwt auth')
-        // console.log('passportLoader authMethod ', authMethod)
-        // console.log('passportLoader authToken ', authToken)
+        if(authToken == null) {
+            console.log('authToken error in jwt verify: Token not present')
+            return res.sendStatus(401)
+        }
 
-        passport.authenticate('jwt', {session: false})
-        return next()
+        // console.log('start jwt')
+        // TODO: I don't understand why passport makes this so complicated. Maybe fix / implement this later.
+        //      Right now, we have working JWT starting at jwt.verify()
+        // passport.authenticate('jwt', {session: false})
+        
+        jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if(err) {
+                res.status(401).send({message: 'Authentication error: Token not recognized'})
+            }
+
+            req.user = user
+
+            next()
+        })
+
+        // console.log('end jwt')
+
+        // return next()
     } else {
         res.status(401).send({message: 'no authorized user'})
 
