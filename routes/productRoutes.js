@@ -124,9 +124,7 @@ module.exports = (app) => {
     let queryString = `SELECT * FROM products
                         WHERE name LIKE '%${searchTerm}%'
                            OR description LIKE '%${searchTerm}%'`
-
-    console.log('queryString ', queryString)
-
+                           
     try {
       const result = await db.query(queryString);
 
