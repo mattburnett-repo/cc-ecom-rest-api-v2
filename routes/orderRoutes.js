@@ -146,10 +146,9 @@ module.exports = (app) => {
 
       // insert cart items
       for(var i=0; i < orderData.cartInfo.length; i++) {
-        // FIXME: use real line item total price vals
         queryString = `INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price)
                             VALUES ($1, $2, $3, $4, $5)`
-        theVals = [cartId, orderData.cartInfo[i].id, orderData.cartInfo[i].quantity, orderData.cartInfo[i].price, 1234]
+        theVals = [cartId, orderData.cartInfo[i].id, orderData.cartInfo[i].quantity, orderData.cartInfo[i].price, orderData.cartInfo[i].item_total_price]
 
         result = await db.query(queryString, theVals)
       }
@@ -170,11 +169,10 @@ module.exports = (app) => {
       result = await db.query(queryString, theVals)
 
       // insert payment data
-      // FIXME: use real amount value
       queryString = `INSERT INTO payments (user_id, stripe_id, created, payment_method, receipt_url, transaction_status, amount)
                       VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`
       theVals = [ orderData.user_id, orderData.paymentInfo.charge.id, orderData.paymentInfo.charge.created, orderData.paymentInfo.charge.payment_method,
-                  orderData.paymentInfo.charge.receipt_url, orderData.paymentInfo.charge.status, 1234]
+                  orderData.paymentInfo.charge.receipt_url, orderData.paymentInfo.charge.status, orderData.totalPrice]
 
       result = await db.query(queryString, theVals)
       let paymentId = result.rows[0].id
@@ -186,10 +184,9 @@ module.exports = (app) => {
       result = await db.query(queryString, theVals)
 
       // insert order data
-      // FIXME: use real total price vals
       queryString = "INSERT INTO orders(user_id, cart_id, total_price) VALUES ($1, $2, $3) RETURNING *";
       // var orderDate = new Date();
-      result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, 1234]);
+      result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, orderData.totalPrice]);
       let orderId = result.rows[0].id
 
       // get final order record
