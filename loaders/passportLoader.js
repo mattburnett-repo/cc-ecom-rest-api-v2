@@ -95,7 +95,8 @@ function initializePassport(app) {
     //         secretOrKey: process.env.ACCESS_TOKEN_SECRET
     //     },
 
-    // TODO: I don't understand why passport makes this so complicated. Maybe fix / implement this later.
+    // TODO: I don't understand why this is so complicated. Maybe fix / implement this later.
+    //  https://medium.com/front-end-weekly/learn-using-jwt-with-passport-authentication-9761539c4314
     // passport.use(new JWTStrategy( opts,
     //     // function (jwtPayload, cb) {
     //     (jwtPayload, cb) => {
