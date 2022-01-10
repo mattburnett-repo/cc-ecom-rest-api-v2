@@ -53,10 +53,19 @@ function initializePassport(app) {
     ); // end local strategy
 
     // Google strategy
+    //      can only have one google callback url?
+    //          the original plan was to have two
+    //              one for the API / local server              (/auth/google/callback)
+    //              another for the remote / React UI server    (/api/v1/auth/google/callback)
+    //          but it doesn't work that way?
+    //      google oauth creates other problems with API server
+    //          specifically, can't run api calls from within Swagger doc
+    //          so we just have to settle for one callback
+    //              in this case, /api/v1/auth/google/callback (React UI app)
     passport.use(new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL
+            callbackURL: process.env.GOOGLE_CALLBACK_URL 
         },
         async (accessToken, refreshToken, profile, done) => {            
             const googleId = profile.id;
