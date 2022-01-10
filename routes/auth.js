@@ -14,11 +14,11 @@ module.exports = (app) => {
     router.get('/', (req, res) => res.render('login.ejs'));
 
     // routes for auth from api server
-    // router.post('/', passport.authenticate('local', {
-    //     successRedirect: '/api/v1/api-docs', // api-docs is the front end for the API project
-    //     failureRedirect: '/login',
-    //     failureFlash: true
-    // }));    
+    router.post('/', passport.authenticate('local', {
+        successRedirect: '/api/v1/api-docs', // api-docs is the front end for the API project
+        failureRedirect: '/login',
+        failureFlash: true
+    }));    
 
     // local to the API server
     // router.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
@@ -34,8 +34,9 @@ module.exports = (app) => {
 
     router.get('/api/v1/auth/google/callback',  passport.authenticate('google'), 
             (req, res) => {
-                // res.redirect('/api/v1/api-docs');
                 res.status(200).json( { message: '/api/v1/auth/google/callback'})
+                // res.redirect('/dashboard') // how to redirect to React server?
+                // TODO: add JWT signing?
             });
 
     // API access from non-api server/s, ie React UI client.
