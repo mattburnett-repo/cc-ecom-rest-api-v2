@@ -74,8 +74,8 @@ CREATE TABLE cart_items
     cart_id integer NOT NULL,
     product_id integer NOT NULL, 
     product_quantity integer NOT NULL,
-    product_price decimal NOT NULL,
-    line_item_total_price decimal NOT NULL,
+    product_price numeric(6, 2) NOT NULL,
+    line_item_total_price numeric(6, 2) NOT NULL,
     PRIMARY KEY (cart_id, product_id)
 );
 
@@ -85,7 +85,7 @@ CREATE TABLE orders
     user_id integer,
     cart_id integer,
     order_date date DEFAULT CURRENT_DATE,
-    total_price decimal
+    total_price numeric(6, 2)
 );
 
 CREATE TABLE products
@@ -95,7 +95,7 @@ CREATE TABLE products
     name character varying(100) NOT NULL,
     description character varying(500) NOT NULL,
     image_url character varying(250),
-    price decimal
+    price numeric(6, 2)
 );
 
 CREATE TABLE product_categories
@@ -148,7 +148,7 @@ CREATE TABLE payments
     payment_method character varying(100),
     receipt_url character varying(200),
     transaction_status character varying(50),    
-    amount decimal NOT NULL
+    amount numeric(6, 2) NOT NULL
 );
 
 CREATE TABLE users_payments
