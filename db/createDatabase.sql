@@ -93,7 +93,7 @@ CREATE TABLE products
     id SERIAL PRIMARY KEY,
     category_id         integer,
     name character varying(100) NOT NULL,
-    description character varying(500) NOT NULL,
+    description character varying(1000) NOT NULL,
     image_url character varying(250),
     price numeric(6, 2)
 );
