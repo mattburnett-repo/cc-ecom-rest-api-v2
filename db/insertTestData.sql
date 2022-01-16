@@ -4,6 +4,8 @@
 -- RUN THIS TO ADD MINIMAL TEST DATA (this file)
 -- psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql
 
+BEGIN;
+
 -- Insert test data
 INSERT INTO users(user_name, password, email) VALUES ('username_01', 'password_01', '1@1.com');
 INSERT INTO users(user_name, password, email) VALUES ('username_02', 'password_02', '2@2.com');
@@ -76,3 +78,5 @@ INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
 
 -- done
 SELECT '*** You now have three users, one shipping address, four product categories, 32 products, one cart, and one order as basic test data ***' AS test_data_inserted;
+
+END;
