@@ -20,6 +20,11 @@ To install after downloading / cloning this repo,
 
 ---
 
+## Testing
+Tests are located in the src/test folder
+
+---
+
 ## Technologies used
 * Express / NodeJS
 * EJS templating
