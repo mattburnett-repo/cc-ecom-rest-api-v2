@@ -1,15 +1,16 @@
 # E-Commerce REST API project
 This is a collection of RESTful API calls modelled on basic e-commerce functionality.
 
-The focus of this project is the creation of REST APIs, and not the creation of a functioning online store.
-
-Click the 'Deployment' link to go to the app. From there you can register / login, and then see the API specification.
+Click the 'Deployment' link below to go to the app. From there you can register / login, and then see the API specification.
 All API routes are protected by authentication.
 
 Click the 'GitHub Project' link to see the kanban project cards.
 
 Deployment: https://e-commerce-rest-api-v2.herokuapp.com/ \
 GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects/1)
+
+This API is used / consumed by another project, "ecommerce-ui", a React app available at the following link\
+https://ecommerce-react-ui.herokuapp.com/
 
 To install after downloading / cloning this repo, 
   * run
@@ -23,7 +24,7 @@ To install after downloading / cloning this repo,
 * Express / NodeJS
 * EJS templating
 * PostgreSQL / PGadmin / Postbird
-* Mocha / Chai TDD suite
+* Mocha / Chai / SuperTest TDD suite
 * Postman API development tool
 * bcrypt encryption library
 * Passport JS authentication library
@@ -38,7 +39,7 @@ To install after downloading / cloning this repo,
 
 ## Future development / To do
 * Everything can always be better...
-* Tests are wrecked after refactoring everything to load from index.js instead of app.js
 * OAuth creates problem in production server Swagger UI 'Try It Out' functionality. 
   * Shows login screen html template, and not endpoint output. 
   * OAuth is still implemented, just not used for API doc access, so you can see output of different API endpoints in 'Try It Out' parts of Swagger UI
+* OAuth redirect doesn't send response to calling UI app. Need to sort this out.
