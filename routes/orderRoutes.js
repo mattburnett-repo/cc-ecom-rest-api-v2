@@ -184,9 +184,8 @@ module.exports = (app) => {
       result = await db.query(queryString, theVals)
 
       // insert order data
-      queryString = "INSERT INTO orders(user_id, cart_id, total_price) VALUES ($1, $2, $3) RETURNING *";
-      // var orderDate = new Date();
-      result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, orderData.totalPrice]);
+      queryString = "INSERT INTO orders(user_id, cart_id, payment_id, total_price) VALUES ($1, $2, $3, $4) RETURNING *";
+      result = await db.query(queryString, [parseInt(orderData.user_id, 10), cartId, paymentId, orderData.totalPrice]);
       let orderId = result.rows[0].id
 
       // get final order record
@@ -196,7 +195,12 @@ module.exports = (app) => {
 
       // console.log('orderRoutes saveOrderData final query result.rows', result.rows)
 
-      res.status(200).send(result.rows)
+      if(result.rowCount > 0) {
+        res.status(200).send(result.rows)
+      } else {
+        res.status(400).send({ message: `$Can\'t return order record for order id ${orderId}`});
+      } 
+      
     } catch(e) {
       console.log('orderRoutes / post error: ', e)
       res.status(400).send({message: e.message});
@@ -204,13 +208,15 @@ module.exports = (app) => {
   }); // end create order
 
   router.delete('/', isAuthenticated, async function(req, res) {
-    const { order_id } = req.body;
-    const queryString = "DELETE FROM orders WHERE id = $1";
+    const { order_id, user_id } = req.body;
 
-    // TODO: needs to remove data from other tables...
+    // delete top-level order data
+    //    leave other data (payment/address/cart etc) for archival 
+    //      and potentially legal purposes
+    const queryString = "DELETE FROM orders WHERE id = $1 AND user_id = $2";
 
     try {
-      const result = await db.query(queryString, [parseInt(order_id, 10)]);
+      const result = await db.query(queryString, [parseInt(order_id, 10), parseInt(user_id, 10)]);
 
       if(result) {
         res.status(200).send(result.rows); 

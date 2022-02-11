@@ -36,14 +36,13 @@ module.exports = async (app) => {
       if(result.rowCount > 0) {
         res.status(200).json(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(200).send([{"message": `user id ${user_id} not found`}]);
+        res.status(400).send({"message": `user id ${user_id} not found`});
       } else {
         res.status(400).send();
       }     
     } catch(e) {
       res.status(400).send({message: e.message});
     }
-
   });
 
   router.post('/', isAuthenticated, async function(req, res) {
@@ -52,10 +51,10 @@ module.exports = async (app) => {
     const queryString = 'INSERT INTO users(user_name, password, email) VALUES($1, $2, $3) RETURNING *';
 
     try {
-      const result = await db.query(queryString, theVals);
+      const result = await db.query(queryString, theVals); 
 
-      if(result) {
-        res.status(200).json(result.rows); 
+      if(result.rowCount > 0) {
+        res.status(201).json(result.rows); 
       } else {
         res.status(400).send();
       }    
@@ -66,7 +65,7 @@ module.exports = async (app) => {
 
   router.put('/', isAuthenticated, async function(req, res) {
     const { user_id, username, password, email } = req.body;
-    const theVals = [parseInt(user_id, 10), username, password];
+    const theVals = [parseInt(user_id, 10), username, password, email];
     const queryString = 'UPDATE users SET user_name = $2, password = $3, email = $4 WHERE id = $1 RETURNING *';
 
     try {

@@ -73,7 +73,7 @@ INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, lin
 INSERT INTO cart_items(cart_id, product_id, product_quantity, product_price, line_item_total_price) VALUES (1, 4, 4, 4.00, 16.00);
 
 -- orders 
-INSERT INTO orders(user_id, cart_id) VALUES (1, 1);
+INSERT INTO orders(user_id, cart_id, payment_id) VALUES (1, 1, 1);
 
 
 -- done

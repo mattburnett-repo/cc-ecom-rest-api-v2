@@ -89,6 +89,5 @@ module.exports = (app) => {
             res.status(400).send({message: e.message});
         }
     }) // end get by user id
-
 } // end module.exports
 

@@ -33,7 +33,7 @@ module.exports = (app) => {
       if(result.rowCount > 0) {
         res.status(200).send(result.rows[0]); 
       } else if (result.rowCount === 0) {
-        res.status(200).send([{'message': `product id ${id} not found`}]);
+        res.status(400).send([{'message': `product id ${id} not found`}]);
       } else {
         res.status(400).send();
       }    
@@ -43,9 +43,9 @@ module.exports = (app) => {
   });
 
   router.post('/', isAuthenticated, async function(req, res) {
-    const { name, description, price, image_url } = req.body;
-    const theVals = [name, description, price, image_url];
-    const queryString = 'INSERT INTO products(name, description, price, image_url) VALUES($1, $2, $3, $4) RETURNING *';
+    const { category_id, name, description, price, image_url } = req.body;
+    const theVals = [category_id, name, description, price, image_url];
+    const queryString = 'INSERT INTO products(category_id, name, description, price, image_url) VALUES($1, $2, $3, $4, $5) RETURNING *';
 
     try {
       const result = await db.query(queryString, theVals);
@@ -61,9 +61,9 @@ module.exports = (app) => {
   });
 
   router.put('/', isAuthenticated, async function(req, res) {
-    const { id, name, description, price, image_url } = req.body;
-    const theVals = [parseInt(id, 10), name, description, price, image_url];
-    const queryString = 'UPDATE Products SET name = $2, description = $3, price = $4, image_url = $5 WHERE id = $1 RETURNING *';
+    const { id, category_id, name, description, price, image_url } = req.body;
+    const theVals = [parseInt(id, 10), parseInt(category_id, 10), name, description, price, image_url];
+    const queryString = 'UPDATE Products SET category_id = $2, name = $3, description = $4, price = $5, image_url = $6 WHERE id = $1 RETURNING *';
 
     try {
       const result = await db.query(queryString, theVals);
@@ -71,7 +71,7 @@ module.exports = (app) => {
       if(result.rowCount === 1) {
         res.status(200).json(result.rows); 
       } else if (result.rowCount === 0) {
-        res.status(204).send({ message: `product_id: ${id} updated.`});
+        res.status(204).send({ message: `product_id: ${id} not found.`});
       } else {
         res.status(400).send();
       }    

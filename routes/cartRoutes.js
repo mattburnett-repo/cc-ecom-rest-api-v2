@@ -126,7 +126,7 @@ module.exports = (app) => {
     }
 });
 
-  // FIXME: figure best way to add cart for a user
+  // note: carts are created on client side, in Redux (currentCart/savedCarts)
 
   router.post('/', isAuthenticated, async function(req, res) {
     const { cart_id, product_id, product_quantity, product_price } = req.body;
@@ -156,8 +156,8 @@ module.exports = (app) => {
     const theVals = [parseInt(cart_id, 10), parseInt(product_id, 10), parseInt(product_quantity, 10), line_item_total_price]; 
     var queryString = 'UPDATE cart_items SET product_quantity = $3, line_item_total_price = $4 WHERE cart_id = $1 AND product_id = $2 RETURNING *';
 
-    console.log('asdf ' + cart_id);
-    console.log('qwer ' + product_id);
+    // console.log('asdf ' + cart_id);
+    // console.log('qwer ' + product_id);
 
     try {
       var result = await db.query(queryString, theVals);

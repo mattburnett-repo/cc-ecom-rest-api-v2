@@ -84,6 +84,7 @@ CREATE TABLE orders
     id SERIAL PRIMARY KEY,
     user_id integer,
     cart_id integer,
+    payment_id integer,
     order_date date DEFAULT CURRENT_DATE,
     total_price numeric(6, 2)
 );
