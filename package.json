@@ -8,6 +8,8 @@
     "dev": "nodemon ./app.js",
     "createDB": "psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/createDatabase.sql",
     "insertData": "psql postgres -d codecademy_ecommerce_rest_api_v2 -f ./db/insertTestData.sql",
+    "herokuDbReset": "heroku pg:reset HEROKU_POSTGRESQL_ONYX --confirm e-commerce-rest-api-v2",
+    "herokuDbPush": "heroku pg:push codecademy_ecommerce_rest_api_v2 HEROKU_POSTGRESQL_ONYX --app e-commerce-rest-api-v2",
     "test": "mocha -w",
     "testOnce": "mocha -b --exit"
   },
