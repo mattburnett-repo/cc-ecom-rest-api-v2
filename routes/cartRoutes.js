@@ -110,7 +110,8 @@ module.exports = (app) => {
                                FROM cart_items
                             GROUP BY cart_id
                           ) cart_total on cart_total.cart_id = cart_items.cart_id
-                        WHERE c.user_id = $1`
+                        WHERE c.user_id = $1
+                        ORDER BY c.id DESC`
     try {
       const result = await db.query(queryString, [user_id]);
 
