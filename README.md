@@ -23,6 +23,8 @@ To install after downloading / cloning this repo,
 ## Testing
 Tests are located in the src/test folder
 
+Tests are written using SuperTest / Chai and are run using Mocha test runner.
+
 ---
 
 ## Technologies used
