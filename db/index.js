@@ -7,7 +7,8 @@ const devConfig = {
   host: process.env.DATABASE_HOSTNAME,
   database: process.env.DATABASE_NAME,
   password: process.env.DATABASE_PASSWORD,
-  port: process.env.DATABASE_PORT
+  port: process.env.DATABASE_PORT,
+  keepAlive: true
 };
 
 const prodConfig = {
