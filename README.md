@@ -1,16 +1,10 @@
 # E-Commerce REST API project
 This is a collection of RESTful API calls modelled on basic e-commerce functionality.
 
-Click the 'Deployment' link below to go to the app. From there you can register / login, and then see the API specification.
-All API routes are protected by authentication.
-
 Click the 'GitHub Project' link to see the kanban project cards.
-
-Deployment: https://e-commerce-rest-api-v2.herokuapp.com/ \
 GitHub Project (https://github.com/mattburnett-repo/cc-ecom-rest-api-v2/projects/1)
 
-This API is used / consumed by another project, "ecommerce-ui", a React app available at the following link\
-https://ecommerce-react-ui.herokuapp.com/
+This API is used / consumed by another project, [ecommerce-ui](https://github.com/mattburnett-repo/cc-ecomm-ui)
 
 To install after downloading / cloning this repo, 
   * run
@@ -40,7 +34,6 @@ Tests are written using SuperTest / Chai and are run using Mocha test runner.
 * Swagger API documentation
 * E-Commerce UI (React app)
   * UI code: https://github.com/mattburnett-repo/cc-ecomm-ui
-* Heroku deployment platform
 
 ---
 
